@@ -88,7 +88,12 @@ retrospective in `publish-to-portfolio` can edit the docs; the skills point thos
 
 ## Cloud sessions
 
-Add this to the environment's setup script:
+The plugin is added to my claude.ai account (marketplace `quasarbright/quasarbright-claude`), and
+account plugins sync into every cloud session on their own, hooks included. Confirmed 2026-11-17:
+a cloud session loaded v0.4.0 with all skills and all five startup hooks. No setup script needed.
+
+Fallback, if account sync ever isn't available: put this in the environment's setup script. A fresh
+container doesn't know the official marketplace, so it has to be added before `frontend-design`.
 
 ```bash
 claude plugin marketplace add quasarbright/quasarbright-claude
@@ -97,9 +102,8 @@ claude plugin marketplace add anthropics/claude-plugins-official
 claude plugin install frontend-design@claude-plugins-official
 ```
 
-A fresh container doesn't know the official marketplace, so it has to be added before
-`frontend-design` will install. These commands were tested in a fresh container on 2026-11-17. That
-plugins installed by the setup script carry into the session is assumed, not yet confirmed.
+Account plugins also sync to the laptop at Claude Code startup, so don't install it there a
+second time with `/plugin install`.
 
 Several skills expect my other repos to sit next to each other under `~/GitHub` (portfolio,
 sketches, cutwist). In a cloud session those paths won't exist unless the environment clones them.
