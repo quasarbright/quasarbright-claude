@@ -29,7 +29,7 @@ finished project, and never deployed/published here.
 
 ## 3. Identity
 
-Invoke the **`frontend-design`** skill to design a distinctive identity *grounded in the subject's
+Invoke the **`frontend-design`** skill (not installed in cloud sessions: do this step yourself there) to design a distinctive identity *grounded in the subject's
 own world* (palette 4–6 named hexes, a display+body+mono type pairing, a signature element, a hero
 that's a thesis). Then apply it by **overriding CSS tokens on `:root`**
 (`--bg --panel --panel-2 --border --text --muted --faint --accent --accent-hi --on-accent`,
@@ -113,6 +113,9 @@ code actually does.
 - `?api-key=…` auto-populates and self-strips (handled by the lib on load) — for pre-keyed friend links.
 
 ## 6. Serve & open when ready
+
+In a cloud session, serve with the Bash tool's `run_in_background` and show Mike screenshots
+instead of opening anything (see the plugin's `steering/rules/cloud.md`).
 
 The first time the scaffold is in a state Mike should look at, start a local server and open it for
 him rather than asking him to open it or trying to self-verify with browser automation:

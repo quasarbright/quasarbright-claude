@@ -32,7 +32,9 @@ The subagent only knows what you give it. Collect:
 
 ## 2. Spawn the reviewer
 
-Use the Agent tool (general-purpose). Don't tell it what you think is wrong or right. Give it the
+Use the Agent tool (general-purpose). Don't tell it what you think is wrong or right. In a cloud session, add the headless-browser
+notes from the plugin's `steering/rules/cloud.md` (WebGL flags, one browser at a time, no pointer
+lock) to the brief, or it will stall on a blank canvas. Give it the
 brief and this task, with `<plugin docs>` replaced by the absolute path of this plugin's `docs/`
 folder (`../../docs` from this skill's folder):
 
