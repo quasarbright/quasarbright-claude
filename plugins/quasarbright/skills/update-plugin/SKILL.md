@@ -14,8 +14,11 @@ the single source of truth. Every installed copy (laptop, cloud sessions) is a c
 - In a cloud session: the repo is attached to the project; clone it if it isn't in the session.
 - Never edit `~/.claude/plugins/cache/...`. An update overwrites it.
 
-Layout: `plugins/quasarbright/` holds `skills/<name>/SKILL.md`, `docs/`, `steering/` (injected at
-every session start by `hooks/hooks.json`) and `.claude-plugin/plugin.json`.
+Layout: `plugins/quasarbright/` holds `skills/<name>/SKILL.md`, `docs/`, `steering/` and
+`.claude-plugin/plugin.json`. `hooks/hooks.json` injects `steering/*` plus `docs/CLAUDE.md`,
+`TASTE.md` and `WORKING.md` at every session start. Each hook's output must stay under about
+10,000 characters, or Claude Code shows only a 2KB preview and saves the rest to a file. When a file
+grows or a new always-on file is added, put it in its own hook entry and check with `wc -c`.
 
 ## Publish
 

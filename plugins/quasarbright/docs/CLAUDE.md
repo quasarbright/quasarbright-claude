@@ -1,18 +1,15 @@
-# CLAUDE.md — Mike's projects workspace
+# CLAUDE.md — Mike's projects
 
-This is `~/GitHub`, the parent directory of Mike's coding projects (`quasarbright` on GitHub). When
-you run Claude Code here, you're operating across the whole portfolio, not one repo. This file,
-`TASTE.md`, `WORKING.md` and `DESIGN.md` are steering that every session inherits. Read
-`DESIGN.md` before building any UI.
+Mike's general steering for every session, loaded at session start by the `quasarbright` plugin
+(`hooks/hooks.json`), together with `TASTE.md` and `WORKING.md`, which follow below. On the laptop
+his projects live as sibling repos under `~/GitHub`; in a cloud session only the attached repos
+exist. `DESIGN.md` and `UX-CHECKLIST.md` sit next to this file in the plugin's `docs/` folder and
+load on demand: read `DESIGN.md` before building any UI, and `UX-CHECKLIST.md` too.
 
 Mike brings ideas and decides what things are. Making them polished, convenient and not awkward is
 your job, without being told. `TASTE.md` is his product taste, `WORKING.md` is how to work with him
 (including the "Before you show it" checks and the UX review), and `UX-CHECKLIST.md` is the
-low-level rules from his past corrections. Read the checklist before building UI. The reviewer
-checks against it.
-
-@TASTE.md
-@WORKING.md
+low-level rules from his past corrections. The reviewer checks against it.
 
 ## Who / where
 - GitHub user: **quasarbright**. Primary branch: **master** (never `main`).
@@ -110,5 +107,6 @@ described under "Recording what he corrects" in `WORKING.md`.
   him, on top of (not instead of) serving the page for him to try.
 - **Commit as you go, without asking.** Every finished change or iteration gets a local commit right
   away (stage only the files you changed; leave other sessions' work alone). Never end a turn with
-  your work uncommitted, and don't offer "commit it?" as a question. Pushing is separate and still
-  needs his explicit go-ahead (see [[feedback-push-only-when-asked]]).
+  your work uncommitted, and don't offer "commit it?" as a question. Pushing is separate: follow
+  the per-project push policy loaded with this steering (no PRs; some projects push freely, others
+  need his go-ahead).

@@ -20,7 +20,7 @@ plugins/quasarbright/
     publish-to-portfolio/              add a project to the portfolio
     ux-review/                         fresh-eyes UX review before a demo
     update-plugin/                     how to change, publish and announce this plugin
-  hooks/hooks.json                     SessionStart hook that injects steering/
+  hooks/hooks.json, session-start.sh   SessionStart hooks that inject the always-on steering
   steering/
     STEERING.md                        standing rules for every session (self-learning, pushing)
     push-policy.md                     per-project push rules
@@ -57,9 +57,16 @@ Skills are namespaced: `/quasarbright:deploy`, `/quasarbright:project-ideas`, an
 
 ## Steering
 
-A plugin can't ship a `CLAUDE.md`, so `hooks/hooks.json` runs a SessionStart hook that prints
-`steering/STEERING.md` and `steering/push-policy.md`; Claude Code adds that output to the session's
-context. Keep these files short, since they cost tokens in every session.
+A plugin can't ship a `CLAUDE.md`, so `hooks/hooks.json` runs SessionStart hooks that print the
+always-on files: `steering/*.md` plus `docs/CLAUDE.md`, `TASTE.md` and `WORKING.md`. Claude Code adds
+that output to the session's context. `DESIGN.md` and `UX-CHECKLIST.md` load on demand.
+
+Each hook's output has to stay under about 10,000 characters; past that, Claude Code shows a 2KB
+preview and saves the rest to a file. That's why the files are split across three hooks. Everything
+here costs tokens in every session (about 5k today), so keep it tight.
+
+On the laptop, `~/GitHub/CLAUDE.md` would load the same docs a second time, so it should only point
+here.
 
 ## Updating
 
