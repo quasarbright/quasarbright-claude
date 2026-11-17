@@ -55,6 +55,11 @@ folder (`../../docs` from this skill's folder):
 > cheesy, dev-tool-like, unfinished on some screen size, or janky in motion? Check the
 > UX-CHECKLIST.md rules that apply.
 >
+> **Use pass.** Looks are only part of it. In every state: can the user see what they need to
+> decide (money, what's due, who's ready)? Is the next action obvious? Does each disabled control
+> say why? Is anything said twice, or not at all? Does a flow take more clicks than it should, or
+> make you scroll?
+>
 > **Parity pass.** Open the siblings named in the brief, read their code, and put each one in the
 > same states as the new thing, comparing behavior over time as well as stills. List what the
 > siblings do here that this doesn't, and where styling or behavior drifted: palettes, snaps,
@@ -91,3 +96,12 @@ Don't loop more than twice.
   correct it.
 
 Then demo as usual: screenshots in the states that show the change, sent with `SendUserFile`.
+
+## Periodic review
+
+Every so often (after a run of changes, or when Mike asks), review the whole app instead of one
+change. The brief's "what changed" becomes "everything": list every screen and the states worth
+reaching, and ask for a real start-to-finish session. The reviewer stays blind, the same as above.
+In a Claude project with a UI/UX persona (see "Design personas" in `WORKING.md`), the persona owns
+this: it runs the review, sorts the findings with what it knows about the project, and folds the
+real ones into its brief's current take, ordered by how much they get in the way.

@@ -9,7 +9,10 @@ work or a bug that testing would have caught. Product taste is in `TASTE.md`.
   understanding (or lay out options as light HTML mocks) and wait. When it's clear, just build.
   Say in one line which one you're doing, so he can ask for the restatement.
 - **Brainstorm means options, then wait.** "Why does X happen?" and "anything missing?" get an
-  explanation and suggestions, not edits. For a big new feature, show mocks and wait.
+  explanation and suggestions, not edits.
+- **Mock for a real choice, or when building is slow.** Show light HTML mocks and wait when there
+  are genuinely different options, or when building it would take a while. A single proposal that's
+  quick to build gets built and demoed instead. Mocks show the current screen next to the change.
 
 ## While building
 
@@ -67,7 +70,21 @@ He sees it finished. For anything visible:
 9. Run the `ux-review` skill. A fresh subagent, without your reasoning, plays with it in a
    browser, judges it against `TASTE.md` and `UX-CHECKLIST.md`, and compares it with sibling
    variants and projects. You decide which findings are real: fix those, drop the ones that are
-   clearly the reviewer misunderstanding, and ask him about anything you're unsure of. Then demo.
+   clearly the reviewer misunderstanding, and ask him about anything you're unsure of. If the
+   project has a UI/UX persona (below), it reviews the change and the screenshots too. Then demo.
+
+Tests pass before every push.
+
+## Design personas (Claude projects only)
+
+In a Claude project, which can run long-lived threads, a project may keep design personas: for
+example a game designer and a UI/UX designer, each its own persistent thread. Each has a brief at
+`docs/personas/<name>.md`: Mike's rules for its area, where things stand, its current take, open
+calls waiting on him, and a dated log. Personas edit docs only and never build. Consult them in
+design discussions and on proposals, and have them review every change in their area before Mike
+sees it. They're the reviewers who remember the project. The blind playtester and the `ux-review`
+subagent are the opposite on purpose: fresh every time, with no memory. Outside a project, skip
+personas and rely on those two.
 
 ## Recording what he corrects
 

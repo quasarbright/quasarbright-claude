@@ -12,7 +12,8 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   nothing in it, or stats that read 0.
 - **A disabled control looks disabled:** gray, no fill, not-allowed cursor. A control looks like
   what it does. Don't style a full-screen gallery opener as a dropdown. Symmetric controls get
-  symmetric styling.
+  symmetric styling. A disabled control says why, on or next to it ("$25 short", "Needs a paint
+  machine"), not just gray.
 - **Sliders go from none or least on the left to most on the right.** 0 means unchanged. They snap
   wherever the result's structure changes (piece count, a face becoming regular, a named shape).
   Find those snap values by measuring, and set snap thresholds in screen pixels.
@@ -79,7 +80,8 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   level select may want it, while something like 2048 just opens on the saved board.
 - **Nothing waits without moving.** Anything that takes time shows progress. State changes show up
   immediately, with no stale objects that look usable. When several outcomes happen at once, show
-  all of them.
+  all of them. Say waiting in words ("thinking", "reading"): no filling meters for waits, no
+  animated dots, and nothing shaped like a speech bubble, which reads as talking.
 - **Constraints show up in the world** (things stop where the track ends), not as text messages.
   Cause and effect is visible: wire controls to what they control, and show the zone a rule depends
   on. Any state that restricts the user gets a persistent visible explanation.
@@ -125,8 +127,9 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   old one, remove the old chrome. Visual weight follows the primary action, and only the one main
   action gets primary styling.
 - **Content gets the space.** On phone game layouts the play area and the main move buttons win.
-  Landing pages skip gratuitous stats. A single-screen page doesn't scroll at any size. Content is
-  fit and centered with generous padding.
+  Landing pages skip gratuitous stats. A single-screen page doesn't scroll at any size. Avoid
+  scrolling wherever it can be avoided: only inner lists scroll, and on desktop use the width
+  (columns side by side) rather than a tall stack. Content is fit and centered with generous padding.
 - **A lone picture is fullscreen**, never a floating panel. The footer always floats and is never
   inside a panel.
 - **Labels never sit on other marks.** After any change, sweep every label for collisions, not just
