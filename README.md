@@ -65,7 +65,7 @@ Code adds that output to the session's context. `DESIGN.md` and `UX-CHECKLIST.md
 
 Each hook's output has to stay under about 10,000 characters; past that, Claude Code shows a 2KB
 preview and saves the rest to a file. That's why the files are split across five hooks. Everything
-here costs tokens in every session (about 5k today), so keep it tight.
+here costs tokens in every session (about 25,000 characters, roughly 6-7k tokens, as of v0.4.0), so keep it tight.
 
 On the laptop, `~/GitHub/CLAUDE.md` would load the same docs a second time, so it should only point
 here.
