@@ -24,8 +24,8 @@ tool.
 
 **3. It's good the moment it loads.** No setup, no blank canvas, no reading first. It opens on
 something worth looking at, and the first touch does something satisfying. A sim invites you to
-push it to the extremes, so it lets you. Differential growth falls short here: it opens on an empty
-"draw a curve" screen, and its presets wait for a grow button.
+push it to the extremes, so it lets you. The exception is when making the starting thing is the
+experience: differential growth opens on an empty "draw a curve" screen on purpose.
 
 **4. It explains itself.** You can tell what's happening and what you can do without instructions:
 short hint lines that change with the mode, tooltips on everything, a solved card that shows the
@@ -59,7 +59,8 @@ Open these to calibrate. They're on Pages, and the source is in `~/GitHub`.
   editing moved onto the puzzle itself.
 - **Pretty good: Tetris** (`tetris/`, quasarbright.github.io/tetris). The reference for game feel.
 - **Core UX fine, not finished: Differential growth** (`sketches/differential-growth/`). Bloom and
-  big and small screens were never right, it opens empty, and its controls are physics constants.
+  big and small screens were never right, and its controls are physics constants. Its empty
+  opening screen and its growth filling the whole window are on purpose.
 
 ## Confirmed defaults
 

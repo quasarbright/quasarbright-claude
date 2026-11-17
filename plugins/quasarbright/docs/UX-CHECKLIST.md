@@ -131,7 +131,8 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   inside a panel.
 - **Labels never sit on other marks.** After any change, sweep every label for collisions, not just
   the reported one. Hand-placed fixes are fine. Never shorten Mike's content to make it fit: change
-  the layout, or ask.
+  the layout, or ask. Short-lived effects (a "+points" popup, a burst of confetti) may pass over a
+  label for a moment; that's fine, though placing them clear of it is a little better.
 - **Check centering by measuring**, every frame of a sequence. He notices a few pixels off.
 - **Check every size:** 375×812 phone, desktop, and wide screens up to 4K.
 
