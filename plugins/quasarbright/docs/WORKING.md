@@ -51,7 +51,8 @@ He sees it finished. For anything visible:
    on a wide screen when layout changed. Send each screenshot or mock as its own full-resolution
    PNG (2x), numbered in order for a sequence (1-…, 2-…). Never stitch them into one combined
    image, and don't make a gallery page or artifact just to show them: a big stitched image is hard
-   to zoom on his phone and loses quality.
+   to zoom on his phone and loses quality. Every mock and screenshot carries a title and a one-line
+   description, in the image itself or in its filename plus caption.
 5. Read the console. Warnings are often the real bug.
 6. For a reported bug, reproduce it in a failing test first. If he reports a class of bug twice,
    sweep for it everywhere.
