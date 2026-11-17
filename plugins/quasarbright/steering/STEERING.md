@@ -22,3 +22,8 @@ without asking.
 
 Never edit the installed copy under `~/.claude/plugins/cache`; updates overwrite it. Edit the repo
 and follow `quasarbright:update-plugin`, which also covers telling other sessions about the change.
+
+In a Claude project, the plugin repo (`quasarbright/quasarbright-claude`) belongs in the project
+too, so every thread can edit it and push plugin changes freely without asking. If it isn't
+attached yet, add it yourself (the `add_repo` tool) instead of sending Mike to the project
+settings. This is the only repo that gets added automatically.
