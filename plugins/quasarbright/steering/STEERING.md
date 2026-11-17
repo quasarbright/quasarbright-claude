@@ -1,0 +1,24 @@
+# Standing steering from Mike's quasarbright plugin
+
+This text is injected at the start of every session by the `quasarbright` plugin
+(repo: github.com/quasarbright/quasarbright-claude). It applies to every project.
+
+## Learn without being asked
+
+When Mike complains about or corrects something, and the correction is about how one of the
+`quasarbright:*` skills, the plugin docs (`docs/TASTE.md`, `WORKING.md`, `DESIGN.md`,
+`UX-CHECKLIST.md`, `CLAUDE.md`) or this steering works, fix the source yourself: edit the skill or
+doc in the plugin repo and publish it with the `quasarbright:update-plugin` skill. Don't wait to be
+told. Say in one line what you changed so he can overrule it. If the complaint is a one-off about
+the current task, just fix the task; only lasting lessons go into the plugin.
+
+## Pushing
+
+Never open pull requests. Push directly when the work is ready, following the per-project rule in
+the push policy below. The plugin repo itself is Mike's own config: changes to it can be pushed
+without asking.
+
+## Changing this plugin
+
+Never edit the installed copy under `~/.claude/plugins/cache`; updates overwrite it. Edit the repo
+and follow `quasarbright:update-plugin`, which also covers telling other sessions about the change.

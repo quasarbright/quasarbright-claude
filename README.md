@@ -19,6 +19,11 @@ plugins/quasarbright/
     project-ideas/                     brainstorming, with liked/rejected idea logs
     publish-to-portfolio/              add a project to the portfolio
     ux-review/                         fresh-eyes UX review before a demo
+    update-plugin/                     how to change, publish and announce this plugin
+  hooks/hooks.json                     SessionStart hook that injects steering/
+  steering/
+    STEERING.md                        standing rules for every session (self-learning, pushing)
+    push-policy.md                     per-project push rules
   docs/
     CLAUDE.md TASTE.md WORKING.md DESIGN.md UX-CHECKLIST.md
 ```
@@ -50,11 +55,22 @@ quasarbright-claude.
 
 Skills are namespaced: `/quasarbright:deploy`, `/quasarbright:project-ideas`, and so on.
 
+## Steering
+
+A plugin can't ship a `CLAUDE.md`, so `hooks/hooks.json` runs a SessionStart hook that prints
+`steering/STEERING.md` and `steering/push-policy.md`; Claude Code adds that output to the session's
+context. Keep these files short, since they cost tokens in every session.
+
 ## Updating
 
-1. Edit the files here, commit and push.
-2. Bump `version` in `plugins/quasarbright/.claude-plugin/plugin.json`.
-3. Run `/plugin marketplace update quasarbright-claude`, or let auto-update pick it up.
+The full procedure is the `quasarbright:update-plugin` skill, which Claude follows on its own when a
+lesson belongs in the plugin. In short:
+
+1. Edit the files here, bump `version` in `plugins/quasarbright/.claude-plugin/plugin.json`, run
+   `claude plugin validate .`, commit and push to `master` (no PR).
+2. Reinstall: `claude plugin marketplace update quasarbright-claude` then
+   `claude plugin update quasarbright@quasarbright-claude`, or let auto-update pick it up.
+3. Message the other running sessions and project threads about the change.
 
 The installed plugin is a cached copy. Edits to it get overwritten on update, so make changes in
 this repo. `project-ideas` appends to `liked-ideas.md` and `rejected-ideas.md`, and the

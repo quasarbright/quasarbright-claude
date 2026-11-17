@@ -1,6 +1,8 @@
 {
   "name": "quasarbright",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Mike's personal skills",
-  "author": { "name": "quasarbright" }
+  "author": {
+    "name": "quasarbright"
+  }
 }

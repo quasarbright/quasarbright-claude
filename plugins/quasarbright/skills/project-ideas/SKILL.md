@@ -65,7 +65,7 @@ The meat is the **environment + the genes + the behavior**. Capability must **em
 
 ## The idea log (separate files — keep them current)
 
-Two companion files in this skill's folder (`./liked-ideas.md` and `./rejected-ideas.md`) hold the running idea history. Read them from this folder. When writing, edit the copies in the plugin repo (`~/GitHub/quasarbright-claude/plugins/quasarbright/skills/project-ideas/`) if it exists, since the installed plugin is a cached copy that updates overwrite; commit there, and push when Mike says to. **Read both at the start of every brainstorm** so you never re-pitch a reject or a duplicate, and so you can mine patterns:
+Two companion files in this skill's folder (`./liked-ideas.md` and `./rejected-ideas.md`) hold the running idea history. Read them from this folder. When writing, edit the copies in the plugin repo (`~/GitHub/quasarbright-claude/plugins/quasarbright/skills/project-ideas/`) if it exists, since the installed plugin is a cached copy that updates overwrite; commit and push there (see `quasarbright:update-plugin`). **Read both at the start of every brainstorm** so you never re-pitch a reject or a duplicate, and so you can mine patterns:
 
 - `liked-ideas.md` — ideas he reacted positively to
 - `rejected-ideas.md` — ideas he turned down
