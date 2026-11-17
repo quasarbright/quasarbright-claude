@@ -13,7 +13,15 @@
           },
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\" docs/TASTE.md docs/WORKING.md"
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\" docs/TASTE.md"
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\" docs/WORKING.md"
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\" steering/rules/american.md steering/rules/draw-it.md steering/rules/github.md"
           }
         ]
       }

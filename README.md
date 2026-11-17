@@ -24,6 +24,7 @@ plugins/quasarbright/
   steering/
     STEERING.md                        standing rules for every session (self-learning, pushing)
     push-policy.md                     per-project push rules
+    rules/                             american.md, draw-it.md, github.md
   docs/
     CLAUDE.md TASTE.md WORKING.md DESIGN.md UX-CHECKLIST.md
 ```
@@ -58,11 +59,12 @@ Skills are namespaced: `/quasarbright:deploy`, `/quasarbright:project-ideas`, an
 ## Steering
 
 A plugin can't ship a `CLAUDE.md`, so `hooks/hooks.json` runs SessionStart hooks that print the
-always-on files: `steering/*.md` plus `docs/CLAUDE.md`, `TASTE.md` and `WORKING.md`. Claude Code adds
-that output to the session's context. `DESIGN.md` and `UX-CHECKLIST.md` load on demand.
+always-on files: `steering/*.md`, the rules in `steering/rules/` (American spelling, drawing
+visual explanations, GitHub conventions), and `docs/CLAUDE.md`, `TASTE.md` and `WORKING.md`. Claude
+Code adds that output to the session's context. `DESIGN.md` and `UX-CHECKLIST.md` load on demand.
 
 Each hook's output has to stay under about 10,000 characters; past that, Claude Code shows a 2KB
-preview and saves the rest to a file. That's why the files are split across three hooks. Everything
+preview and saves the rest to a file. That's why the files are split across five hooks. Everything
 here costs tokens in every session (about 5k today), so keep it tight.
 
 On the laptop, `~/GitHub/CLAUDE.md` would load the same docs a second time, so it should only point

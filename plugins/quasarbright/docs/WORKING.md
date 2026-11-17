@@ -48,13 +48,22 @@ He sees it finished. For anything visible:
    range.
 3. Look at mid-animation frames, not only rest states.
 4. Screenshot new controls in their hover, active and disabled states, at 375×812, at desktop, and
-   on a wide screen when layout changed.
+   on a wide screen when layout changed. Send each screenshot or mock as its own full-resolution
+   PNG (2x), numbered in order for a sequence (1-…, 2-…). Never stitch them into one combined
+   image, and don't make a gallery page or artifact just to show them: a big stitched image is hard
+   to zoom on his phone and loses quality.
 5. Read the console. Warnings are often the real bug.
 6. For a reported bug, reproduce it in a failing test first. If he reports a class of bug twice,
    sweep for it everywhere.
 7. Reproduce his exact scene before claiming a visual fix. If you can't, ask for his settings right
    away.
-8. Run the `ux-review` skill. A fresh subagent, without your reasoning, plays with it in a
+8. **Blind playtest** after a meaningful gameplay change (a game or anything played). Spawn a fresh
+   subagent that gets only the URL and what a new player would know: no docs, no repo, no reasoning
+   of yours, no memory of past playtests. It plays a real run through the visible controls and
+   reports where it got confused, stuck, bored, or did something you didn't expect. It's a step in
+   testing, not a persona: a new one every time, so it stays blind. Fix what it finds the same way
+   as the review below.
+9. Run the `ux-review` skill. A fresh subagent, without your reasoning, plays with it in a
    browser, judges it against `TASTE.md` and `UX-CHECKLIST.md`, and compares it with sibling
    variants and projects. You decide which findings are real: fix those, drop the ones that are
    clearly the reviewer misunderstanding, and ask him about anything you're unsure of. Then demo.
