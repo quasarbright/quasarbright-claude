@@ -97,6 +97,24 @@ Don't loop more than twice.
 
 Then demo as usual: screenshots in the states that show the change, sent with `SendUserFile`.
 
+## iPhone apps
+
+The steps above assume a web page. For an iOS app, swap the browser parts for the iOS Simulator
+and keep the rest (taste, use and parity passes, the report, sorting the findings):
+
+- **How to open it** is a booted simulator (device name and UDID), the bundle id, and
+  `xcrun simctl launch`. The reviewer drives it with the simulator control tool (screenshot, tap,
+  swipe, text) instead of Playwright, and checks light and dark mode
+  (`xcrun simctl ui <udid> appearance dark`) and a large Dynamic Type size
+  (`xcrun simctl ui <udid> content_size accessibility-large`), resetting both at the end.
+- **Notification banners can't be tapped with that tool:** its touches pass through the banner to
+  whatever is underneath. Give the reviewer an XCUITest that taps or presses and holds the banner
+  through `XCUIApplication(bundleIdentifier: "com.apple.springboard")`, and a quick way to seed
+  data that's due soon (write the app's data file, relaunch). Without that, the reviewer reports
+  working notifications as broken.
+- **Siblings** are usually the iPhone's own apps doing the same job (Messages, Reminders, Clock).
+- Leave out simulator-only limits (no Messages, slow contact picker) when sorting findings.
+
 ## Periodic review
 
 Every so often (after a run of changes, or when Mike asks), review the whole app instead of one
