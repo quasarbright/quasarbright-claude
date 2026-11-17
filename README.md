@@ -61,15 +61,20 @@ this repo. `project-ideas` appends to `liked-ideas.md` and `rejected-ideas.md`, 
 retrospective in `publish-to-portfolio` can edit the docs; the skills point those writes at
 `~/GitHub/quasarbright-claude` when it exists. Commit and push after they change.
 
-## Cloud sessions (being verified)
+## Cloud sessions
 
 Add this to the environment's setup script:
 
 ```bash
 claude plugin marketplace add quasarbright/quasarbright-claude
 claude plugin install quasarbright@quasarbright-claude
+claude plugin marketplace add anthropics/claude-plugins-official
 claude plugin install frontend-design@claude-plugins-official
 ```
+
+A fresh container doesn't know the official marketplace, so it has to be added before
+`frontend-design` will install. These commands were tested in a fresh container on 2026-11-17. That
+plugins installed by the setup script carry into the session is assumed, not yet confirmed.
 
 Several skills expect my other repos to sit next to each other under `~/GitHub` (portfolio,
 sketches, cutwist). In a cloud session those paths won't exist unless the environment clones them.
