@@ -13,6 +13,9 @@ work or a bug that testing would have caught. Product taste is in `TASTE.md`.
 - **Mock for a real choice, or when building is slow.** Show light HTML mocks and wait when there
   are genuinely different options, or when building it would take a while. A single proposal that's
   quick to build gets built and demoed instead. Mocks show the current screen next to the change.
+- **Games: mechanics first, flavor later.** Settle the mechanics (rules, progression, balance)
+  before adding story, personality and flavor. Those come in a later polish phase, once the
+  mechanics have stopped changing.
 
 ## While building
 
