@@ -1,0 +1,38 @@
+# Rejected ideas — DO NOT re-pitch
+
+Ideas Mike turned down. **Always record WHY he rejected it (his stated reason) — the reason is the real lesson and prevents pitching the same flaw again.** Append new rejects every turn.
+
+Format: `- **Name** — WHY he rejected it (his words/paraphrase) → the generalizable lesson [category]`
+
+- **Plain Lenia** — "that's done"; won't clone a well-known thing → novelty required [emergence]
+- **Mimicry evolution** — "boring, you'd just not click anything with weird colors"; and simulating predators *learning* avoidance needs a complex vision component (real mimicry evolved from surprise-delay) → too contrived/complex, low agency [evolution]
+- **Finch / niche-seed speciation** — "over-engineered… contrived"; "good at eating a particular seed" should be EMERGENT not a hard-coded stat; and the interactivity "is contrived and doesn't meaningfully contribute" → capability must emerge from simple mechanics; no fake interactivity [evolution]
+- **N-body gravity sandbox** — "I feel like that'd still be pretty boring" → not enough depth/payoff [physics]
+- **Hawk-Dove game** — "sounds very similar to evolving particle life, so redundant" → don't pitch near-duplicates of existing projects [game-theory]
+- **DLA (diffusion-limited aggregation)** — "pretty slow and doesn't usually look that cool" → avoid slow/ugly sims [emergence]
+- **Golden-angle / phyllotaxis as a knob toy** — "too simple… 1-dimensional… check it out for 10 seconds and then be done" → single-knob toys are too thin. The EMERGENT-phyllotaxis version (golden angle emerges from repulsion) was also "kind of boring, not quite interesting enough… maybe with an extra spin" [interactive-intuition]
+- **Sound projects (general)** — "most sound stuff isn't interesting… not going to be a big new project category"; only dabbled during a synth phase → don't pitch sound-centric ideas [sound]
+- **Caustic "paint with light" / mirror editors** — "complicated to make and would probably be too complicated for someone to use… wouldn't even look that cool"; "a mirror editor would be really tricky" → too complex to build AND use [physics/optics]
+- **Structure / bridge builder** — "too complicated… any editor type thing should be super simple to use… I don't want to make something too complex" → keep build + UX simple [physics/game]
+- **Karl-Sims morphology evolution** — needs soft-body physics; heaviest to build → cuts against the simplicity rule [evolution]
+- **Clanker MLM / pyramid scheme** — "what would even be the gameplay after getting a few people in the pyramid? watching your AI suckers get more suckers isn't interesting"; "doesn't have as rich of a management aspect as tycoon" → needs real, ongoing gameplay depth, not idle watching [LLM-game]
+- **Clanker content farm / newsroom** — "not really going to be interesting gameplay… there isn't much for the player to do so it'd be more about watching the stuff the ais make"; AI slop isn't interesting enough for an idle experience → player needs agency, not spectating [LLM-game]
+- **Clanker heist** — "could be funny but I don't think the tech is there yet… you'd want full-on LLM-powered realtime NPCs… LLMs are too slow for this" → NO realtime LLM swarms; async/turn-based or 1v1 only [LLM-game]
+- **Clanker bureaucracy** — "sounds like less fun clanker tycoon" → don't pitch a weaker version of an idea he already likes [LLM-game]
+- **Clanker whisper network / market / escape room / mole / reverse-Turing** — "the other ideas just plain don't seem interesting or fun" → spectating / thin gameplay [LLM-game]
+- **"Train your clanker" (vague prompt-engineering game)** — "too vague. what are we training it to do? the 'idea' is in the specifics and the setting"; "I don't think this is really a new idea" → specifics + setting ARE the idea; pitch concrete, novel framings [LLM-game]
+- **Yard-sale / kinetic wealth-exchange model** — "sounds like some communist shit lol"; didn't resonate (political framing landed wrong) → frame social-physics models neutrally / pick less ideological ones [emergence/social]
+- **Termite clustering (stigmergic sorting)** — "not really interesting enough, you just watch some blobs form" → low agency, weak visual payoff [emergence/swarm]
+- **Chaos game / IFS fractal** — "has been done before, unoriginal" → been-done = hard no [fractal]
+- **Double-pendulum butterfly effect** — "unoriginal"; even the pixel=initial-condition fractal version is "been done" — it's basically his own magnet-pendulum shader → don't re-tread his existing projects [physics/chaos]
+- **Anamorphosis maker** — "stupid bc there's no way for the user to actually see it get unwarped except for an optics sim, and that wouldn't even be that cool" → the payoff must be directly visible in-app, not require external apparatus [image]
+- **Generic PL suggestions** — "stop suggesting PL ideas"; his PL work is advanced & self-directed → don't pitch PL unless he explicitly asks [PL]
+- **Desire-path network formation** — "that'll just lead to some smoothed corners, not very interesting" → emergent result must be visually rich, not a marginal tweak [emergence]
+- **Evolving CA rules** — "sounds like it won't lead to good results, probably won't be able to get it to work, and even if you did, it's not that cool to make a regular old pattern even though it happens to be from CA" → don't pitch things likely to fail OR whose output is mundane regardless of the fancy method [evolution/CA]
+- **CA-seeding puzzle game** — "will not be fun, fiddling with conway seeds is really annoying" → tedious fiddly interaction kills it [game/CA]
+- **Map-projection distortion explorer** — "exists already" → been-done = hard no [interactive-intuition]
+- **Aperiodic monotile ("hat"/"spectre") tiler** — "doesn't have enough interesting bits to make it original, like it's just looking at a tiling" → a static thing to look at (even if novel math) isn't enough; needs interaction/depth beyond viewing [math/generative]
+- **Wallpaper-group kaleidoscope from a photo** — "will probably look shitty from an arbitrary rectangular image" → transforms that mangle arbitrary uploads into ugly output are out [image/math]
+- **Brachistochrone race** — "cool for like 20 seconds and everybody's already seen it" → shallow + over-exposed; been-done [interactive-intuition]
+- **Eigenvector playground** — "similar, no" (shallow + already seen, like brachistochrone) [interactive-intuition]
+- **Bounded-confidence opinion dynamics (echo chambers)** — "conceptually pretty shallow and just hearing about it tells you all you need to know, making it isn't even worth it. not quite emergent enough" → if understanding the concept IS the whole payoff (no surprising emergent reveal from building/watching), it's out [emergence/social]

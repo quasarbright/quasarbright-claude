@@ -1,0 +1,12 @@
+{
+  "name": "quasarbright-claude",
+  "owner": { "name": "quasarbright" },
+  "description": "Mike's personal Claude Code plugin",
+  "plugins": [
+    {
+      "name": "quasarbright",
+      "source": "./plugins/quasarbright",
+      "description": "Mike's personal skills"
+    }
+  ]
+}
