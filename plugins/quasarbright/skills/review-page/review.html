@@ -1,0 +1,447 @@
+<title>__PROJECT__ Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one narrow column (phone first). A list of what needs Mike, and one item open at a time. */
+:root{
+  color-scheme:dark;
+  --bg:#0e0f16;--panel:#171a24;--panel-2:#1f2330;--border:#2a2f3d;--border-hi:#3a4157;
+  --text:#e6e8ef;--muted:#8a8fa3;--faint:#5b6072;
+  --accent:#7c8cf8;--accent-hi:#9aa6ff;--on-accent:#0e0f16;
+  --good:#5fd08a;--good-bg:#1b2e24;--bad:#ff8fa0;--bad-bg:#33202a;--warn:#e8b450;
+  --ui:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,monospace;
+}
+html,body{background:var(--bg);color:var(--text)}
+body{font-family:var(--ui);font-size:15px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 32px}
+main{max-width:760px;margin:0 auto}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:2px solid var(--accent-hi);outline-offset:2px}
+.top{display:flex;align-items:center;gap:10px;padding:18px 0 6px}
+.top h1{font-size:21px;font-weight:650;margin:0;text-wrap:balance}
+.count{background:var(--accent);color:var(--on-accent);font-weight:700;font-size:12.5px;border-radius:20px;padding:1px 9px}
+.proj{margin-left:auto;color:var(--muted);font-size:13px}
+.sec{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:650;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:20px 2px 8px}
+.sec span{color:var(--faint)}
+.list{display:flex;flex-direction:column;gap:8px}
+.row{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px}
+.row:hover{border-color:var(--border-hi)}
+.row.blocking{border-color:#45406a}
+.thumb{width:68px;height:48px;border-radius:7px;background:var(--panel-2) center/cover no-repeat;flex:none;border:1px solid var(--border);display:grid;place-items:center;color:var(--warn);font-weight:700;font-size:20px}
+.thumb.stack{box-shadow:4px -4px 0 -1px #2b3044,8px -8px 0 -2px #232838}
+.row-b{flex:1;min-width:0}
+.row-t{font-weight:600;font-size:15px;line-height:1.3}
+.row-m{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.kind{font-size:10.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;border-radius:5px;padding:2px 6px;background:var(--panel-2);color:var(--accent-hi)}
+.kind.question{color:var(--warn)}.kind.approve{color:var(--good)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex:none}
+.chev{color:var(--faint);font-size:20px;flex:none}
+.done-toggle{width:100%;display:flex;justify-content:space-between;background:none;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;color:var(--muted);font-size:13.5px}
+.empty{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px 18px;color:var(--muted);margin-top:16px}
+.empty b{color:var(--text);display:block;font-size:16px;margin-bottom:4px}
+/* item */
+.nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0 4px}
+.link{background:none;border:none;color:var(--accent-hi);padding:6px 0;font-size:14.5px}
+.pos{color:var(--muted);font-size:13px;display:flex;gap:4px;align-items:center}
+.pos .link{padding:6px 8px}
+.it-title{font-size:22px;font-weight:650;line-height:1.25;margin:8px 0 4px;text-wrap:balance}
+.from{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.ctx{color:#c7cbd8;margin:0 0 16px;max-width:65ch}
+.ctx b{color:var(--text)}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.opt{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:8px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0}
+.opt.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.shot{position:relative;border-radius:8px;overflow:hidden;background:#000}
+.shot img{display:block;width:100%;height:auto}
+.opt .shot img{aspect-ratio:3/2;object-fit:contain}
+.shot .zoom{position:absolute;right:6px;top:6px;background:#0e0f16cc;border:1px solid var(--border);border-radius:7px;padding:3px 8px;font-size:12px;color:var(--text)}
+.opt-h{display:flex;align-items:center;gap:8px;padding:9px 4px 2px;font-weight:600}
+.radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--faint);flex:none}
+.opt.sel .radio{border-color:var(--accent);background:radial-gradient(var(--accent) 42%,transparent 47%)}
+.opt.multi .radio{border-radius:5px}
+.opt.multi.sel .radio{background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%230e0f16' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/80% no-repeat}
+.num{font-family:var(--mono);color:var(--muted);font-weight:500}
+.tag{font-size:10.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;margin-left:auto;color:var(--muted);white-space:nowrap}
+.tag.rec{color:var(--good)}
+.opt-d{font-size:13px;color:var(--muted);padding:0 4px 4px 30px}
+.opt-l{align-self:flex-start;margin:0 0 0 30px;color:var(--accent-hi);font-size:12.5px;padding:2px 0;text-decoration:none}.opt-l:hover{text-decoration:underline}
+.shot.broken{display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;color:var(--muted);font-size:13px;text-align:center;padding:16px}
+.opt-c{align-self:flex-start;margin:2px 0 2px 26px;background:none;border:none;color:var(--accent-hi);font-size:12.5px;padding:4px}
+.qopts{display:flex;flex-direction:column;gap:8px}
+.qopt{text-align:left;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start}
+.qopt.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.qopt small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.seq{display:flex;flex-direction:column;gap:18px}
+.seq-c{font-weight:600;margin:8px 2px 0}.seq-d{font-size:13px;color:var(--muted);margin:2px 2px 0}
+.answer{position:sticky;bottom:0;background:var(--bg);padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));margin-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:44px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px}
+textarea::placeholder{color:var(--faint)}
+.btns{display:flex;gap:8px}
+.btn{flex:1;border-radius:10px;padding:12px 14px;border:1px solid var(--border);background:var(--panel-2);font-weight:600;font-size:15px}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.good{background:var(--good-bg);border-color:#2f5a42;color:var(--good)}
+.btn.bad{background:var(--bad-bg);border-color:#5a2f3c;color:var(--bad)}
+.btn.ghost{background:none;flex:.7}
+.status{font-size:13px;color:var(--muted);min-height:1em}
+.status.ok{color:var(--good)}.status.err{color:var(--bad)}
+.sent{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:16px}
+.sent b{color:var(--good)}
+.sent .note{color:#c7cbd8;margin-top:4px;white-space:pre-wrap}
+.chatbox{background:#1a1d2a;border:1px solid #33395a;border-radius:12px;padding:12px 14px;margin-top:16px;color:#c7cbd8}
+.chatbox b{color:var(--accent-hi)}
+.toast{position:fixed;z-index:15;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));width:min(560px,calc(100% - 32px));box-sizing:border-box;background:#22283c;border:1px solid #3a4266;border-radius:10px;padding:10px 14px;font-size:13.5px;box-shadow:0 6px 20px #0008}
+[hidden]{display:none!important}
+.toast.bad{border-color:#5a2f3c;background:var(--bad-bg)}
+.cbox{display:flex;flex-direction:column;gap:6px;margin:4px 4px 6px 30px}.seq .cbox{margin-left:0}
+.cbox .btns .btn{padding:8px 12px;font-size:14px}
+.deaf .link{padding:0;font-size:inherit}
+.calm{margin-top:14px;background:var(--panel);border:1px solid var(--border);color:var(--muted);border-radius:12px;padding:12px 14px;font-size:14px}
+.deaf{margin-top:14px;background:var(--bad-bg);border:1px solid #5a2f3c;color:var(--bad);border-radius:12px;padding:12px 14px;font-size:14px}.deaf b{color:var(--text)}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:20;background:#07080c;display:grid;grid-template:"bar bar" auto "stage panel" minmax(0,1fr) / minmax(0,1fr) 420px;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.lb[hidden]{display:none}
+body.lb-open{overflow:hidden}
+.lb-bar{grid-area:bar;display:flex;justify-content:space-between;align-items:center;padding:10px 16px;color:var(--muted);font-size:13px;gap:12px;min-width:0}
+.lb-cap{display:flex;gap:10px;align-items:baseline;min-width:0}.lb-cap b{color:var(--text);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lb-cap span{white-space:nowrap}
+.lb-tools{display:flex;gap:16px;flex:none}
+.lb-stage{grid-area:stage;position:relative;min-height:0;display:flex}
+.lb-scroll{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;padding:0 64px 16px;min-height:0}
+.lb-scroll img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.lb.full .lb-scroll{align-items:flex-start;justify-content:flex-start}
+.lb.full .lb-scroll img{max-width:none;max-height:none;width:auto}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid var(--border);background:#14161dcc;color:var(--text);display:grid;place-items:center;z-index:2;cursor:pointer}
+.lb-nav:hover{background:var(--panel-2);border-color:var(--accent)}
+.lb-nav.prev{left:10px}.lb-nav.next{right:10px}
+.lb-panel{grid-area:panel;overflow:auto;padding:4px 16px 16px;display:flex;flex-direction:column;gap:12px;border-left:1px solid var(--border);min-height:0}
+.lb-panel .answer{margin-top:0;padding:0;border-top:0;position:static;background:none}
+.lb-panel .answer textarea{min-height:64px}
+.lb-panel .btns{flex-wrap:wrap}.lb-panel .btns .btn{flex:1 1 auto;white-space:nowrap}
+.lb-opt.lb-shot{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px}
+@media (max-width:760px){
+  .lb{grid-template:"bar" auto "stage" minmax(0,1fr) "panel" auto / minmax(0,1fr)}
+  .lb-cap b{display:none}
+  .lb-scroll{padding:0 8px 8px}
+  .lb-nav{width:40px;height:40px;top:auto;bottom:14px;transform:none}
+  .lb-panel{border-left:0;border-top:1px solid var(--border);max-height:48vh;padding-top:12px}
+}
+@media (max-width:480px){.it-title{font-size:20px}.opts{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){.row,.opt,.qopt{transition:border-color .12s}}
+</style>
+
+<main id="app"><div class="empty"><b>Loading what needs you…</b>This page reads its items from its own store.</div></main>
+<div class="toast" id="toast" role="status" hidden></div>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Enlarged picture"></div>
+
+<script>
+// Items live in the page's db, collection "items" (one doc each). Claude writes them; Mike answers here.
+// Item: {title, kind: "pick"|"approve"|"question", multi (pick: choose any number), blocking, from, context, created (ISO),
+//   options:[{id,label,desc,img,tag}], recommended, recommendReason, images:[{img,title,desc}],
+//   status: "open"|"answered"|"chat"|"done", answer:{choice,label,verdict,note,at}}
+const S = { items: [], meta: {}, showDone: false, sel: {}, drafts: {}, status: {}, ready: false, err: null, lb: null, lbFull: false };
+let db = null, comments = null, user = null, canWrite = true;
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const ago = (iso) => {
+  if (!iso) return "";
+  const m = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (m < 1) return "just now"; if (m < 60) return m + " min ago";
+  const h = Math.round(m / 60); if (h < 24) return h + " h ago";
+  return Math.round(h / 24) + " d ago";
+};
+const KIND = { pick: "Pick one", approve: "Approve", question: "Question" };
+const kindLabel = (it) => it.kind === "pick" ? `${it.multi ? "Pick any" : "Pick one"} · ${(it.options || []).length}` : it.kind === "approve" && (it.images || []).length > 1 ? `Approve · ${it.images.length} shots` : KIND[it.kind] || it.kind;
+const thumbOf = (it) => (it.options || []).find((o) => o.img)?.img || (it.images || [])[0]?.img;
+const byNew = (a, b) => String(b.created || "").localeCompare(String(a.created || ""));
+const open = () => S.items.filter((i) => (i.status || "open") === "open");
+const groups = () => ({
+  blocking: open().filter((i) => i.blocking).sort(byNew),
+  look: open().filter((i) => !i.blocking).sort(byNew),
+  chat: S.items.filter((i) => i.status === "chat").sort(byNew),
+  sent: S.items.filter((i) => i.status === "answered").sort(byNew),
+  done: S.items.filter((i) => i.status === "done").sort(byNew),
+});
+const queue = () => { const g = groups(); return [...g.blocking, ...g.look]; };
+const currentId = () => (location.hash.startsWith("#i-") ? decodeURIComponent(location.hash.slice(3)) : null);
+
+function row(it) {
+  const t = thumbOf(it), multi = it.kind === "pick" || (it.images || []).length > 1;
+  const meta = it.status === "chat" ? "Talking in the project chat" : it.status === "answered" ? `You answered ${ago(it.answer?.at)} · waiting on Claude` : it.status === "done" ? (it.answer?.label === "Just a note" ? "You sent a note" : it.answer?.label === "None" ? "You picked none" : it.answer?.label ? `You chose ${esc(it.answer.label)}` : "Done") : `${esc(it.from || "")}${it.from ? " · " : ""}${ago(it.created)}`;
+  return `<button class="row ${it.blocking && (it.status || "open") === "open" ? "blocking" : ""}" data-open="${esc(it.id)}">
+    <span class="thumb ${t && multi ? "stack" : ""}" ${t ? `style="background-image:url('${esc(t)}')"` : ""}>${t ? "" : it.kind === "question" ? "?" : "·"}</span>
+    <span class="row-b"><span class="row-t">${esc(it.title)}</span><span class="row-m"><span class="kind ${esc(it.kind)}">${kindLabel(it)}</span>${meta}</span></span>
+    ${(it.status || "open") === "open" ? `<span class="dot" aria-label="needs you"></span>` : `<span class="chev">›</span>`}</button>`;
+}
+function section(title, list) {
+  return list.length ? `<div class="sec">${title} <span>${list.length}</span></div><div class="list">${list.map(row).join("")}</div>` : "";
+}
+function renderList() {
+  const g = groups(), n = g.blocking.length + g.look.length;
+  const proj = S.meta.project || "";
+  let h = `<div class="top"><h1>Needs you</h1>${n ? `<span class="count">${n}</span>` : ""}<span class="proj">${esc(proj)}</span></div>`;
+  if (S.err) h += `<div class="empty"><b>Can't load the items.</b>${esc(S.err)}</div>`;
+  else if (!S.ready) h += `<div class="empty"><b>Loading what needs you…</b>This page reads its items from its own store.</div>`;
+  else if (!S.items.length || (!n && !g.chat.length && !g.sent.length && !g.done.length)) h += `<div class="empty"><b>Nothing needs you.</b>When a thread has a screenshot to approve, a choice or a question, it shows up here.</div>`;
+  else {
+    if (!n) h += `<div class="empty"><b>You're caught up.</b>Nothing is waiting on you right now.</div>`;
+    h += section("Blocking work", g.blocking) + section("Look when you can", g.look) + section("Talking in chat", g.chat) + section("Answered, waiting on Claude", g.sent);
+    if (g.done.length) h += `<div class="sec"></div><button class="done-toggle" id="doneT"><span>Done · ${g.done.length}</span><span>${S.showDone ? "hide" : "show"}</span></button>${S.showDone ? `<div class="list" style="margin-top:8px">${g.done.map(row).join("")}</div>` : ""}`;
+  }
+  $("#app").innerHTML = h;
+  $("#doneT")?.addEventListener("click", () => { S.showDone = !S.showDone; render(); });
+}
+
+function shot(img, label, i, lbi) {
+  return `<div class="shot" data-shot="${i}"><img src="${esc(img)}" alt="${esc(label)}" loading="lazy" referrerpolicy="no-referrer" data-zoom="${esc(img)}" data-lbi="${lbi}" data-cap="${esc(label)}"><span class="zoom" aria-hidden="true">Enlarge</span></div>`;
+}
+// Multi-pick items keep an array of option ids; single picks keep one id.
+const selOf = (it) => { const v = S.sel[it.id] ?? it.answer?.choice; return it.multi ? (Array.isArray(v) ? v : v ? [v] : []) : v; };
+const isSel = (it, id) => it.multi ? selOf(it).includes(id) : selOf(it) === id;
+const isRec = (it, id) => Array.isArray(it.recommended) ? it.recommended.includes(id) : it.recommended === id;
+// Every image an item shows, in order: pick options with a picture, or an approval's shots.
+function imagesOf(it) {
+  if (it.kind === "pick") return (it.options || []).map((o, i) => ({ o, i })).filter((x) => x.o.img).map(({ o, i }) => ({ img: o.img, n: i + 1, label: o.label, desc: o.desc, opt: o, key: `${it.id}-${o.id}` }));
+  if (it.kind === "approve") return (it.images || []).map((m, i) => ({ img: m.img, n: i + 1, label: m.title || "", desc: m.desc, key: `${it.id}-${i}` }));
+  return [];
+}
+// The enlarged view carries the item's whole UI: arrows (and arrow keys) between its images, this image's
+// pick or check and comment box, and the item's note and send controls (Mike, 2026-11-18).
+const ARROW = (d) => `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="${d < 0 ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}"/></svg>`;
+function renderLb(it, tail) {
+  const el = $("#lb");
+  const imgs = it ? imagesOf(it) : [];
+  if (!S.lb || !it || !imgs.length) { el.hidden = true; el.innerHTML = ""; document.body.classList.remove("lb-open"); return; }
+  const i = ((S.lb.i % imgs.length) + imgs.length) % imgs.length; S.lb.i = i;
+  const x = imgs[i], o = x.opt, many = imgs.length > 1;
+  const optHead = o
+    ? `<div class="opt lb-opt ${isSel(it, o.id) ? "sel" : ""} ${it.multi ? "multi" : ""}" data-opt="${esc(o.id)}" tabindex="0" role="${it.multi ? "checkbox" : "radio"}" aria-checked="${isSel(it, o.id)}">
+        <div class="opt-h"><span class="radio"></span><span><span class="num">${x.n}</span> · ${esc(o.label)}</span>${isRec(it, o.id) ? `<span class="tag rec">Recommended</span>` : o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ""}</div>
+        ${o.desc ? `<div class="opt-d">${esc(o.desc)}</div>` : ""}
+        ${o.link ? `<a class="opt-l" href="${esc(o.link)}" target="_blank" rel="noopener noreferrer">${esc(o.source || "Source")} ↗</a>` : ""}
+        ${comments ? `<button class="opt-c" data-comment="${esc(x.key)}" data-label="${esc(`${x.n} · ${o.label}`)}">Comment on this one</button>` : ""}
+      </div>`
+    : `<div class="lb-opt lb-shot"><div class="seq-c"><span class="num">${x.n}</span> · ${esc(x.label)}</div>${x.desc ? `<div class="seq-d">${esc(x.desc)}</div>` : ""}${comments ? `<button class="opt-c" style="margin-left:0" data-comment="${esc(x.key)}" data-label="${esc(`${x.n} · ${x.label}`)}">Comment on this one</button>` : ""}</div>`;
+  el.classList.toggle("full", S.lbFull);
+  el.innerHTML = `<div class="lb-bar"><span class="lb-cap"><b>${esc(it.title)}</b><span>${x.n} of ${imgs.length}${it.kind === "pick" ? " options" : " shots"}</span></span><span class="lb-tools"><button class="link" data-lbfull>${S.lbFull ? "Fit to screen" : "Actual size"}</button><button class="link" data-lbclose>Close</button></span></div>
+    <div class="lb-stage">${many ? `<button class="lb-nav prev" data-lbgo="-1" aria-label="Previous picture">${ARROW(-1)}</button>` : ""}<div class="lb-scroll"><img src="${esc(x.img)}" alt="${esc(`${x.n} · ${x.label}`)}" referrerpolicy="no-referrer"></div>${many ? `<button class="lb-nav next" data-lbgo="1" aria-label="Next picture">${ARROW(1)}</button>` : ""}</div>
+    <div class="lb-panel">${optHead}${tail}</div>`;
+  el.hidden = false; document.body.classList.add("lb-open");
+}
+function lbGo(d) { if (!S.lb) return; const it = S.items.find((t) => t.id === S.lb.id); if (it) keepDraft(it); S.lb.i += d; render(); }
+function lbClose() { if (!S.lb) return; const it = S.items.find((t) => t.id === S.lb.id); if (it) keepDraft(it); S.lb = null; render(); }
+function body(it) {
+  const answered = it.status !== "open" && it.status;
+  if (it.kind === "pick") {
+    return `<div class="opts" ${it.multi ? `role="group"` : `role="radiogroup"`}>${(it.options || []).map((o, i) => `
+      <div class="opt ${isSel(it, o.id) ? "sel" : ""} ${it.multi ? "multi" : ""}" data-opt="${esc(o.id)}" tabindex="0" role="${it.multi ? "checkbox" : "radio"}" aria-checked="${isSel(it, o.id)}">
+        ${o.img ? shot(o.img, `${i + 1} · ${o.label}`, `${it.id}-${o.id}`, imagesOf(it).findIndex((x) => x.opt === o)) : ""}
+        <div class="opt-h"><span class="radio"></span><span><span class="num">${i + 1}</span> · ${esc(o.label)}</span>${isRec(it, o.id) ? `<span class="tag rec">Recommended</span>` : o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ""}</div>
+        ${o.desc ? `<div class="opt-d">${esc(o.desc)}</div>` : ""}
+        ${o.link ? `<a class="opt-l" href="${esc(o.link)}" target="_blank" rel="noopener noreferrer">${esc(o.source || "Source")} ↗</a>` : ""}
+        ${comments ? `<button class="opt-c" data-comment="${esc(it.id)}-${esc(o.id)}" data-label="${esc(`${i + 1} · ${o.label}`)}">Comment on this one</button>` : ""}
+      </div>`).join("")}</div>`;
+  }
+  if (it.kind === "question") {
+    const sel = S.sel[it.id] ?? it.answer?.choice;
+    return `<div class="qopts">${(it.options || []).map((o) => `<button class="qopt ${sel === o.id ? "sel" : ""}" data-opt="${esc(o.id)}"><span class="radio"></span><span>${esc(o.label)}${it.recommended === o.id ? ` <span class="tag rec" style="margin-left:6px">Recommended</span>` : ""}${o.desc ? `<small>${esc(o.desc)}</small>` : ""}</span></button>`).join("")}</div>`;
+  }
+  return `<div class="seq">${(it.images || []).map((m, i) => `<div>${shot(m.img, `${i + 1} · ${m.title || ""}`, `${it.id}-${i}`, i)}<div class="seq-c"><span class="num">${i + 1}</span> · ${esc(m.title || "")}</div>${m.desc ? `<div class="seq-d">${esc(m.desc)}</div>` : ""}${comments ? `<button class="opt-c" style="margin-left:0" data-comment="${esc(it.id)}-${i}" data-label="${esc(`${i + 1} · ${m.title || ""}`)}">Comment on this one</button>` : ""}</div>`).join("")}</div>`;
+}
+function answerBar(it) {
+  const st = S.status[it.id] || {};
+  const note = `<textarea id="note-${esc(it.id)}" rows="1" placeholder="${it.kind === "approve" ? "What should change? (needed for Needs changes)" : "Add a note (optional)"}">${esc(S.drafts[it.id] || "")}</textarea>`;
+  const status = `<div class="status ${st.cls || ""}" role="status">${esc(st.text || "")}</div>`;
+  if (!canWrite) return `<div class="answer"><div class="status">You can look at this, but only the project owner can answer.</div></div>`;
+  if (it.kind === "approve") return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn bad" data-act="changes">Needs changes</button><button class="btn good" data-act="good">Looks good</button></div>${status}</div>`;
+  const { ok, label } = sendState(it);
+  return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn pri" data-act="send" ${ok ? "" : "disabled"}>${label}</button></div>${status}</div>`;
+}
+// Send works with a pick, a note, or both (Mike, 2026-11-18: "I should be able to send without a selection and only a note").
+function sendState(it) {
+  const hasNote = !!(S.drafts[it.id] || "").trim();
+  if (it.kind === "pick" && it.multi) {
+    const nums = (it.options || []).map((o, i) => (S.sel[it.id] || []).includes(o.id) ? i + 1 : 0).filter(Boolean);
+    if (nums.length) return { ok: true, label: nums.length === 1 ? `Send pick ${nums[0]}` : `Send picks ${nums.slice(0, -1).join(", ")} and ${nums.at(-1)}` };
+  } else {
+    const opt = (it.options || []).find((o) => o.id === S.sel[it.id]), i = (it.options || []).indexOf(opt);
+    if (opt) return { ok: true, label: it.kind === "pick" ? `Send pick ${i + 1}` : "Send answer" };
+  }
+  if (hasNote) return { ok: true, label: "Send note" };
+  return { ok: false, label: it.kind === "pick" ? (it.multi ? "Pick some or write a note" : "Pick one or write a note") : "Choose an answer or write a note" };
+}
+function renderItem(id) {
+  const it = S.items.find((i) => i.id === id);
+  if (!it) { S.lb = null; renderLb(null); $("#app").innerHTML = `<div class="nav"><button class="link" data-back>‹ Needs you</button></div><div class="empty"><b>${S.ready ? "This item is gone." : "Loading…"}</b>${S.ready ? "It was finished or removed." : ""}</div>`; bindItem(); return; }
+  const q = queue(), k = q.findIndex((i) => i.id === id);
+  const st = it.status || "open";
+  let h = `<div class="nav"><button class="link" data-back>‹ Needs you</button>${k >= 0 ? `<span class="pos">${k > 0 ? `<button class="link" data-go="${esc(q[k - 1].id)}" aria-label="Previous">‹</button>` : ""}${k + 1} of ${q.length}${k < q.length - 1 ? `<button class="link" data-go="${esc(q[k + 1].id)}" aria-label="Next">›</button>` : ""}</span>` : ""}</div>
+    <div class="it-title">${esc(it.title)}</div>
+    <div class="from">${esc(it.from || "")}${it.from ? " · " : ""}${ago(it.created)}${it.blocking ? " · blocking work" : ""}</div>
+    ${it.context ? `<p class="ctx">${esc(it.context)}${it.recommendReason ? ` <b>${esc(it.recommendReason)}</b>` : ""}</p>` : ""}
+    ${body(it)}`;
+  let tail = "";
+  if (st === "answered" || st === "done") {
+    const a = it.answer || {};
+    tail = `<div class="sent"><b>${a.verdict === "changes" ? "You asked for changes" : a.verdict === "good" ? "You approved it" : (a.label === "Just a note" ? "You sent a note" : a.label === "None" ? "You picked none" : `You chose ${esc(a.label || a.choice || "")}`)}</b> · ${ago(a.at)}${st === "answered" ? " · waiting on Claude" : " · done"}${a.note ? `<div class="note">${esc(a.note)}</div>` : ""}
+      ${st === "answered" && canWrite ? `<button class="link" data-act="reopen">Change my answer</button>` : ""}</div>`;
+  } else if (st === "chat") {
+    tail = `<div class="chatbox"><b>Talking in the project chat.</b> Claude will bring the outcome back here, or clear it when it's settled.${canWrite ? ` <button class="link" data-act="reopen">Answer here instead</button>` : ""}</div>`;
+  } else tail = answerBar(it);
+  const inLb = S.lb && S.lb.id === it.id;
+  if (S.lb && !inLb) S.lb = null;
+  $("#app").innerHTML = h + (inLb ? "" : tail);
+  renderLb(inLb ? it : null, tail);
+  bindItem(it);
+}
+// Push only: everything goes out with Send to Claude, so say up front when no Claude session can hear it.
+let listen = null;
+async function checkListen() {
+  let v = "off";
+  try { v = comments ? await comments.canSendToClaude() : "off"; } catch (e) { v = "off"; }
+  if (v !== listen) { listen = v; render(); }
+}
+// No push route exists for artifacts on this account (the Claude Code Remote connector won't load in pages),
+// so the only live route is Send to Claude while a session watches the page. Answers always save in the db.
+const banner = () => {
+  if (!S.ready || listen === "available") return "";
+  return `<div class="calm" role="status">Your answers save here. When you're done, let Claude know in the project chat.</div>`;
+};
+function render() { const id = currentId(); if (id) renderItem(id); else { S.lb = null; renderLb(null); renderList(); } const b = banner(); if (b) $("#app").insertAdjacentHTML("afterbegin", b); }
+
+function bindItem(it) {
+  document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => { location.hash = ""; }));
+  document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { location.hash = "i-" + encodeURIComponent(b.dataset.go); }));
+  if (!it) return;
+  const st = it.status || "open";
+  document.querySelectorAll("[data-opt]").forEach((el) => {
+    const pick = (e) => { if (e.target.closest("[data-zoom],[data-comment],a")) return; if (st !== "open" || !canWrite) return; keepDraft(it); const id = el.dataset.opt;
+      if (it.multi) { const cur = S.sel[it.id] || []; S.sel[it.id] = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]; } else S.sel[it.id] = id;
+      render(); };
+    el.addEventListener("click", pick);
+    el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(e); } });
+  });
+  document.querySelectorAll("[data-comment]").forEach((b) => b.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const key = b.dataset.comment, holder = b.closest(".opt, .seq > div, .lb-opt");
+    if (holder.querySelector(".cbox")) { holder.querySelector(".cbox textarea").focus(); return; }
+    b.insertAdjacentHTML("afterend", `<div class="cbox"><textarea rows="2" placeholder="What about this one?"></textarea><div class="btns"><button class="btn ghost" data-cancel>Cancel</button><button class="btn pri" data-csend>Send to Claude</button></div><div class="status" role="status"></div></div>`);
+    const box = holder.querySelector(".cbox"), ta = box.querySelector("textarea"), stat = box.querySelector(".status");
+    ["click", "keydown"].forEach((ev) => box.addEventListener(ev, (x) => x.stopPropagation()));
+    ta.focus();
+    box.querySelector("[data-cancel]").addEventListener("click", () => box.remove());
+    box.querySelector("[data-csend]").addEventListener("click", async (x) => {
+      const t = ta.value.trim(); if (!t) { stat.textContent = "Write the comment first."; stat.className = "status err"; return; }
+      x.target.disabled = true; stat.textContent = "Sending…"; stat.className = "status";
+      const what = b.dataset.label || key;
+      const said = await tellClaude(it, `[review ${it.id}] Comment on ${what} in "${it.title}":\n\n${t}`, holder.querySelector(".shot") || holder);
+      if (said.ok) { box.innerHTML = `<div class="status ok">Sent to Claude: “${esc(t)}”</div>`; }
+      else { stat.textContent = said.text === NOT_HEARD ? "Not sent: Claude isn't watching right now. Say it in the project chat." : said.text.replace(/^Saved here, but /, "Not sent: ").replace(/^Not sent: Claude didn't get it: /, "Not sent: "); stat.className = "status err"; x.target.disabled = false; }
+    });
+  }));
+  const note = $(`#note-${CSS.escape(it.id)}`);
+  note?.addEventListener("input", () => { S.drafts[it.id] = note.value; const b = document.querySelector('[data-act="send"]'); if (b) { const st = sendState(it); b.disabled = !st.ok; b.textContent = st.label; } });
+  document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => act(it, b.dataset.act)));
+}
+const keepDraft = (it) => { const n = $(`#note-${CSS.escape(it.id)}`); if (n) S.drafts[it.id] = n.value; };
+function setStatus(it, text, cls) { S.status[it.id] = { text, cls }; const el = document.querySelector(".answer .status"); if (el) { el.textContent = text; el.className = "status " + (cls || ""); } }
+
+// Tell Claude: a comment on this item, sent to Claude. A plain comment wakes nobody, so the page never
+// falls back to one; when no Claude session can take it, it says so and points to the project chat.
+const NOT_HEARD = "Saved. Let Claude know in the project chat when you're done.";
+async function tellClaude(it, text, el) {
+  if (!comments) return { ok: false, text: NOT_HEARD };
+  try {
+    const can = await comments.canSendToClaude();
+    if (can !== "available") return { ok: false, text: can === "writers_only" ? "Saved here, but only the page's owner can send to Claude from it." : NOT_HEARD };
+    const anchor = await comments.anchorFor(el || document.querySelector(".it-title"));
+    await comments.sendToClaude({ anchor, text });
+    return { ok: true, text: "Sent to Claude." };
+  } catch (e) {
+    if (e?.code === "consent_required") return { ok: false, text: "Saved here, but not sent: allow this page to comment for you when claude.ai asks, then try again." };
+    if (e?.code === "forbidden") return { ok: false, text: "Saved here, but sending from this page is turned off for you. Mention it in the project chat." };
+    return { ok: false, text: "Saved here, but sending to Claude failed (" + (e?.code || "error") + "). Mention it in the project chat." };
+  }
+}
+async function act(it, what) {
+  keepDraft(it);
+  const note = (S.drafts[it.id] || "").trim();
+  const ref = db.collection("items").doc(it.id);
+  if (what === "reopen") { try { await ref.update({ status: "open" }); } catch (e) { setStatus(it, "Couldn't reopen it: " + (e?.message || "try again"), "err"); } return; }
+  let patch, text;
+  const now = new Date().toISOString();
+  if (what === "chat") {
+    patch = { status: "chat", answer: { note, at: now } };
+    text = `[review ${it.id}] Mike wants to talk about "${it.title}" in the project chat.${note ? `\n\nHis note: ${note}` : ""}`;
+  } else if (what === "send") {
+    const opts = it.options || [];
+    if (it.kind === "pick" && it.multi) {
+      const chosen = opts.filter((x) => (S.sel[it.id] || []).includes(x.id));
+      const label = chosen.map((x) => `${opts.indexOf(x) + 1} · ${x.label}`).join(", ");
+      if (!chosen.length) { if (!note) return; patch = { status: "answered", answer: { choice: [], label: "Just a note", note, at: now } }; text = `[review ${it.id}] "${it.title}": Mike picked none and sent a note:\n\n${note}`; }
+      else {
+      patch = { status: "answered", answer: { choice: chosen.map((x) => x.id), label, note, at: now } };
+      text = `[review ${it.id}] "${it.title}": Mike picked ${chosen.length} of ${opts.length}: ${label}.${note ? `\n\nHis note: ${note}` : ""}`;
+      }
+    } else {
+    const o = opts.find((x) => x.id === S.sel[it.id]);
+    if (!o) { if (!note) return; patch = { status: "answered", answer: { label: "Just a note", note, at: now } }; text = `[review ${it.id}] "${it.title}": Mike didn't pick and sent a note:\n\n${note}`; }
+    else {
+    const n = opts.indexOf(o) + 1, label = it.kind === "pick" ? `${n} · ${o.label}` : o.label;
+    patch = { status: "answered", answer: { choice: o.id, label, note, at: now } };
+    text = `[review ${it.id}] "${it.title}": Mike chose ${label}.${note ? `\n\nHis note: ${note}` : ""}`;
+    }
+    }
+  } else {
+    if (what === "changes" && !note) { setStatus(it, "Say what should change first, in the box above.", "err"); $(`#note-${CSS.escape(it.id)}`)?.focus(); return; }
+    patch = { status: "answered", answer: { verdict: what, label: what === "good" ? "Looks good" : "Needs changes", note, at: now } };
+    text = `[review ${it.id}] "${it.title}": ${what === "good" ? "Mike approved it." : "Mike asked for changes."}${note ? `\n\n${note}` : ""}`;
+  }
+  document.querySelectorAll(".answer .btn").forEach((b) => (b.disabled = true));
+  setStatus(it, "Sending…");
+  try { await ref.update(patch); }
+  catch (e) { setStatus(it, "Couldn't save your answer: " + (e?.message || "try again") + ".", "err"); document.querySelectorAll(".answer .btn").forEach((b) => (b.disabled = false)); return; }
+  const said = await tellClaude(it, text);
+  delete S.drafts[it.id]; delete S.sel[it.id];
+  const next = queue().find((i) => i.id !== it.id);
+  toast(`“${it.title}”: ${said.text}`, !said.ok && said.text !== NOT_HEARD);
+  location.hash = next ? "i-" + encodeURIComponent(next.id) : "";
+}
+let toastT = 0;
+function toast(t, bad) { const el = $("#toast"); el.textContent = t; el.classList.toggle("bad", !!bad); el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (el.hidden = true), bad ? 15000 : 6000); }
+
+// Lightbox: tap any screenshot to see it big; "Actual size" scrolls it at full resolution.
+document.addEventListener("click", (e) => {
+  const z = e.target.closest("[data-zoom]"); if (!z) return;
+  e.stopPropagation(); const id = currentId(), it = S.items.find((t) => t.id === id); if (!it) return;
+  keepDraft(it); S.lb = { id, i: +z.dataset.lbi || 0 }; S.lbFull = false; render();
+}, true);
+document.addEventListener("click", (e) => {
+  if (e.target.closest("[data-lbclose]")) lbClose();
+  else if (e.target.closest("[data-lbgo]")) lbGo(+e.target.closest("[data-lbgo]").dataset.lbgo);
+  else if (e.target.closest("[data-lbfull]")) { S.lbFull = !S.lbFull; const it = S.items.find((t) => t.id === S.lb?.id); if (it) keepDraft(it); render(); }
+});
+document.addEventListener("keydown", (e) => {
+  if (!S.lb) return;
+  if (e.key === "Escape") { e.preventDefault(); lbClose(); return; }
+  if (e.target.closest("textarea, input")) return;
+  if (e.key === "ArrowLeft") { e.preventDefault(); lbGo(-1); } else if (e.key === "ArrowRight") { e.preventDefault(); lbGo(1); }
+});
+document.addEventListener("click", (e) => { const r = e.target.closest("[data-open]"); if (r) location.hash = "i-" + encodeURIComponent(r.dataset.open); });
+document.addEventListener("error", (e) => { const im = e.target; if (!(im instanceof HTMLImageElement)) return; const sh = im.closest(".shot"); if (!sh || sh.classList.contains("broken")) return; sh.classList.add("broken"); sh.textContent = "This picture didn't load here. The source link below still works."; }, true);
+addEventListener("hashchange", () => { render(); scrollTo(0, 0); checkListen(); });
+
+(async () => {
+  const timer = setTimeout(() => { if (!S.ready) { S.err = "The store didn't answer. Reload the page to try again."; render(); } }, 10000);
+  db = await claude.use("db");
+  if (!db) { clearTimeout(timer); S.err = "Open this page signed in to claude.ai to see what needs you."; render(); return; }
+  claude.use("comments").then((c) => { comments = c; checkListen(); if (S.ready) render(); });
+  addEventListener("focus", checkListen); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkListen(); });
+  claude.use("user").then((u) => { user = u; if (u) Promise.resolve(u.can ? u.can("data.write") : null).then((v) => { if (v === false) { canWrite = false; render(); } }); });
+  db.doc("meta/page").onSnapshot((s) => { S.meta = (s.exists && s.data()) || {}; render(); }, () => {});
+  db.collection("items").onSnapshot((snap) => {
+    clearTimeout(timer);
+    S.items = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+    S.ready = true; S.err = null; render();
+  }, (e) => { clearTimeout(timer); S.err = "Couldn't read the items (" + (e?.code || "error") + ")."; render(); });
+})();
+render();
+</script>

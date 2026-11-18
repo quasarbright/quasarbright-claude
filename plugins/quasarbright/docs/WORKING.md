@@ -100,6 +100,9 @@ work. Mike doesn't read threads.
   sets across posts and keep the numbering going.
 - **Anything waiting on Mike carries its full background:** what it is, why it came up, and what
   each choice leads to. Never assume he saw a thread's proposal.
+- **Everything waiting on Mike goes on the project's review page** (the `review-page` skill): picks,
+  approvals and text questions, persona questions included. Keep it in sync when he answers in
+  chat, link it whenever something needs him, and mark items Done once their work ships.
 
 ## Design personas (Claude projects only)
 
