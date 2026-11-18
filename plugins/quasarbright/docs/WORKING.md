@@ -57,8 +57,8 @@ He sees it finished. For anything visible:
    on a wide screen when layout changed. Send each screenshot or mock as its own full-resolution
    PNG (2x), numbered in order for a sequence (1-…, 2-…). Never stitch them into one combined
    image, and don't make a gallery page or artifact just to show them: a big stitched image is hard
-   to zoom on his phone and loses quality. Every mock and screenshot carries a title and a one-line
-   description, in the image itself or in its filename plus caption.
+   to zoom on his phone and loses quality. Every mock, screenshot and clip carries a short title and a
+   one-line description, in the image itself or in its filename plus caption.
    When the change involves motion or animation, also send a short MP4 clip (a few seconds) as its
    own file next to the screenshots. Clips are only for motion, never for static UI.
 5. Read the console. Warnings are often the real bug.
@@ -79,6 +79,20 @@ He sees it finished. For anything visible:
    project has a UI/UX persona (below), it reviews the change and the screenshots too. Then demo.
 
 Tests pass before every push.
+
+## Working in a Claude project (coordinator and threads)
+
+A Claude project has a project chat, where Mike talks to a coordinator, and threads that do the
+work. Mike doesn't read threads.
+
+- **Relay everything to the project chat.** Mike only comments on images inside a thread, and those
+  comments go to the thread that made the image. Every thread result and every answer a thread gives
+  gets relayed by the coordinator back to the project chat. Never assume he saw something because
+  a thread posted it.
+- **Images there follow step 4 above,** and a post holds at most 6 attachments, so split larger
+  sets across posts and keep the numbering going.
+- **Anything waiting on Mike carries its full background:** what it is, why it came up, and what
+  each choice leads to. Never assume he saw a thread's proposal.
 
 ## Design personas (Claude projects only)
 
