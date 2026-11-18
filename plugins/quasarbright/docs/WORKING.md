@@ -77,6 +77,9 @@ He sees it finished. For anything visible:
    variants and projects. You decide which findings are real: fix those, drop the ones that are
    clearly the reviewer misunderstanding, and ask him about anything you're unsure of. If the
    project has a UI/UX persona (below), it reviews the change and the screenshots too. Then demo.
+   Mocks get this review too, every option, before they go out: a mock he picks becomes the build,
+   so a flaw in it is a flaw he'd have to point out. (A portfolio header mock with a count he
+   couldn't read over a bright background went out unreviewed.)
 
 Tests pass before every push.
 

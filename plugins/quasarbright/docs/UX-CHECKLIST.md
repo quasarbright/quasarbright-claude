@@ -148,7 +148,10 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   chrome is fine when it's real and proportionate.
 - **Text over arbitrary colors needs protection:** white with a dark outline or shadow, drawn on
   top. Never encode state by fading text people need to read. Test against the brightest
-  background. Protect text locally rather than dimming the whole background.
+  background. When the background varies (a random or live background, user images), screenshot
+  every label over the brightest and busiest one, small and muted text included (counts, dates,
+  links): muted gray with a light shadow vanishes over light gray. Protect text locally rather than
+  dimming the whole background.
 - **Contrast:** check 4.5:1 on every new label and audit borders. Dark gray on black is the default
   failure. Judge each color against its neighbors in the palette as well as the background.
 - **Palettes:** check every pair for confusability (white/beige, red/orange). Use real standard
