@@ -50,6 +50,15 @@ this plugin's `docs/` and `skills/` folders (`../../docs` and `..` from this ski
 > state you reach, and capture frames over time for anything that moves (mid-drag, mid-animation,
 > zoom). Look at every screenshot.
 >
+> **Explore first, like a curious new user, before any checklist.** Spend real time on it: at
+> least a few minutes of actual use and dozens of interactions, not one screenshot per state. Go
+> everywhere the page lets you: every screen, menu, mode, preset, panel and link. In anything
+> spatial, walk, fly, look around and look down, and go to the edges of the world. Try each flow
+> start to finish, then try it in an odd order. Poke at things beyond what changed, push every
+> control to its extremes, combine settings, refresh mid-flow, and try to break it. Write down
+> each moment you were confused, surprised or unsure what to do next. Those notes are findings.
+> The brief's list of states is a minimum, not the scope.
+>
 > **Taste pass.** Go through each TASTE.md principle and ask whether this meets it. Does the subject
 > get the screen? Is it good the moment it loads? Does it explain itself? Is anything distracting,
 > cheesy, dev-tool-like, unfinished on some screen size, or janky in motion? Check the

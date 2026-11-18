@@ -114,8 +114,9 @@ calls waiting on him, and a dated log. Personas edit docs only and never build. 
 design discussions and on proposals, and have them review every change in their area before Mike
 sees it. They're the reviewers who remember the project. The blind playtester and the `ux-review`
 subagent are the opposite on purpose: fresh every time, with no memory. A UI/UX persona's review
-opens the live page (screenshots only show what the builder chose), reads every word, runs
-`ux-review`'s contrast check, and drives every control the change touches. Outside a project, skip
+opens the live page (screenshots only show what the builder chose) and explores it like a
+curious user, well beyond the change: every screen, mode and control, moving around the world,
+trying to break it. It also reads every word and runs `ux-review`'s contrast check. Outside a project, skip
 personas and rely on those two.
 
 ## Recording what he corrects
