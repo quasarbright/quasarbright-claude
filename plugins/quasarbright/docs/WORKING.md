@@ -17,6 +17,10 @@ work or a bug that testing would have caught. Product taste is in `TASTE.md`.
   before adding story, personality and flavor. Those come in a later polish phase, once the
   mechanics have stopped changing.
 
+- **Keep the issue in the loop.** When work starts on a project that has a GitHub issue, comment
+  on the issue that it's in progress. Once it's published anywhere (Pages, a branch, the
+  portfolio), comment the link, even though the issue stays open. Don't close it unless asked.
+
 ## While building
 
 - **Do the literal ask.** When he specifies an algorithm, build that one, not a cheaper substitute.
