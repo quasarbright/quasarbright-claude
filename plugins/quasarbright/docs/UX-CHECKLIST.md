@@ -16,7 +16,11 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   machine"), not just gray.
 - **Sliders go from none or least on the left to most on the right.** 0 means unchanged. They snap
   wherever the result's structure changes (piece count, a face becoming regular, a named shape).
-  Find those snap values by measuring, and set snap thresholds in screen pixels.
+  Find those snap values by measuring, and set snap thresholds in screen pixels. Two sizes that
+  can match (a back plane and a screen) snap at 1:1, and the readout names that point.
+- **A control's label says what its number means:** the unit, and whether it's absolute or a
+  ratio of something ("× screen", "m"). If a newcomer would have to ask "the ratio or the size?",
+  rename it. A control with no effect in the current mode says so next to it.
 - **No arbitrary maximums.** Let numbers go as big as they want, and let degenerate values (0, 1)
   do their natural thing. If a limit is real, show it and say why. Once he says "no max" for one
   kind of input, apply it to every input of that kind.
@@ -65,6 +69,9 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   positions come from the same geometry that draws the row.
 - **Choose things by clicking them in the world**, not in a separate picker. Show choices on the
   object, not behind a toggle.
+- **The camera starts somewhere a person could stand.** No eye, lens or sensor inside the ground or
+  an object on load or after a mode switch. When a view looks into something solid, fix where
+  the camera is, not how the inside looks.
 - **3D objects you hold** (puzzles, models) use arcball/trackball rotation with no poles. Orbit with
   an up axis is only for scenes with a ground. View operations (camera, zoom, pan) never change
   state. Test them in scrambled states.

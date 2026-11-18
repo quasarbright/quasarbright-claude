@@ -65,6 +65,20 @@ this plugin's `docs/` and `skills/` folders (`../../docs` and `..` from this ski
 > background, user images), force the brightest and busiest one with `--setup "<js>"` and use
 > `--show "<text>"` to see one label's number. Every failure is a finding.
 >
+> **Controls pass.** For every slider, toggle, field and button: before touching it, write down
+> what you think it does from its label alone, including the unit and whether the number is
+> absolute or relative to something ("1 (screen size)" leaves open whether that's a ratio or a
+> size). Then use it. If your guess was wrong or you couldn't make one, the label is a finding.
+> Drag every slider from end to end and list the values where the result's structure changes: a
+> 1:1 ratio, two things the same size, 0, a named shape or lens. Each one should snap, and its
+> readout should name it. A missing snap is a finding. A control that does nothing in the current
+> mode should say so.
+>
+> **Default-view pass.** On a fresh load, and after each mode or preset switch, ask whether the
+> camera, eye, sensor or viewport is somewhere a person could stand: not inside the ground, a
+> wall or an object, not looking at the inside of a surface. If it isn't, the finding is the
+> setup, not how that view looks.
+>
 > **Use pass.** Looks are only part of it. In every state: can the user see what they need to
 > decide (money, what's due, who's ready)? Is the next action obvious? Does each disabled control
 > say why? Is anything said twice, or not at all? Does a flow take more clicks than it should, or
@@ -137,6 +151,6 @@ real ones into its brief's current take, ordered by how much they get in the way
 ## With a UI/UX persona
 
 In a Claude project that keeps a UI/UX persona (see "Design personas" in `WORKING.md`), send it the
-change and the screenshots after this review, before Mike sees them. The persona reads every word
-and runs the contrast check itself, so a miss here gets a second chance with someone who remembers
+change, the live URL and the screenshots after this review, before Mike sees them. The persona
+opens the live page and does the read, contrast, controls and default-view passes itself, so a miss here gets a second chance with someone who remembers
 the project's rules. It sends back what to fix; you fix it, then demo.
