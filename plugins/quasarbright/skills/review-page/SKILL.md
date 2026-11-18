@@ -60,7 +60,7 @@ Each item is a doc in the collection `items`, written with ArtifactData. No repu
 | `options` | `[{id, label, desc, img, tag, link, source}]` for pick and question |
 | `images` | `[{img, title, desc}]` for approve |
 | `status` | `open`, `answered`, `chat`, `done` |
-| `answer` | `{choice, label, verdict, note, at}`, written by the page |
+| `answer` | `{choice, label, verdict, marks, note, at}`, written by the page. For a multi-shot approval, `marks` maps a picture index (from 0) to `good` or `changes`, and `verdict` is `good`, `changes` or `partial` |
 
 Images: JPEG about 1600px wide, uploaded with the Artifact tool (`asset: true`, the page's `url`).
 Every image gets a title and a one-line description, through the option's `label` and `desc` or the
@@ -72,7 +72,11 @@ shot's `title` and `desc`.
   plus a folded Done. Each item opens with previous and next arrows.
 - **Pick**: image cards with a radio button, or checkboxes when `multi`. Send names the picks
   ("Send picks 1, 2 and 4").
-- **Approve**: Looks good, or Needs changes (which needs a note).
+- **Approve**: Looks good, or Needs changes (which needs a note). With more than one shot, each
+  picture gets its own Looks good / Needs changes, in the list and in the enlarged view (marking one
+  there moves to the next unmarked picture). Send reports the marks ("Send: 7 good, 1 needs changes,
+  1 unmarked"), and "Approve all N" appears only in the list view, never in the enlarged view. Mike
+  pressed Looks good on one enlarged picture and it approved the whole sequence (2026-11-18).
 - **Question**: text options.
 - **Note-only send** on every item: with nothing picked, a note alone enables "Send note".
 - **Talk in chat** hands the item back to the conversation (status `chat`).

@@ -1,4 +1,4 @@
-<title>__PROJECT__ Review</title>
+<title>Clanker Tycoon Review</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /* Layout: one narrow column (phone first). A list of what needs Mike, and one item open at a time. */
@@ -71,7 +71,9 @@ button:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:2px solid
 .qopt.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .qopt small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
 .seq{display:flex;flex-direction:column;gap:18px}
-.seq-c{font-weight:600;margin:8px 2px 0}.seq-d{font-size:13px;color:var(--muted);margin:2px 2px 0}
+.seq-c{font-weight:600;margin:8px 2px 0}
+.marks{display:flex;gap:6px;margin:8px 0 0;flex-wrap:wrap}.mk{font:inherit;font-size:13px;padding:5px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer}.mk:hover{color:var(--text);border-color:var(--muted)}.mk.good.on{background:var(--good-bg);border-color:#2f5a42;color:var(--good)}.mk.bad.on{background:var(--bad-bg);border-color:#5a2f3c;color:var(--bad)}
+.seq-mark{display:inline-block;font-size:12px;font-weight:600;margin-left:6px}.seq-mark.good{color:var(--good)}.seq-mark.bad{color:var(--bad)}.seq-d{font-size:13px;color:var(--muted);margin:2px 2px 0}
 .answer{position:sticky;bottom:0;background:var(--bg);padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));margin-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
 textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:44px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px}
 textarea::placeholder{color:var(--faint)}
@@ -137,7 +139,7 @@ body.lb-open{overflow:hidden}
 // Item: {title, kind: "pick"|"approve"|"question", multi (pick: choose any number), blocking, from, context, created (ISO),
 //   options:[{id,label,desc,img,tag}], recommended, recommendReason, images:[{img,title,desc}],
 //   status: "open"|"answered"|"chat"|"done", answer:{choice,label,verdict,note,at}}
-const S = { items: [], meta: {}, showDone: false, sel: {}, drafts: {}, status: {}, ready: false, err: null, lb: null, lbFull: false };
+const S = { items: [], meta: {}, showDone: false, sel: {}, drafts: {}, marks: {}, status: {}, ready: false, err: null, lb: null, lbFull: false };
 let db = null, comments = null, user = null, canWrite = true;
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -196,6 +198,17 @@ function shot(img, label, i, lbi) {
 // Multi-pick items keep an array of option ids; single picks keep one id.
 const selOf = (it) => { const v = S.sel[it.id] ?? it.answer?.choice; return it.multi ? (Array.isArray(v) ? v : v ? [v] : []) : v; };
 const isSel = (it, id) => it.multi ? selOf(it).includes(id) : selOf(it) === id;
+// Approvals with several pictures are judged picture by picture (Mike, 2026-11-18: one "Looks good" in the
+// enlarged view approved the whole sequence when he meant one picture). Marks live in S.marks until sent.
+const multiShot = (it) => it.kind === "approve" && (it.images || []).length > 1;
+const marksOf = (it) => S.marks[it.id] || (S.marks[it.id] = {});
+const markBtns = (it, i) => { if (!canWrite || (it.status && it.status !== "open")) return ""; const m = marksOf(it)[i]; return `<div class="marks" role="group" aria-label="This picture"><button class="mk good ${m === "good" ? "on" : ""}" data-mark="${i}" data-v="good" aria-pressed="${m === "good"}">Looks good</button><button class="mk bad ${m === "changes" ? "on" : ""}" data-mark="${i}" data-v="changes" aria-pressed="${m === "changes"}">Needs changes</button></div>`; };
+const rangeList = (ns) => ns.join(", ");
+function markSummary(it) {
+  const m = marksOf(it), n = (it.images || []).length, good = [], bad = [], none = [];
+  for (let i = 0; i < n; i++) (m[i] === "good" ? good : m[i] === "changes" ? bad : none).push(i + 1);
+  return { n, good, bad, none };
+}
 const isRec = (it, id) => Array.isArray(it.recommended) ? it.recommended.includes(id) : it.recommended === id;
 // Every image an item shows, in order: pick options with a picture, or an approval's shots.
 function imagesOf(it) {
@@ -219,7 +232,7 @@ function renderLb(it, tail) {
         ${o.link ? `<a class="opt-l" href="${esc(o.link)}" target="_blank" rel="noopener noreferrer">${esc(o.source || "Source")} ↗</a>` : ""}
         ${comments ? `<button class="opt-c" data-comment="${esc(x.key)}" data-label="${esc(`${x.n} · ${o.label}`)}">Comment on this one</button>` : ""}
       </div>`
-    : `<div class="lb-opt lb-shot"><div class="seq-c"><span class="num">${x.n}</span> · ${esc(x.label)}</div>${x.desc ? `<div class="seq-d">${esc(x.desc)}</div>` : ""}${comments ? `<button class="opt-c" style="margin-left:0" data-comment="${esc(x.key)}" data-label="${esc(`${x.n} · ${x.label}`)}">Comment on this one</button>` : ""}</div>`;
+    : `<div class="lb-opt lb-shot"><div class="seq-c"><span class="num">${x.n}</span> · ${esc(x.label)}</div>${x.desc ? `<div class="seq-d">${esc(x.desc)}</div>` : ""}${multiShot(it) ? markBtns(it, i) : ""}${comments ? `<button class="opt-c" style="margin-left:0" data-comment="${esc(x.key)}" data-label="${esc(`${x.n} · ${x.label}`)}">Comment on this one</button>` : ""}</div>`;
   el.classList.toggle("full", S.lbFull);
   el.innerHTML = `<div class="lb-bar"><span class="lb-cap"><b>${esc(it.title)}</b><span>${x.n} of ${imgs.length}${it.kind === "pick" ? " options" : " shots"}</span></span><span class="lb-tools"><button class="link" data-lbfull>${S.lbFull ? "Fit to screen" : "Actual size"}</button><button class="link" data-lbclose>Close</button></span></div>
     <div class="lb-stage">${many ? `<button class="lb-nav prev" data-lbgo="-1" aria-label="Previous picture">${ARROW(-1)}</button>` : ""}<div class="lb-scroll"><img src="${esc(x.img)}" alt="${esc(`${x.n} · ${x.label}`)}" referrerpolicy="no-referrer"></div>${many ? `<button class="lb-nav next" data-lbgo="1" aria-label="Next picture">${ARROW(1)}</button>` : ""}</div>
@@ -244,13 +257,33 @@ function body(it) {
     const sel = S.sel[it.id] ?? it.answer?.choice;
     return `<div class="qopts">${(it.options || []).map((o) => `<button class="qopt ${sel === o.id ? "sel" : ""}" data-opt="${esc(o.id)}"><span class="radio"></span><span>${esc(o.label)}${it.recommended === o.id ? ` <span class="tag rec" style="margin-left:6px">Recommended</span>` : ""}${o.desc ? `<small>${esc(o.desc)}</small>` : ""}</span></button>`).join("")}</div>`;
   }
-  return `<div class="seq">${(it.images || []).map((m, i) => `<div>${shot(m.img, `${i + 1} · ${m.title || ""}`, `${it.id}-${i}`, i)}<div class="seq-c"><span class="num">${i + 1}</span> · ${esc(m.title || "")}</div>${m.desc ? `<div class="seq-d">${esc(m.desc)}</div>` : ""}${comments ? `<button class="opt-c" style="margin-left:0" data-comment="${esc(it.id)}-${i}" data-label="${esc(`${i + 1} · ${m.title || ""}`)}">Comment on this one</button>` : ""}</div>`).join("")}</div>`;
+  return `<div class="seq">${(it.images || []).map((m, i) => `<div>${shot(m.img, `${i + 1} · ${m.title || ""}`, `${it.id}-${i}`, i)}<div class="seq-c"><span class="num">${i + 1}</span> · ${esc(m.title || "")}${doneMark(it, i)}</div>${m.desc ? `<div class="seq-d">${esc(m.desc)}</div>` : ""}${multiShot(it) ? markBtns(it, i) : ""}${comments ? `<button class="opt-c" style="margin-left:0" data-comment="${esc(it.id)}-${i}" data-label="${esc(`${i + 1} · ${m.title || ""}`)}">Comment on this one</button>` : ""}</div>`).join("")}</div>`;
 }
-function answerBar(it) {
+// After sending, each picture shows how it was judged.
+function doneMark(it, i) { const v = it.status && it.status !== "open" && it.answer?.marks?.[i]; return v ? `<span class="seq-mark ${v === "good" ? "good" : "bad"}">${v === "good" ? "Looks good" : "Needs changes"}</span>` : ""; }
+function sentMarks(it, a) {
+  const n = (it.images || []).length, g = [], b = [], u = [];
+  for (let i = 0; i < n; i++) (a.marks[i] === "good" ? g : a.marks[i] === "changes" ? b : u).push(i + 1);
+  if (g.length === n) return `You approved all ${n}`;
+  const bits = []; if (g.length) bits.push(`Looks good: ${rangeList(g)}`); if (b.length) bits.push(`Needs changes: ${rangeList(b)}`); if (u.length) bits.push(`Not marked: ${rangeList(u)}`);
+  return bits.join(" · ");
+}
+function markState(it) {
+  const { n, good, bad, none } = markSummary(it);
+  if (!good.length && !bad.length) return { ok: false, label: "Mark pictures to send" };
+  const parts = []; if (good.length) parts.push(`${good.length} good`); if (bad.length) parts.push(`${bad.length} need${bad.length === 1 ? "s" : ""} changes`); if (none.length) parts.push(`${none.length} unmarked`);
+  return { ok: true, label: `Send: ${parts.join(", ")}` };
+}
+function answerBar(it, inLb) {
   const st = S.status[it.id] || {};
   const note = `<textarea id="note-${esc(it.id)}" rows="1" placeholder="${it.kind === "approve" ? "What should change? (needed for Needs changes)" : "Add a note (optional)"}">${esc(S.drafts[it.id] || "")}</textarea>`;
   const status = `<div class="status ${st.cls || ""}" role="status">${esc(st.text || "")}</div>`;
   if (!canWrite) return `<div class="answer"><div class="status">You can look at this, but only the project owner can answer.</div></div>`;
+  if (multiShot(it)) {
+    const ms = markState(it);
+    const notePh = `<textarea id="note-${esc(it.id)}" rows="1" placeholder="What should change? (needed for pictures marked Needs changes)">${esc(S.drafts[it.id] || "")}</textarea>`;
+    return `<div class="answer">${notePh}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button>${inLb ? "" : `<button class="btn good" data-act="good">Approve all ${it.images.length}</button>`}<button class="btn pri" data-act="marks" ${ms.ok ? "" : "disabled"}>${ms.label}</button></div>${status}</div>`;
+  }
   if (it.kind === "approve") return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn bad" data-act="changes">Needs changes</button><button class="btn good" data-act="good">Looks good</button></div>${status}</div>`;
   const { ok, label } = sendState(it);
   return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn pri" data-act="send" ${ok ? "" : "disabled"}>${label}</button></div>${status}</div>`;
@@ -281,12 +314,13 @@ function renderItem(id) {
   let tail = "";
   if (st === "answered" || st === "done") {
     const a = it.answer || {};
-    tail = `<div class="sent"><b>${a.verdict === "changes" ? "You asked for changes" : a.verdict === "good" ? "You approved it" : (a.label === "Just a note" ? "You sent a note" : a.label === "None" ? "You picked none" : `You chose ${esc(a.label || a.choice || "")}`)}</b> · ${ago(a.at)}${st === "answered" ? " · waiting on Claude" : " · done"}${a.note ? `<div class="note">${esc(a.note)}</div>` : ""}
+    tail = `<div class="sent"><b>${a.marks ? sentMarks(it, a) : a.verdict === "changes" ? "You asked for changes" : a.verdict === "good" ? (multiShot(it) ? `You approved all ${it.images.length}` : "You approved it") : (a.label === "Just a note" ? "You sent a note" : a.label === "None" ? "You picked none" : `You chose ${esc(a.label || a.choice || "")}`)}</b> · ${ago(a.at)}${st === "answered" ? " · waiting on Claude" : " · done"}${a.note ? `<div class="note">${esc(a.note)}</div>` : ""}
       ${st === "answered" && canWrite ? `<button class="link" data-act="reopen">Change my answer</button>` : ""}</div>`;
   } else if (st === "chat") {
     tail = `<div class="chatbox"><b>Talking in the project chat.</b> Claude will bring the outcome back here, or clear it when it's settled.${canWrite ? ` <button class="link" data-act="reopen">Answer here instead</button>` : ""}</div>`;
-  } else tail = answerBar(it);
+  }
   const inLb = S.lb && S.lb.id === it.id;
+  if (!tail) tail = answerBar(it, inLb);
   if (S.lb && !inLb) S.lb = null;
   $("#app").innerHTML = h + (inLb ? "" : tail);
   renderLb(inLb ? it : null, tail);
@@ -340,6 +374,13 @@ function bindItem(it) {
   const note = $(`#note-${CSS.escape(it.id)}`);
   note?.addEventListener("input", () => { S.drafts[it.id] = note.value; const b = document.querySelector('[data-act="send"]'); if (b) { const st = sendState(it); b.disabled = !st.ok; b.textContent = st.label; } });
   document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => act(it, b.dataset.act)));
+  document.querySelectorAll("[data-mark]").forEach((b) => b.addEventListener("click", (e) => {
+    e.stopPropagation(); keepDraft(it);
+    const m = marksOf(it), i = +b.dataset.mark; m[i] = m[i] === b.dataset.v ? undefined : b.dataset.v; if (!m[i]) delete m[i];
+    // In the enlarged view, marking a picture moves on to the next unmarked one.
+    if (S.lb && S.lb.id === it.id && m[i]) { const n = it.images.length; for (let d = 1; d < n; d++) { const j = (i + d) % n; if (!m[j]) { S.lb.i = j; break; } } }
+    render();
+  }));
 }
 const keepDraft = (it) => { const n = $(`#note-${CSS.escape(it.id)}`); if (n) S.drafts[it.id] = n.value; };
 function setStatus(it, text, cls) { S.status[it.id] = { text, cls }; const el = document.querySelector(".answer .status"); if (el) { el.textContent = text; el.className = "status " + (cls || ""); } }
@@ -390,17 +431,27 @@ async function act(it, what) {
     text = `[review ${it.id}] "${it.title}": Mike chose ${label}.${note ? `\n\nHis note: ${note}` : ""}`;
     }
     }
+  } else if (what === "marks") {
+    const { n, good, bad, none } = markSummary(it);
+    if (!good.length && !bad.length) return;
+    if (bad.length && !note) { setStatus(it, `Say what should change in ${bad.length === 1 ? "picture" : "pictures"} ${rangeList(bad)} first, in the box above.`, "err"); $(`#note-${CSS.escape(it.id)}`)?.focus(); return; }
+    const marks = {}; good.forEach((k) => (marks[k - 1] = "good")); bad.forEach((k) => (marks[k - 1] = "changes"));
+    const verdict = bad.length ? "changes" : none.length ? "partial" : "good";
+    const label = bad.length ? "Needs changes" : none.length ? "Some look good" : "Looks good";
+    patch = { status: "answered", answer: { verdict, marks, label, note, at: now } };
+    const lines = []; if (good.length) lines.push(`looks good: ${rangeList(good)}`); if (bad.length) lines.push(`needs changes: ${rangeList(bad)}`); if (none.length) lines.push(`not marked: ${rangeList(none)}`);
+    text = `[review ${it.id}] "${it.title}": Mike judged the ${n} pictures one by one. ${lines.join("; ")}.${note ? `\n\n${note}` : ""}`;
   } else {
     if (what === "changes" && !note) { setStatus(it, "Say what should change first, in the box above.", "err"); $(`#note-${CSS.escape(it.id)}`)?.focus(); return; }
     patch = { status: "answered", answer: { verdict: what, label: what === "good" ? "Looks good" : "Needs changes", note, at: now } };
-    text = `[review ${it.id}] "${it.title}": ${what === "good" ? "Mike approved it." : "Mike asked for changes."}${note ? `\n\n${note}` : ""}`;
+    text = `[review ${it.id}] "${it.title}": ${what === "good" ? (multiShot(it) ? `Mike approved all ${it.images.length} pictures.` : "Mike approved it.") : "Mike asked for changes."}${note ? `\n\n${note}` : ""}`;
   }
   document.querySelectorAll(".answer .btn").forEach((b) => (b.disabled = true));
   setStatus(it, "Sending…");
   try { await ref.update(patch); }
   catch (e) { setStatus(it, "Couldn't save your answer: " + (e?.message || "try again") + ".", "err"); document.querySelectorAll(".answer .btn").forEach((b) => (b.disabled = false)); return; }
   const said = await tellClaude(it, text);
-  delete S.drafts[it.id]; delete S.sel[it.id];
+  delete S.drafts[it.id]; delete S.sel[it.id]; delete S.marks[it.id];
   const next = queue().find((i) => i.id !== it.id);
   toast(`“${it.title}”: ${said.text}`, !said.ok && said.text !== NOT_HEARD);
   location.hash = next ? "i-" + encodeURIComponent(next.id) : "";
