@@ -35,8 +35,8 @@ The subagent only knows what you give it. Collect:
 Use the Agent tool (general-purpose). Don't tell it what you think is wrong or right. In a cloud session, add the headless-browser
 notes from the plugin's `steering/rules/cloud.md` (WebGL flags, one browser at a time, no pointer
 lock) to the brief, or it will stall on a blank canvas. Give it the
-brief and this task, with `<plugin docs>` replaced by the absolute path of this plugin's `docs/`
-folder (`../../docs` from this skill's folder):
+brief and this task, with `<plugin docs>` and `<plugin skills>` replaced by the absolute paths of
+this plugin's `docs/` and `skills/` folders (`../../docs` and `..` from this skill's folder):
 
 > You are reviewing a web page for Mike before he sees it. He should never have to point out
 > anything awkward, unpolished, inconvenient, distracting, cheesy, inconsistent or broken. Your job
@@ -54,6 +54,16 @@ folder (`../../docs` from this skill's folder):
 > get the screen? Is it good the moment it loads? Does it explain itself? Is anything distracting,
 > cheesy, dev-tool-like, unfinished on some screen size, or janky in motion? Check the
 > UX-CHECKLIST.md rules that apply.
+>
+> **Read pass.** Open every screenshot at full size and read every word on it: labels, counts,
+> dates, captions, descriptions, links. Small muted text over a busy or changing background is the
+> usual miss. If you have to squint, it fails. Then measure: run
+> `node <plugin skills>/ux-review/contrast-check.mjs <url> --scroll` at 1440×900 and again with
+> `--width 375 --height 812 --mobile`, from a folder where `playwright` resolves. It compares each
+> text's color with the pixels really drawn behind it (images, iframes, animated backgrounds) and
+> lists everything under 4.5:1 (3:1 for large text). When the background varies (a random or live
+> background, user images), force the brightest and busiest one with `--setup "<js>"` and use
+> `--show "<text>"` to see one label's number. Every failure is a finding.
 >
 > **Use pass.** Looks are only part of it. In every state: can the user see what they need to
 > decide (money, what's due, who's ready)? Is the next action obvious? Does each disabled control
@@ -123,3 +133,10 @@ reaching, and ask for a real start-to-finish session. The reviewer stays blind, 
 In a Claude project with a UI/UX persona (see "Design personas" in `WORKING.md`), the persona owns
 this: it runs the review, sorts the findings with what it knows about the project, and folds the
 real ones into its brief's current take, ordered by how much they get in the way.
+
+## With a UI/UX persona
+
+In a Claude project that keeps a UI/UX persona (see "Design personas" in `WORKING.md`), send it the
+change and the screenshots after this review, before Mike sees them. The persona reads every word
+and runs the contrast check itself, so a miss here gets a second chance with someone who remembers
+the project's rules. It sends back what to fix; you fix it, then demo.

@@ -101,11 +101,13 @@ work. Mike doesn't read threads.
 
 In a Claude project, which can run long-lived threads, a project may keep design personas: for
 example a game designer and a UI/UX designer, each its own persistent thread. Each has a brief at
-`docs/personas/<name>.md`: Mike's rules for its area, where things stand, its current take, open
+`docs/personas/<name>.md` in the project's repo, or at `/mnt/project-files/personas/<name>.md` when
+the project spans many repos: Mike's rules for its area, where things stand, its current take, open
 calls waiting on him, and a dated log. Personas edit docs only and never build. Consult them in
 design discussions and on proposals, and have them review every change in their area before Mike
 sees it. They're the reviewers who remember the project. The blind playtester and the `ux-review`
-subagent are the opposite on purpose: fresh every time, with no memory. Outside a project, skip
+subagent are the opposite on purpose: fresh every time, with no memory. A UI/UX persona's review
+reads every word on every screenshot and runs `ux-review`'s contrast check. Outside a project, skip
 personas and rely on those two.
 
 ## Recording what he corrects

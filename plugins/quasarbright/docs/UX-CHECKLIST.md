@@ -152,7 +152,8 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   every label over the brightest and busiest one, small and muted text included (counts, dates,
   links): muted gray with a light shadow vanishes over light gray. Protect text locally rather than
   dimming the whole background.
-- **Contrast:** check 4.5:1 on every new label and audit borders. Dark gray on black is the default
+- **Contrast:** measure 4.5:1 on every label (3:1 for large text) with `ux-review`'s
+  `contrast-check.mjs`, which reads the real pixels behind the text, and audit borders. Dark gray on black is the default
   failure. Judge each color against its neighbors in the palette as well as the background.
 - **Palettes:** check every pair for confusability (white/beige, red/orange). Use real standard
   schemes for named objects (cube colors with their opposite pairs). Color ramps reach full
