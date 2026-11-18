@@ -59,6 +59,8 @@ He sees it finished. For anything visible:
    image, and don't make a gallery page or artifact just to show them: a big stitched image is hard
    to zoom on his phone and loses quality. Every mock and screenshot carries a title and a one-line
    description, in the image itself or in its filename plus caption.
+   When the change involves motion or animation, also send a short MP4 clip (a few seconds) as its
+   own file next to the screenshots. Clips are only for motion, never for static UI.
 5. Read the console. Warnings are often the real bug.
 6. For a reported bug, reproduce it in a failing test first. If he reports a class of bug twice,
    sweep for it everywhere.
