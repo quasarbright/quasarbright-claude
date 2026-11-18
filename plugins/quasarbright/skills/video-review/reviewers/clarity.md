@@ -21,8 +21,12 @@ place you got lost, had to rewind, or were told something without being shown wh
 Report as a viewer: "at line 136 I lost track because..." rather than as an editor.
 
 ## What to look for (learned)
-- Lists of more than three new terms in one breath don't stick when heard rather than read.
-  Define the ones the punchline depends on; put the rest on screen.
+- A rapid-fire list can be the point: a flavor of how much there is. Don't flag a list for length.
+  Flag it only when a later line needs one of its items remembered, and fix that item alone.
+- At the script stage, assume the `>` notes and any planned visuals will be on screen. Flag what's
+  still unclear with them, not what words alone leave out.
 
 ## Log
 - 2026-11-18: created.
+- 2026-11-18, Cursed Rubik's Cubes p1: Mike kept the nine-metric list ("listing the metrics is
+  interesting"); orientation-index confusion rechecked with the about modal's visuals.

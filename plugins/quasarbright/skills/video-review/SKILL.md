@@ -34,6 +34,10 @@ below. They're the ones who remember Mike.
 
 ## Material
 
+- **Planned visuals:** when a passage's visuals are already known (an about modal, an earlier video's
+  scene, a `>` note pointing at something that exists), give the reviewer that material too, so it
+  judges the passage with its pictures. Mike explains with visuals and expects them to carry part of
+  the load.
 - **Script stage:** the script, read fresh from where Mike keeps it right before the run. For Obsidian
   scripts, his Mac copy (`~/GitHub/learn-obsidian`) is newer than GitHub; read it through the device
   tools. Never edit his Obsidian files. If a video is split into parts, give only the part under
@@ -77,7 +81,9 @@ what Mike has decided for this video:
 - **Drop** ones that contradict something Mike decided or prefers. Name the preference.
 - **Ask** when it would change what the video says or how it's built. Those are his.
 
-Report to Mike in one message, grouped by reviewer, must-fix first, with line numbers. One line for
+Report to Mike in one message, must-fix first, with line numbers. **Every finding names the
+reviewer(s) who raised it and gives a brief reason** (what a viewer would experience, or the source
+for a fact), so he can weigh it (Mike, 2026-11-18). One line for
 what you dropped and why, so he can overrule it. Keep it skimmable: he reads on his phone.
 
 ## Learning

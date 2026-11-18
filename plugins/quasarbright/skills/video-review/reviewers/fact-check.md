@@ -31,3 +31,6 @@ say so instead of guessing.
 - 2026-11-18: created. Seeded from the Cursed Rubik's Cubes part 1 review (prior art for the
   Klein bottle slider at Cut-the-Knot; "rotation only happens at the boundary" contradicting the
   script's own no-special-line point).
+- 2026-11-18, Cursed Rubik's Cubes p1: Mike fixed all three naming/prior-art findings (Pyraminx
+  Crystal, Loopover, the Klein slider's prior art). Naming the established puzzle is worth checking
+  every time.

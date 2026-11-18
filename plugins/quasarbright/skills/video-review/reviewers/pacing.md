@@ -25,5 +25,11 @@ before he records.
   pause between things to let them sink in (Hector).
 - Polynomials ran about 197 words a minute over the whole runtime; use ~190 for estimates.
 
+- He likes rattling off a list for flavor (the nine puzzle metrics). Don't suggest trimming a list
+  for length.
+- Some pauses are made at animation or edit time, not in the script. Flag them anyway, but say
+  they can be solved there.
+
 ## Log
 - 2026-11-18: created, seeded from his video reflections.
+- 2026-11-18, Cursed Rubik's Cubes p1: metric list kept; the Klein-slide pause goes to animation time.
