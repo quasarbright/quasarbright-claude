@@ -172,6 +172,12 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
 - **3D quality bar:** smooth analytic surfaces, analytic normals and crisp shader-drawn lines, not
   painted textures. Look up close and from every side. Check for slivers, seams, pop-in and
   textures blurry at real zoom. Render at device pixel ratio.
+- **Cameras: the viewer's eye never moves when the lens or mode changes.** Swapping projection
+  (perspective, orthographic, any lens) or morphing between them keeps the eye at the same point
+  and the same height: anything above eye height stays above the middle of the screen. Never
+  offset, raise or pull back the view to dodge geometry (it reads as third-person, and he had to
+  say it twice). Solve clipping some other way, such as treating rays that start inside a solid as
+  hitting it. Add an automated test of the invariant across every mode and mid-morph.
 - **Glow means fading heat over a still-visible structure.** No neon, bloom or glow blobs.
   Pulsing is situational: good for drawing attention to the one thing that matters, or as a slow
   part of the look, and distracting when lots of things pulse. Prefer color pulses on existing
