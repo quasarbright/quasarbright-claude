@@ -9,6 +9,8 @@ If it isn't listed, ask Mike once, then add it here and publish with `quasarbrig
 | sketches | Push freely |
 | Dinner Debt | Never push without Mike's explicit approval |
 | clanker-tycoon | Push after every major change, once `npm test` passes (for now) |
+| projection | Push to master once Mike has seen the change. The portfolio's deploy builds from projection's master, so a push changes the live site on its next deploy. Don't publish to npm. |
+| portfolio | Push once Mike approves the preview. Pushing master deploys it. |
 
 Push with a plain `git push` run on its own from the repo folder. A `git -C … push` chained after
 a pull gets blocked by the permission check.
