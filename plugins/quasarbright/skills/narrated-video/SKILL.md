@@ -12,6 +12,9 @@ recording and the placeholder art by real images, and no scene code changes.
 Reference implementation: `2026/hector-salamanca/`. Shared machinery:
 `narration/`. Read both before starting a new one.
 
+Review the script with the `video-review` skill before building, and each draft
+render after, running only the reviewers that apply at that stage.
+
 ## The three files
 
 | file | |
