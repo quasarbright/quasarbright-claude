@@ -420,9 +420,8 @@ function bindItem(it) {
   const note = $(`#note-${CSS.escape(it.id)}`);
   note?.addEventListener("input", () => { S.drafts[it.id] = note.value; const b = document.querySelector('[data-act="send"]'); if (b) { const st = sendState(it); b.disabled = !st.ok; b.textContent = st.label; } });
   document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => act(it, b.dataset.act)));
-  // Round picture buttons. In the enlarged view every action moves on to the next picture.
+  // Round picture buttons. Every action stays on the picture.
   const lbOn = () => S.lb && S.lb.id === it.id;
-  const advance = () => { if (lbOn()) { const n = imagesOf(it).length; if (S.lb.i < n - 1) S.lb.i += 1; } };
   document.querySelectorAll("[data-pv]").forEach((b) => b.addEventListener("click", (e) => {
     e.stopPropagation(); e.preventDefault(); keepDraft(it);
     const v = b.dataset.pv, k = b.dataset.key;
@@ -430,14 +429,13 @@ function bindItem(it) {
     let on;
     if (v === "pick") { if (it.multi) { const cur = S.sel[it.id] || []; on = !cur.includes(k); S.sel[it.id] = on ? [...cur, k] : cur.filter((x) => x !== k); } else { on = S.sel[it.id] !== k; S.sel[it.id] = on ? k : undefined; } }
     else { const m = marksOf(it); on = m[k] !== v; if (on) m[k] = v; else delete m[k]; }
-    // Show the filled button first, then move on, so the choice is visible before the picture changes.
+    // Stay on the picture: Mike moves on with the arrows (2026-11-19: "don't automatically advance").
     S.lbNote = false; render();
-    if (on && lbOn()) { const i0 = S.lb.i; setTimeout(() => { if (lbOn() && S.lb.i === i0 && !S.lbNote) { advance(); render(); } }, 450); }
   }));
   document.querySelectorAll(".pv-pop").forEach((pop) => {
     ["click", "keydown"].forEach((ev) => pop.addEventListener(ev, (x) => x.stopPropagation()));
     const ta = pop.querySelector("textarea"), k = pop.dataset.pop;
-    const save = () => { const t = ta.value.trim(); if (t) notesOf(it)[k] = t; else delete notesOf(it)[k]; S.pop = null; if (lbOn()) { S.lbNote = false; advance(); } render(); };
+    const save = () => { const t = ta.value.trim(); if (t) notesOf(it)[k] = t; else delete notesOf(it)[k]; S.pop = null; S.lbNote = false; render(); };
     pop.querySelector("[data-pvsave]").addEventListener("click", save);
     pop.querySelector("[data-pvcancel]").addEventListener("click", () => { S.pop = null; S.lbNote = false; render(); });
     ta.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); save(); } else if (e.key === "Escape") { e.preventDefault(); S.pop = null; S.lbNote = false; render(); } });

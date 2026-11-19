@@ -77,9 +77,9 @@ shot's `title` and `desc`.
   - Pick: a check (pick it; checkboxes when `multi`) and chat.
   - Chat opens a small text box on the picture. Its note waits and goes out with the answer, never
     on its own.
-  - A picked or marked button fills in at once, and in the enlarged view the page moves to the next
-    picture about half a second later (it stays on the last one), so the choice is seen first (Mike,
-    2026-11-19: "the selected thing should get its circle filled in").
+  - Every action stays on the picture: the button fills in and Mike moves on with the arrows himself
+    (2026-11-19: "don't automatically advance to the next thing on good/bad"; auto-advance had hidden
+    the filled button too).
 - **Pick**: Send names the picks ("Send picks 1, 2 and 4").
 - **Approve**: Send reports the marks and notes ("Send: 7 good, 1 needs changes, 1 unmarked") and
   appears only once at least one picture is marked or noted. There is no overall comment box.
@@ -94,6 +94,16 @@ shot's `title` and `desc`.
   Actual size and Close. The round buttons sit centered under the image, and the caption below has
   a fixed height so the buttons never move between pictures. Arrow buttons and the ← → keys move
   through the pictures, and Escape closes it (or the open note box first).
+
+## Making a good item
+
+- **A pick is a real choice that differs in one thing.** Every option is the same screen with only
+  the thing being decided changed, so Mike compares that one thing. Fixes and layout changes that
+  apply to every option are not options: build them into all of them and say so in the context.
+- **One direction is an approval, not a pick.** When there's only one sensible answer, show it as an
+  approval sequence (one picture per state, each with a title and a line) and let him mark pictures.
+  Mike, 2026-11-19, on a quarter-board pick: "it wasn't even really a choice, and there were
+  unrelated differences between each thing."
 
 ## How answers reach Claude
 
