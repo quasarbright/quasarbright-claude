@@ -119,6 +119,11 @@ shot's `title` and `desc`.
 
 ## Making a good item
 
+- **Check a build against what he approved before it goes up.** When an item shows built work for
+  something he already picked (a mock, an art choice), put the screenshot side by side with the
+  approved picture and list every difference first. Fix the drift, or say in `context` what differs
+  and why. Mike, 2026-11-19, rejecting the in-game crate twice: "we just agreed on the crate art and
+  it was something else", then "Still not the version you showed me that I liked."
 - **A pick is a real choice that differs in one thing.** Every option is the same screen with only
   the thing being decided changed, so Mike compares that one thing. Fixes and layout changes that
   apply to every option are not options: build them into all of them and say so in the context.
