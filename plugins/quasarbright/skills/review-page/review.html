@@ -79,6 +79,7 @@ textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:44px;backgr
 textarea::placeholder{color:var(--faint)}
 .btns{display:flex;gap:8px}
 .btn{flex:1;border-radius:10px;padding:12px 14px;border:1px solid var(--border);background:var(--panel-2);font-weight:600;font-size:15px}
+.answer .btns .btn{white-space:nowrap}.btn.wide{flex:2 1 auto}
 .btn:disabled{opacity:.45;cursor:default}
 .btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .btn.good{background:var(--good-bg);border-color:#2f5a42;color:var(--good)}
@@ -118,6 +119,23 @@ body.lb-open{overflow:hidden}
 .lb-panel .answer{margin-top:0;padding:0;border-top:0;position:static;background:none}
 .lb-panel .answer textarea{min-height:64px}
 .lb-panel .btns{flex-wrap:wrap}.lb-panel .btns .btn{flex:1 1 auto;white-space:nowrap}
+.lb{grid-template:"bar" auto "stage" minmax(0,1fr) "foot" auto / minmax(0,1fr)!important}
+.lb-foot{grid-area:foot;height:64px;padding:8px 72px 12px;display:flex;flex-direction:column;justify-content:center;gap:2px;overflow:hidden;border-top:1px solid #1c1f2a}
+.lb-foot b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lb-foot span{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lb-send{white-space:nowrap}
+#lb .lb-scroll{padding-bottom:96px}
+#lb.full .lb-scroll{padding-bottom:96px}
+.pv{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:14px;z-index:3}
+.shot .pv{left:auto;right:10px;bottom:10px;transform:none;gap:8px}
+.pvb{width:56px;height:56px;border-radius:50%;border:1px solid #ffffff33;background:#101219e6;color:#e7e9f2;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px #0009;position:relative;padding:0}
+.shot .pvb{width:40px;height:40px}.shot .pvb svg{width:19px;height:19px}
+.pvb:hover{border-color:#ffffff88;background:#1b1e29f0}
+.pvb.good.on{background:#1f6b45;border-color:#4fd18b;color:#fff}.pvb.bad.on{background:#7a2335;border-color:#ff7a93;color:#fff}.pvb.pick.on{background:var(--accent);border-color:var(--accent);color:#14161d}.pvb.note.on{border-color:var(--accent);color:var(--accent)}
+.pvb.note.on::after{content:"";position:absolute;top:3px;right:3px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px #101219}
+.pv-pop{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);width:min(460px,calc(100% - 40px));background:#151823f5;border:1px solid var(--border);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;z-index:4;box-shadow:0 10px 30px #000a}
+.shot .pv-pop{bottom:60px;right:10px;left:auto;transform:none;width:min(380px,calc(100% - 20px))}
+.pv-pop textarea{min-height:70px}.pv-pop .btns{justify-content:flex-end}.pv-pop small{color:var(--muted);font-size:12px}
+.seq-note{font-size:13px;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:6px 10px;margin-top:6px}.seq-note b{color:var(--accent);font-weight:600}
 .lb-opt.lb-shot{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px}
 @media (max-width:760px){
   .lb{grid-template:"bar" auto "stage" minmax(0,1fr) "panel" auto / minmax(0,1fr)}
@@ -139,7 +157,7 @@ body.lb-open{overflow:hidden}
 // Item: {title, kind: "pick"|"approve"|"question", multi (pick: choose any number), blocking, from, context, created (ISO),
 //   options:[{id,label,desc,img,tag}], recommended, recommendReason, images:[{img,title,desc}],
 //   status: "open"|"answered"|"chat"|"done", answer:{choice,label,verdict,note,at}}
-const S = { items: [], meta: {}, showDone: false, sel: {}, drafts: {}, marks: {}, status: {}, ready: false, err: null, lb: null, lbFull: false };
+const S = { items: [], meta: {}, showDone: false, sel: {}, drafts: {}, marks: {}, pnotes: {}, lbNote: false, status: {}, ready: false, err: null, lb: null, lbFull: false };
 let db = null, comments = null, user = null, canWrite = true;
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -200,13 +218,35 @@ const selOf = (it) => { const v = S.sel[it.id] ?? it.answer?.choice; return it.m
 const isSel = (it, id) => it.multi ? selOf(it).includes(id) : selOf(it) === id;
 // Approvals with several pictures are judged picture by picture (Mike, 2026-11-18: one "Looks good" in the
 // enlarged view approved the whole sequence when he meant one picture). Marks live in S.marks until sent.
-const multiShot = (it) => it.kind === "approve" && (it.images || []).length > 1;
+const multiShot = (it) => it.kind === "approve" && (it.images || []).length > 0;
+const ICON = { good: '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>', changes: '<path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/>', note: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>', pick: '<path d="M20 6 9 17l-5-5"/>' };
+const ico = (k) => `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+// One note per picture, kept with the answer and sent with it (never on its own).
+const notesOf = (it) => S.pnotes[it.id] || (S.pnotes[it.id] = {});
+const keyOf = (it, x) => x.opt ? x.opt.id : String(x.n - 1);
+const canAct = (it) => canWrite && (!it.status || it.status === "open");
+// Round buttons on a picture: thumbs up / thumbs down / note for approvals, pick / note for choices (Mike, 2026-11-19).
+function pvButtons(it, x) {
+  if (!canAct(it)) return "";
+  const k = keyOf(it, x), has = !!(notesOf(it)[k] || "").trim();
+  const b = (cls, v, label, on) => `<button class="pvb ${cls} ${on ? "on" : ""}" data-pv="${v}" data-key="${esc(k)}" aria-pressed="${!!on}" title="${label}" aria-label="${label}">${ico(v)}</button>`;
+  const m = it.kind === "approve" ? marksOf(it)[k] : null;
+  return `<div class="pv">${it.kind === "approve" ? b("good", "good", "Looks good", m === "good") + b("bad", "changes", "Needs changes", m === "changes") : b("pick", "pick", isSel(it, x.opt.id) ? "Picked" : "Pick this one", isSel(it, x.opt.id))}${b("note", "note", has ? "Edit your note" : "Add a note", has)}</div>`;
+}
+function pvPop(it, x) {
+  const k = keyOf(it, x);
+  return `<div class="pv-pop" data-pop="${esc(k)}"><textarea placeholder="What about this one?">${esc(notesOf(it)[k] || "")}</textarea><div class="btns"><small style="margin-right:auto;align-self:center">Goes with your answer when you send it.</small><button class="btn ghost" data-pvcancel>Cancel</button><button class="btn pri" data-pvsave>Save note</button></div></div>`;
+}
+function notesText(it) {
+  const imgs = imagesOf(it), n = notesOf(it);
+  return imgs.filter((x) => (n[keyOf(it, x)] || "").trim()).map((x) => `On ${x.n} (${x.label}): ${n[keyOf(it, x)].trim()}`).join("\n");
+}
 const marksOf = (it) => S.marks[it.id] || (S.marks[it.id] = {});
 const markBtns = (it, i) => { if (!canWrite || (it.status && it.status !== "open")) return ""; const m = marksOf(it)[i]; return `<div class="marks" role="group" aria-label="This picture"><button class="mk good ${m === "good" ? "on" : ""}" data-mark="${i}" data-v="good" aria-pressed="${m === "good"}">Looks good</button><button class="mk bad ${m === "changes" ? "on" : ""}" data-mark="${i}" data-v="changes" aria-pressed="${m === "changes"}">Needs changes</button></div>`; };
 const rangeList = (ns) => ns.join(", ");
 function markSummary(it) {
   const m = marksOf(it), n = (it.images || []).length, good = [], bad = [], none = [];
-  for (let i = 0; i < n; i++) (m[i] === "good" ? good : m[i] === "changes" ? bad : none).push(i + 1);
+  for (let i = 0; i < n; i++) (m[String(i)] === "good" ? good : m[String(i)] === "changes" ? bad : none).push(i + 1);
   return { n, good, bad, none };
 }
 const isRec = (it, id) => Array.isArray(it.recommended) ? it.recommended.includes(id) : it.recommended === id;
@@ -219,46 +259,51 @@ function imagesOf(it) {
 // The enlarged view carries the item's whole UI: arrows (and arrow keys) between its images, this image's
 // pick or check and comment box, and the item's note and send controls (Mike, 2026-11-18).
 const ARROW = (d) => `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="${d < 0 ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}"/></svg>`;
-function renderLb(it, tail) {
+function renderLb(it) {
   const el = $("#lb");
   const imgs = it ? imagesOf(it) : [];
   if (!S.lb || !it || !imgs.length) { el.hidden = true; el.innerHTML = ""; document.body.classList.remove("lb-open"); return; }
   const i = ((S.lb.i % imgs.length) + imgs.length) % imgs.length; S.lb.i = i;
-  const x = imgs[i], o = x.opt, many = imgs.length > 1;
-  const optHead = o
-    ? `<div class="opt lb-opt ${isSel(it, o.id) ? "sel" : ""} ${it.multi ? "multi" : ""}" data-opt="${esc(o.id)}" tabindex="0" role="${it.multi ? "checkbox" : "radio"}" aria-checked="${isSel(it, o.id)}">
-        <div class="opt-h"><span class="radio"></span><span><span class="num">${x.n}</span> · ${esc(o.label)}</span>${isRec(it, o.id) ? `<span class="tag rec">Recommended</span>` : o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ""}</div>
-        ${o.desc ? `<div class="opt-d">${esc(o.desc)}</div>` : ""}
-        ${o.link ? `<a class="opt-l" href="${esc(o.link)}" target="_blank" rel="noopener noreferrer">${esc(o.source || "Source")} ↗</a>` : ""}
-        ${comments ? `<button class="opt-c" data-comment="${esc(x.key)}" data-label="${esc(`${x.n} · ${o.label}`)}">Comment on this one</button>` : ""}
-      </div>`
-    : `<div class="lb-opt lb-shot"><div class="seq-c"><span class="num">${x.n}</span> · ${esc(x.label)}</div>${x.desc ? `<div class="seq-d">${esc(x.desc)}</div>` : ""}${multiShot(it) ? markBtns(it, i) : ""}${comments ? `<button class="opt-c" style="margin-left:0" data-comment="${esc(x.key)}" data-label="${esc(`${x.n} · ${x.label}`)}">Comment on this one</button>` : ""}</div>`;
+  const x = imgs[i], many = imgs.length > 1, k = keyOf(it, x);
+  const st = it.kind === "approve" ? markState(it) : sendState(it);
+  const mark = it.kind === "approve" ? (marksOf(it)[k] || (it.status !== "open" && it.answer?.marks?.[k])) : isSel(it, x.opt.id);
+  const tag = it.kind === "approve" ? (mark === "good" ? " · Looks good" : mark === "changes" ? " · Needs changes" : "") : mark ? " · Picked" : "";
   el.classList.toggle("full", S.lbFull);
-  el.innerHTML = `<div class="lb-bar"><span class="lb-cap"><b>${esc(it.title)}</b><span>${x.n} of ${imgs.length}${it.kind === "pick" ? " options" : " shots"}</span></span><span class="lb-tools"><button class="link" data-lbfull>${S.lbFull ? "Fit to screen" : "Actual size"}</button><button class="link" data-lbclose>Close</button></span></div>
-    <div class="lb-stage">${many ? `<button class="lb-nav prev" data-lbgo="-1" aria-label="Previous picture">${ARROW(-1)}</button>` : ""}<div class="lb-scroll"><img src="${esc(x.img)}" alt="${esc(`${x.n} · ${x.label}`)}" referrerpolicy="no-referrer"></div>${many ? `<button class="lb-nav next" data-lbgo="1" aria-label="Next picture">${ARROW(1)}</button>` : ""}</div>
-    <div class="lb-panel">${optHead}${tail}</div>`;
+  el.innerHTML = `<div class="lb-bar"><span class="lb-cap"><b>${esc(it.title)}</b><span>${x.n} of ${imgs.length}${esc(tag)}</span></span><span class="lb-tools">${canAct(it) && st.ok ? `<button class="btn pri lb-send" data-act="${it.kind === "approve" ? "marks" : "send"}">${esc(st.label)}</button>` : ""}<button class="link" data-lbfull>${S.lbFull ? "Fit to screen" : "Actual size"}</button><button class="link" data-lbclose>Close</button></span></div>
+    <div class="lb-stage">${many ? `<button class="lb-nav prev" data-lbgo="-1" aria-label="Previous picture">${ARROW(-1)}</button>` : ""}<div class="lb-scroll"><img src="${esc(x.img)}" alt="${esc(`${x.n} · ${x.label}`)}" referrerpolicy="no-referrer"></div>${many ? `<button class="lb-nav next" data-lbgo="1" aria-label="Next picture">${ARROW(1)}</button>` : ""}${S.lbNote ? pvPop(it, x) : ""}${pvButtons(it, x)}</div>
+    <div class="lb-foot"><b>${x.n} · ${esc(x.label)}${x.opt && isRec(it, x.opt.id) ? ` <span class="tag rec" style="display:inline;margin-left:6px">Recommended</span>` : ""}</b>${x.desc ? `<span>${esc(x.desc)}</span>` : ""}</div>`;
   el.hidden = false; document.body.classList.add("lb-open");
+  const ta = el.querySelector(".pv-pop textarea"); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
 }
-function lbGo(d) { if (!S.lb) return; const it = S.items.find((t) => t.id === S.lb.id); if (it) keepDraft(it); S.lb.i += d; render(); }
-function lbClose() { if (!S.lb) return; const it = S.items.find((t) => t.id === S.lb.id); if (it) keepDraft(it); S.lb = null; render(); }
+function lbGo(d) { if (!S.lb) return; S.lbNote = false; const it = S.items.find((t) => t.id === S.lb.id); if (it) keepDraft(it); S.lb.i += d; render(); }
+function lbClose() { if (!S.lb) return; S.lbNote = false; const it = S.items.find((t) => t.id === S.lb.id); if (it) keepDraft(it); S.lb = null; render(); }
 function body(it) {
   const answered = it.status !== "open" && it.status;
   if (it.kind === "pick") {
     return `<div class="opts" ${it.multi ? `role="group"` : `role="radiogroup"`}>${(it.options || []).map((o, i) => `
       <div class="opt ${isSel(it, o.id) ? "sel" : ""} ${it.multi ? "multi" : ""}" data-opt="${esc(o.id)}" tabindex="0" role="${it.multi ? "checkbox" : "radio"}" aria-checked="${isSel(it, o.id)}">
-        ${o.img ? shot(o.img, `${i + 1} · ${o.label}`, `${it.id}-${o.id}`, imagesOf(it).findIndex((x) => x.opt === o)) : ""}
+        ${o.img ? shotPv(it, imagesOf(it).find((x) => x.opt === o), o.img, `${i + 1} · ${o.label}`, `${it.id}-${o.id}`, imagesOf(it).findIndex((x) => x.opt === o)) : ""}
         <div class="opt-h"><span class="radio"></span><span><span class="num">${i + 1}</span> · ${esc(o.label)}</span>${isRec(it, o.id) ? `<span class="tag rec">Recommended</span>` : o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ""}</div>
         ${o.desc ? `<div class="opt-d">${esc(o.desc)}</div>` : ""}
         ${o.link ? `<a class="opt-l" href="${esc(o.link)}" target="_blank" rel="noopener noreferrer">${esc(o.source || "Source")} ↗</a>` : ""}
-        ${comments ? `<button class="opt-c" data-comment="${esc(it.id)}-${esc(o.id)}" data-label="${esc(`${i + 1} · ${o.label}`)}">Comment on this one</button>` : ""}
+        ${seqNote(it, o.id)}
       </div>`).join("")}</div>`;
   }
   if (it.kind === "question") {
     const sel = S.sel[it.id] ?? it.answer?.choice;
     return `<div class="qopts">${(it.options || []).map((o) => `<button class="qopt ${sel === o.id ? "sel" : ""}" data-opt="${esc(o.id)}"><span class="radio"></span><span>${esc(o.label)}${it.recommended === o.id ? ` <span class="tag rec" style="margin-left:6px">Recommended</span>` : ""}${o.desc ? `<small>${esc(o.desc)}</small>` : ""}</span></button>`).join("")}</div>`;
   }
-  return `<div class="seq">${(it.images || []).map((m, i) => `<div>${shot(m.img, `${i + 1} · ${m.title || ""}`, `${it.id}-${i}`, i)}<div class="seq-c"><span class="num">${i + 1}</span> · ${esc(m.title || "")}${doneMark(it, i)}</div>${m.desc ? `<div class="seq-d">${esc(m.desc)}</div>` : ""}${multiShot(it) ? markBtns(it, i) : ""}${comments ? `<button class="opt-c" style="margin-left:0" data-comment="${esc(it.id)}-${i}" data-label="${esc(`${i + 1} · ${m.title || ""}`)}">Comment on this one</button>` : ""}</div>`).join("")}</div>`;
+  const xs = imagesOf(it);
+  return `<div class="seq">${(it.images || []).map((m, i) => `<div>${shotPv(it, xs[i], m.img, `${i + 1} · ${m.title || ""}`, `${it.id}-${i}`, i)}<div class="seq-c"><span class="num">${i + 1}</span> · ${esc(m.title || "")}${doneMark(it, i)}${!it.status || it.status === "open" ? liveMark(it, i) : ""}</div>${m.desc ? `<div class="seq-d">${esc(m.desc)}</div>` : ""}${seqNote(it, String(i))}</div>`).join("")}</div>`;
 }
+// A picture in the list, with the same round buttons as the enlarged view in its corner.
+function shotPv(it, x, img, label, key, lbi) {
+  const h = shot(img, label, key, lbi);
+  const pop = S.pop && S.pop.id === it.id && S.pop.key === keyOf(it, x) ? pvPop(it, x) : "";
+  return h.replace(/<\/div>$/, `${pop}${pvButtons(it, x)}</div>`);
+}
+function liveMark(it, i) { const v = marksOf(it)[String(i)]; return v ? `<span class="seq-mark ${v === "good" ? "good" : "bad"}">${v === "good" ? "Looks good" : "Needs changes"}</span>` : ""; }
+function seqNote(it, k) { const t = (it.status && it.status !== "open" ? it.answer?.notes?.[k] : notesOf(it)[k]) || ""; return t.trim() ? `<div class="seq-note"><b>Your note:</b> ${esc(t)}</div>` : ""; }
 // After sending, each picture shows how it was judged.
 function doneMark(it, i) { const v = it.status && it.status !== "open" && it.answer?.marks?.[i]; return v ? `<span class="seq-mark ${v === "good" ? "good" : "bad"}">${v === "good" ? "Looks good" : "Needs changes"}</span>` : ""; }
 function sentMarks(it, a) {
@@ -269,9 +314,10 @@ function sentMarks(it, a) {
   return bits.join(" · ");
 }
 function markState(it) {
-  const { n, good, bad, none } = markSummary(it);
-  if (!good.length && !bad.length) return { ok: false, label: "Mark pictures to send" };
-  const parts = []; if (good.length) parts.push(`${good.length} good`); if (bad.length) parts.push(`${bad.length} need${bad.length === 1 ? "s" : ""} changes`); if (none.length) parts.push(`${none.length} unmarked`);
+  const { good, bad, none } = markSummary(it);
+  const nn = Object.values(notesOf(it)).filter((t) => (t || "").trim()).length;
+  if (!good.length && !bad.length && !nn) return { ok: false, label: "" };
+  const parts = []; if (good.length) parts.push(`${good.length} good`); if (bad.length) parts.push(`${bad.length} need${bad.length === 1 ? "s" : ""} changes`); if (!good.length && !bad.length) parts.push(`${nn} note${nn === 1 ? "" : "s"}`); else if (none.length) parts.push(`${none.length} unmarked`);
   return { ok: true, label: `Send: ${parts.join(", ")}` };
 }
 function answerBar(it, inLb) {
@@ -280,9 +326,8 @@ function answerBar(it, inLb) {
   const status = `<div class="status ${st.cls || ""}" role="status">${esc(st.text || "")}</div>`;
   if (!canWrite) return `<div class="answer"><div class="status">You can look at this, but only the project owner can answer.</div></div>`;
   if (multiShot(it)) {
-    const ms = markState(it);
-    const notePh = `<textarea id="note-${esc(it.id)}" rows="1" placeholder="What should change? (needed for pictures marked Needs changes)">${esc(S.drafts[it.id] || "")}</textarea>`;
-    return `<div class="answer">${notePh}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button>${inLb ? "" : `<button class="btn good" data-act="good">Approve all ${it.images.length}</button>`}<button class="btn pri" data-act="marks" ${ms.ok ? "" : "disabled"}>${ms.label}</button></div>${status}</div>`;
+    const ms = markState(it), n = it.images.length;
+    return `<div class="answer"><div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn good" data-act="good">${n === 1 ? "Looks good" : `Approve all ${n}`}</button>${ms.ok ? `<button class="btn pri wide" data-act="marks">${ms.label}</button>` : ""}</div>${status}</div>`;
   }
   if (it.kind === "approve") return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn bad" data-act="changes">Needs changes</button><button class="btn good" data-act="good">Looks good</button></div>${status}</div>`;
   const { ok, label } = sendState(it);
@@ -290,7 +335,7 @@ function answerBar(it, inLb) {
 }
 // Send works with a pick, a note, or both (Mike, 2026-11-18: "I should be able to send without a selection and only a note").
 function sendState(it) {
-  const hasNote = !!(S.drafts[it.id] || "").trim();
+  const hasNote = !!(S.drafts[it.id] || "").trim() || !!notesText(it);
   if (it.kind === "pick" && it.multi) {
     const nums = (it.options || []).map((o, i) => (S.sel[it.id] || []).includes(o.id) ? i + 1 : 0).filter(Boolean);
     if (nums.length) return { ok: true, label: nums.length === 1 ? `Send pick ${nums[0]}` : `Send picks ${nums.slice(0, -1).join(", ")} and ${nums.at(-1)}` };
@@ -323,7 +368,7 @@ function renderItem(id) {
   if (!tail) tail = answerBar(it, inLb);
   if (S.lb && !inLb) S.lb = null;
   $("#app").innerHTML = h + (inLb ? "" : tail);
-  renderLb(inLb ? it : null, tail);
+  renderLb(inLb ? it : null);
   bindItem(it);
 }
 // Push only: everything goes out with Send to Claude, so say up front when no Claude session can hear it.
@@ -347,7 +392,7 @@ function bindItem(it) {
   if (!it) return;
   const st = it.status || "open";
   document.querySelectorAll("[data-opt]").forEach((el) => {
-    const pick = (e) => { if (e.target.closest("[data-zoom],[data-comment],a")) return; if (st !== "open" || !canWrite) return; keepDraft(it); const id = el.dataset.opt;
+    const pick = (e) => { if (e.target.closest("[data-zoom],[data-comment],a,.pv,.pv-pop")) return; if (st !== "open" || !canWrite) return; keepDraft(it); const id = el.dataset.opt;
       if (it.multi) { const cur = S.sel[it.id] || []; S.sel[it.id] = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]; } else S.sel[it.id] = id;
       render(); };
     el.addEventListener("click", pick);
@@ -374,13 +419,25 @@ function bindItem(it) {
   const note = $(`#note-${CSS.escape(it.id)}`);
   note?.addEventListener("input", () => { S.drafts[it.id] = note.value; const b = document.querySelector('[data-act="send"]'); if (b) { const st = sendState(it); b.disabled = !st.ok; b.textContent = st.label; } });
   document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => act(it, b.dataset.act)));
-  document.querySelectorAll("[data-mark]").forEach((b) => b.addEventListener("click", (e) => {
-    e.stopPropagation(); keepDraft(it);
-    const m = marksOf(it), i = +b.dataset.mark; m[i] = m[i] === b.dataset.v ? undefined : b.dataset.v; if (!m[i]) delete m[i];
-    // In the enlarged view, marking a picture moves on to the next unmarked one.
-    if (S.lb && S.lb.id === it.id && m[i]) { const n = it.images.length; for (let d = 1; d < n; d++) { const j = (i + d) % n; if (!m[j]) { S.lb.i = j; break; } } }
-    render();
+  // Round picture buttons. In the enlarged view every action moves on to the next picture.
+  const lbOn = () => S.lb && S.lb.id === it.id;
+  const advance = () => { if (lbOn()) { const n = imagesOf(it).length; if (S.lb.i < n - 1) S.lb.i += 1; } };
+  document.querySelectorAll("[data-pv]").forEach((b) => b.addEventListener("click", (e) => {
+    e.stopPropagation(); e.preventDefault(); keepDraft(it);
+    const v = b.dataset.pv, k = b.dataset.key;
+    if (v === "note") { if (lbOn()) S.lbNote = !S.lbNote; else S.pop = S.pop && S.pop.id === it.id && S.pop.key === k ? null : { id: it.id, key: k }; render(); return; }
+    if (v === "pick") { if (it.multi) { const cur = S.sel[it.id] || []; S.sel[it.id] = cur.includes(k) ? cur.filter((x) => x !== k) : [...cur, k]; } else S.sel[it.id] = S.sel[it.id] === k ? undefined : k; }
+    else { const m = marksOf(it); if (m[k] === v) delete m[k]; else m[k] = v; }
+    S.lbNote = false; advance(); render();
   }));
+  document.querySelectorAll(".pv-pop").forEach((pop) => {
+    ["click", "keydown"].forEach((ev) => pop.addEventListener(ev, (x) => x.stopPropagation()));
+    const ta = pop.querySelector("textarea"), k = pop.dataset.pop;
+    const save = () => { const t = ta.value.trim(); if (t) notesOf(it)[k] = t; else delete notesOf(it)[k]; S.pop = null; if (lbOn()) { S.lbNote = false; advance(); } render(); };
+    pop.querySelector("[data-pvsave]").addEventListener("click", save);
+    pop.querySelector("[data-pvcancel]").addEventListener("click", () => { S.pop = null; S.lbNote = false; render(); });
+    ta.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); save(); } else if (e.key === "Escape") { e.preventDefault(); S.pop = null; S.lbNote = false; render(); } });
+  });
 }
 const keepDraft = (it) => { const n = $(`#note-${CSS.escape(it.id)}`); if (n) S.drafts[it.id] = n.value; };
 function setStatus(it, text, cls) { S.status[it.id] = { text, cls }; const el = document.querySelector(".answer .status"); if (el) { el.textContent = text; el.className = "status " + (cls || ""); } }
@@ -417,14 +474,14 @@ async function act(it, what) {
     if (it.kind === "pick" && it.multi) {
       const chosen = opts.filter((x) => (S.sel[it.id] || []).includes(x.id));
       const label = chosen.map((x) => `${opts.indexOf(x) + 1} · ${x.label}`).join(", ");
-      if (!chosen.length) { if (!note) return; patch = { status: "answered", answer: { choice: [], label: "Just a note", note, at: now } }; text = `[review ${it.id}] "${it.title}": Mike picked none and sent a note:\n\n${note}`; }
+      if (!chosen.length) { if (!note && !notesText(it)) return; patch = { status: "answered", answer: { choice: [], label: "Just a note", note, at: now } }; text = `[review ${it.id}] "${it.title}": Mike picked none and sent ${note ? `a note:\n\n${note}` : "notes."}`; }
       else {
       patch = { status: "answered", answer: { choice: chosen.map((x) => x.id), label, note, at: now } };
       text = `[review ${it.id}] "${it.title}": Mike picked ${chosen.length} of ${opts.length}: ${label}.${note ? `\n\nHis note: ${note}` : ""}`;
       }
     } else {
     const o = opts.find((x) => x.id === S.sel[it.id]);
-    if (!o) { if (!note) return; patch = { status: "answered", answer: { label: "Just a note", note, at: now } }; text = `[review ${it.id}] "${it.title}": Mike didn't pick and sent a note:\n\n${note}`; }
+    if (!o) { if (!note && !notesText(it)) return; patch = { status: "answered", answer: { label: "Just a note", note, at: now } }; text = `[review ${it.id}] "${it.title}": Mike didn't pick and sent ${note ? `a note:\n\n${note}` : "notes."}`; }
     else {
     const n = opts.indexOf(o) + 1, label = it.kind === "pick" ? `${n} · ${o.label}` : o.label;
     patch = { status: "answered", answer: { choice: o.id, label, note, at: now } };
@@ -433,8 +490,7 @@ async function act(it, what) {
     }
   } else if (what === "marks") {
     const { n, good, bad, none } = markSummary(it);
-    if (!good.length && !bad.length) return;
-    if (bad.length && !note) { setStatus(it, `Say what should change in ${bad.length === 1 ? "picture" : "pictures"} ${rangeList(bad)} first, in the box above.`, "err"); $(`#note-${CSS.escape(it.id)}`)?.focus(); return; }
+    if (!good.length && !bad.length && !notesText(it)) return;
     const marks = {}; good.forEach((k) => (marks[k - 1] = "good")); bad.forEach((k) => (marks[k - 1] = "changes"));
     const verdict = bad.length ? "changes" : none.length ? "partial" : "good";
     const label = bad.length ? "Needs changes" : none.length ? "Some look good" : "Looks good";
@@ -446,12 +502,14 @@ async function act(it, what) {
     patch = { status: "answered", answer: { verdict: what, label: what === "good" ? "Looks good" : "Needs changes", note, at: now } };
     text = `[review ${it.id}] "${it.title}": ${what === "good" ? (multiShot(it) ? `Mike approved all ${it.images.length} pictures.` : "Mike approved it.") : "Mike asked for changes."}${note ? `\n\n${note}` : ""}`;
   }
-  document.querySelectorAll(".answer .btn").forEach((b) => (b.disabled = true));
+  const pn = notesText(it);
+  if (pn && patch.status === "answered") { patch.answer.notes = Object.fromEntries(Object.entries(notesOf(it)).filter(([, t]) => (t || "").trim())); text += `\n\nNotes on pictures:\n${pn}`; }
+  document.querySelectorAll(".answer .btn, .lb-send").forEach((b) => (b.disabled = true));
   setStatus(it, "Sending…");
   try { await ref.update(patch); }
   catch (e) { setStatus(it, "Couldn't save your answer: " + (e?.message || "try again") + ".", "err"); document.querySelectorAll(".answer .btn").forEach((b) => (b.disabled = false)); return; }
   const said = await tellClaude(it, text);
-  delete S.drafts[it.id]; delete S.sel[it.id]; delete S.marks[it.id];
+  delete S.drafts[it.id]; delete S.sel[it.id]; delete S.marks[it.id]; delete S.pnotes[it.id]; S.lb = null; S.lbNote = false; S.pop = null;
   const next = queue().find((i) => i.id !== it.id);
   toast(`“${it.title}”: ${said.text}`, !said.ok && said.text !== NOT_HEARD);
   location.hash = next ? "i-" + encodeURIComponent(next.id) : "";

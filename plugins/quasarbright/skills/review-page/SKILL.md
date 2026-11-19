@@ -70,26 +70,32 @@ shot's `title` and `desc`.
 
 - A list grouped by Blocking work, Look when you can, Talking in chat, and Answered (waiting on Claude),
   plus a folded Done. Each item opens with previous and next arrows.
-- **Pick**: image cards with a radio button, or checkboxes when `multi`. Send names the picks
-  ("Send picks 1, 2 and 4").
-- **Approve**: Looks good, or Needs changes (which needs a note). With more than one shot, each
-  picture gets its own Looks good / Needs changes, in the list and in the enlarged view (marking one
-  there moves to the next unmarked picture). Send reports the marks ("Send: 7 good, 1 needs changes,
-  1 unmarked"), and "Approve all N" appears only in the list view, never in the enlarged view. Mike
-  pressed Looks good on one enlarged picture and it approved the whole sequence (2026-11-18).
+- **Round buttons on every picture** (Mike, 2026-11-19: the side panel made the image small, the
+  buttons shifted with the description height, and comments went out eagerly). Each picture carries
+  small circle buttons in its bottom-right corner, in the list and in the enlarged view:
+  - Approve: thumbs up (Looks good), thumbs down (Needs changes), chat (a note).
+  - Pick: a check (pick it; checkboxes when `multi`) and chat.
+  - Chat opens a small text box on the picture. Its note waits and goes out with the answer, never
+    on its own.
+  - In the enlarged view, any action moves to the next picture (it stays on the last one).
+- **Pick**: Send names the picks ("Send picks 1, 2 and 4").
+- **Approve**: Send reports the marks and notes ("Send: 7 good, 1 needs changes, 1 unmarked") and
+  appears only once at least one picture is marked or noted. There is no overall comment box.
+  "Approve all N" ("Looks good" for one picture) is in the list view only, never in the enlarged
+  view: Mike pressed Looks good on one enlarged picture and it approved the whole sequence
+  (2026-11-18).
 - **Question**: text options.
-- **Note-only send** on every item: with nothing picked, a note alone enables "Send note".
+- **Note-only send** on picks and questions: with nothing picked, a note alone enables "Send note".
 - **Talk in chat** hands the item back to the conversation (status `chat`).
-- **Per-image comments**: "Comment on this one" under every picture sends that comment straight to
-  Claude.
-- **Enlarged view**: tap a picture to see it large. Arrow buttons and the ← → keys move through the
-  item's pictures, and a side panel (a bottom panel on a phone) holds that picture's pick or check,
-  its comment box, the note and the send buttons, so he never has to leave it. "Actual size" shows
-  full resolution, and Escape closes it.
+- **Enlarged view**: tap a picture to see it large, filling the window with no side panel. The top
+  bar holds the title, "n of N" with that picture's mark, Send (once there's something to send),
+  Actual size and Close. The round buttons sit centered under the image, and the caption below has
+  a fixed height so the buttons never move between pictures. Arrow buttons and the ← → keys move
+  through the pictures, and Escape closes it (or the open note box first).
 
 ## How answers reach Claude
 
-Every answer, note, picture comment and Talk in chat is saved in the page's db first. Then it goes out
+Every answer (with its picture notes), note and Talk in chat is saved in the page's db first. Then it goes out
 as `comments.sendToClaude`, which wakes the session that watches the artifact and arrives as a comment
 starting `[review <item id>]`. A plain comment wakes nobody, so the page never falls back to one.
 
