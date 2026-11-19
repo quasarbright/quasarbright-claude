@@ -80,7 +80,12 @@ He sees it finished. For anything visible:
    of yours, no memory of past playtests. It plays a real run through the visible controls and
    reports where it got confused, stuck, bored, or did something you didn't expect. It's a step in
    testing, not a persona: a new one every time, so it stays blind. Fix what it finds the same way
-   as the review below.
+   as the review below. If the game calls a model and the session can't reach one (a cloud
+   session: no `claude -p` login, no API key), check the project for a model bridge before
+   faking it: clanker-tycoon has one (`docs/cloud-playtest.md`), where a background Haiku
+   subagent answers the game's model calls through files. Playtest on Mike's Mac when it's
+   online, and use a cloud bridge only when the Mac can't be reached. The playtester still gets only the URL
+   and how to open the page.
 9. Run the `ux-review` skill. A fresh subagent, without your reasoning, plays with it in a
    browser, judges it against `TASTE.md` and `UX-CHECKLIST.md`, and compares it with sibling
    variants and projects. You decide which findings are real: fix those, drop the ones that are
