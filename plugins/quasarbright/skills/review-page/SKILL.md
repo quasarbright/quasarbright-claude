@@ -47,7 +47,8 @@ republish them from the new template.
 
 1. Copy `review.html`, replace `__PROJECT__` in the `<title>`, and publish it with the Artifact tool,
    with capabilities `{"db":{},"user":{},"comments":{},"assets":{}}`. Don't declare `mcp`: the Claude
-   Code Remote connector doesn't load inside artifacts.
+   Code Remote connector doesn't load inside artifacts (retested 2026-11-19 on Mike's phone: "Couldn't
+   load this connector"), so a page can't `send_message` into a thread to wake it.
 2. Write `meta/page` = `{project: "<name>"}` with ArtifactData.
 3. Save the page's URL to project memory, along with the thread that owns it (the Review desk, in a
    project). To move the page to a new owner, read the artifact and republish the same HTML to its
@@ -122,7 +123,10 @@ Every answer (with its picture notes), note and Talk in chat is saved in the pag
 as `comments.sendToClaude`, which wakes the session that watches the artifact and arrives as a comment
 starting `[review <item id>]`. A plain comment wakes nobody, so the page never falls back to one.
 
-Send to Claude only reaches a session that is awake and watching. Container sleeps break that, so when
+Send to Claude only reaches a session that is awake and watching. The watch survives a container sleep
+(it is restored when the session wakes), but a send made while the owner sleeps is refused
+(`canSendToClaude()` is `no_session`) and never queued, so nothing wakes the owner. There is no other
+push route today (2026-11-19). Container sleeps break that, so when
 `canSendToClaude()` isn't "available" the page shows a calm gray line: "Your answers save here. When
 you're done, let Claude know in the project chat." No red error, because nothing was lost. (A picture
 comment isn't saved, so that one does show "Not sent".) When Mike says he answered, read the items whose
