@@ -25,7 +25,11 @@
           },
           {
             "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\" steering/rules/american.md steering/rules/draw-it.md steering/rules/github.md steering/rules/cloud.md"
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\" steering/rules/american.md steering/rules/draw-it.md steering/rules/github.md"
+          },
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\" steering/rules/cloud.md steering/rules/cloud-first.md"
           }
         ]
       }

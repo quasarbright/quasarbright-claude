@@ -24,6 +24,14 @@ work. Mike doesn't read threads.
   any general lesson in its area's doc in the same turn, through the area's persona when there is
   one (`WORKING.md`, "Lessons from his verdicts").
 
+## Where threads run
+
+Cloud first (`steering/rules/cloud-first.md`): coordinator, build, persona and review threads all
+run in cloud sessions. A thread uses Mike's Mac through Remote Control only for what needs it, such
+as pulling a branch for him to play on localhost or a live playtest while the Mac is online. When a
+gap stops a thread working in the cloud, it tells the coordinator, who brings it to Mike with what
+would fix it; then the fix goes into that rule's checklist.
+
 ## Design personas (Claude projects only)
 
 In a Claude project, which can run long-lived threads, a project may keep design personas: for

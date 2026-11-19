@@ -1,7 +1,8 @@
 # In a cloud session (claude.ai project thread or Claude Code on the web)
 
 The skills and docs are written for Mike's laptop. In a cloud container these parts work
-differently. Found while building perspectivent in a project thread on 2026-11-17.
+differently. Found while building perspectivent in a project thread on 2026-11-17. Working in the
+cloud is the default (`cloud-first.md`, next to this file).
 
 - **Paths.** `~/GitHub/<repo>` is `/home/user/<repo>`, and only the repos attached to the project
   exist. A skill that reads a sibling repo that isn't attached can't; say so and carry on.
