@@ -131,6 +131,7 @@ body.lb-open{overflow:hidden}
 .shot .pvb{width:40px;height:40px}.shot .pvb svg{width:19px;height:19px}
 .pvb:hover{border-color:#ffffff88;background:#1b1e29f0}
 .pvb.good.on{background:#1f6b45;border-color:#4fd18b;color:#fff}.pvb.bad.on{background:#7a2335;border-color:#ff7a93;color:#fff}.pvb.pick.on{background:var(--accent);border-color:var(--accent);color:#14161d}.pvb.note.on{border-color:var(--accent);color:var(--accent)}
+@keyframes pvon{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}.pvb.good.on,.pvb.bad.on,.pvb.pick.on{animation:pvon .25s ease-out}
 .pvb.note.on::after{content:"";position:absolute;top:3px;right:3px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px #101219}
 .pv-pop{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);width:min(460px,calc(100% - 40px));background:#151823f5;border:1px solid var(--border);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;z-index:4;box-shadow:0 10px 30px #000a}
 .shot .pv-pop{bottom:60px;right:10px;left:auto;transform:none;width:min(380px,calc(100% - 20px))}
@@ -426,9 +427,12 @@ function bindItem(it) {
     e.stopPropagation(); e.preventDefault(); keepDraft(it);
     const v = b.dataset.pv, k = b.dataset.key;
     if (v === "note") { if (lbOn()) S.lbNote = !S.lbNote; else S.pop = S.pop && S.pop.id === it.id && S.pop.key === k ? null : { id: it.id, key: k }; render(); return; }
-    if (v === "pick") { if (it.multi) { const cur = S.sel[it.id] || []; S.sel[it.id] = cur.includes(k) ? cur.filter((x) => x !== k) : [...cur, k]; } else S.sel[it.id] = S.sel[it.id] === k ? undefined : k; }
-    else { const m = marksOf(it); if (m[k] === v) delete m[k]; else m[k] = v; }
-    S.lbNote = false; advance(); render();
+    let on;
+    if (v === "pick") { if (it.multi) { const cur = S.sel[it.id] || []; on = !cur.includes(k); S.sel[it.id] = on ? [...cur, k] : cur.filter((x) => x !== k); } else { on = S.sel[it.id] !== k; S.sel[it.id] = on ? k : undefined; } }
+    else { const m = marksOf(it); on = m[k] !== v; if (on) m[k] = v; else delete m[k]; }
+    // Show the filled button first, then move on, so the choice is visible before the picture changes.
+    S.lbNote = false; render();
+    if (on && lbOn()) { const i0 = S.lb.i; setTimeout(() => { if (lbOn() && S.lb.i === i0 && !S.lbNote) { advance(); render(); } }, 450); }
   }));
   document.querySelectorAll(".pv-pop").forEach((pop) => {
     ["click", "keydown"].forEach((ev) => pop.addEventListener(ev, (x) => x.stopPropagation()));

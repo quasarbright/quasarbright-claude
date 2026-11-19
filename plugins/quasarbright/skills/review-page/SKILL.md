@@ -77,7 +77,9 @@ shot's `title` and `desc`.
   - Pick: a check (pick it; checkboxes when `multi`) and chat.
   - Chat opens a small text box on the picture. Its note waits and goes out with the answer, never
     on its own.
-  - In the enlarged view, any action moves to the next picture (it stays on the last one).
+  - A picked or marked button fills in at once, and in the enlarged view the page moves to the next
+    picture about half a second later (it stays on the last one), so the choice is seen first (Mike,
+    2026-11-19: "the selected thing should get its circle filled in").
 - **Pick**: Send names the picks ("Send picks 1, 2 and 4").
 - **Approve**: Send reports the marks and notes ("Send: 7 good, 1 needs changes, 1 unmarked") and
   appears only once at least one picture is marked or noted. There is no overall comment box.
