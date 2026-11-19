@@ -22,16 +22,25 @@ republish them from the new template.
   full background in `context`. He may never have seen the thread it came from.
 - **Keep the page and the chat in sync.** When Mike answers something in chat or a thread, mark that
   item answered or done on the page right away, with his answer in `answer.note`. When he answers on
-  the page, relay it to whoever owns the work (the coordinator, in a project) right away: item, choice
-  and note.
+  the page, route it to whoever owns the work right away (see the Review desk below): item, choice
+  and notes.
 - **Link the page** whenever you tell Mike something needs his review.
 - **Mark items Done when their work ships**, or as soon as a decision is settled and nothing is left to
   wait on. Don't leave settled items "waiting on Claude".
 - **Embed images.** Artifacts block outside images (a news site's URL renders as nothing), so upload
   every picture as an asset and use its `/_blob/<id>` URL. Keep the source link in the option's `link`.
-- **One session owns the page:** it watches the artifact, replies to its comments, and writes item
-  status. Other sessions send it their items instead of writing them, so two sessions don't answer the
-  same comment.
+- **A dedicated "Review desk" thread owns the page** (Mike, 2026-11-19). In a project, the page gets
+  its own thread whose only job is running it, rather than a designer persona or the build thread.
+  The Review desk publishes the artifact (so its watch, and every Send to Claude from the page, lands
+  there), adds and clears items, and writes every status. Other threads and the coordinator never
+  write items: they send the desk their new items and any answers Mike gave in chat, with full
+  background. Outside a project, the one session doing the work owns it the same way.
+- **The Review desk routes each answer to its owner.** For every send from Mike, write a short routed
+  note naming the owner and what to do: game design or balance to the design persona (who also owns
+  the decision log), screens and flows to the UI/UX persona, art assets to the art persona, code to
+  the build thread. A thread can't message threads it doesn't depend on, so the desk sends routed
+  notes to the coordinator with full context, and the coordinator relays them. The desk does no
+  design or build work itself.
 - **No polling.** Answers reach Claude only by push (below). The page says so when nobody is listening.
 
 ## Setting one up
@@ -40,7 +49,9 @@ republish them from the new template.
    with capabilities `{"db":{},"user":{},"comments":{},"assets":{}}`. Don't declare `mcp`: the Claude
    Code Remote connector doesn't load inside artifacts.
 2. Write `meta/page` = `{project: "<name>"}` with ArtifactData.
-3. Save the page's URL to project memory, along with which session owns it.
+3. Save the page's URL to project memory, along with the thread that owns it (the Review desk, in a
+   project). To move the page to a new owner, read the artifact and republish the same HTML to its
+   `url` from the new owner's session: that registers its watch, and items in the db carry over.
 4. Tell Mike the link once.
 
 ## Items
