@@ -124,7 +124,7 @@ When you demo, mention what you dropped in one line each with the reason, so he 
 If the fixes were substantial (layout, interaction model), run the review once more on the result.
 Don't loop more than twice.
 - If the review found a kind of problem that `TASTE.md` or `UX-CHECKLIST.md` doesn't cover, add the
-  lesson there (see "Recording what he corrects" in `WORKING.md`). Edit the copies in the plugin
+  lesson there (see "Lessons from his verdicts" in `WORKING.md`). Edit the copies in the plugin
   repo, `~/GitHub/quasarbright-claude/plugins/quasarbright/docs/`, not the installed cache, since he would have had to
   correct it.
 
@@ -153,13 +153,14 @@ and keep the rest (taste, use and parity passes, the report, sorting the finding
 Every so often (after a run of changes, or when Mike asks), review the whole app instead of one
 change. The brief's "what changed" becomes "everything": list every screen and the states worth
 reaching, and ask for a real start-to-finish session. The reviewer stays blind, the same as above.
-In a Claude project with a UI/UX persona (see "Design personas" in `WORKING.md`), the persona owns
+In a Claude project with a UI/UX persona (see "Design personas" in `PROJECTS.md`), the persona owns
 this: it runs the review, sorts the findings with what it knows about the project, and folds the
-real ones into its brief's current take, ordered by how much they get in the way.
+real ones into its brief's current take, ordered by how much they get in the way. A finding that
+is a general rule rather than a one-off goes into `UX-CHECKLIST.md`, which the persona keeps tidy.
 
 ## With a UI/UX persona
 
-In a Claude project that keeps a UI/UX persona (see "Design personas" in `WORKING.md`), send it the
+In a Claude project that keeps a UI/UX persona (see "Design personas" in `PROJECTS.md`), send it the
 change, the live URL and the screenshots after this review, before Mike sees them. The persona
 opens the live page and does the read, contrast, controls and default-view passes itself, so a miss here gets a second chance with someone who remembers
 the project's rules. It sends back what to fix; you fix it, then demo.

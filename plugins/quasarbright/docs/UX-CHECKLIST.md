@@ -37,6 +37,12 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
 - **Fewer controls, one smart button.** Fold buttons that serve the same goal into one stateful
   button. A button for state that's already set offers the inverse. Prefer a few direct action
   buttons over a configurable system.
+- **Never auto-advance after a mark, pick or answer.** The control fills in and stays put; the
+  user moves on with the arrows themselves. Auto-advance hides the confirmation and takes control
+  away (a review page that jumped to the next picture on thumbs-up, 2026-11-19).
+- **Color follows meaning.** Two versions of the same action (a small and a big loan) share one
+  style; the muted or outlined style is only for Cancel. A big option that looks like a cancel
+  button reads as one.
 - **Toggles need visible controls.** No clickable readouts, and no core actions that only live in
   a right-click menu.
 - **Speed controls** are halve and double buttons plus skip-to-end. Live controls update on every
@@ -109,10 +115,15 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   solutions, no busywork and no hidden extra win conditions. Check win state continuously,
   including the initial state. Scores the player earns exclude AI help. Games get game UI (see
   [[feedback-games-get-game-ui]]).
-- **Show where things are heading while there's still time to act.** A mid-run card in a game
-  with a deadline says whether the current pace makes it ("about 18 of 20 at this rate"), not just
-  the count so far. A card that closes a period shows the period's totals; per-step numbers say so
-  ("this shift"). Copy never points at an action that doesn't exist.
+- **Show what's true, not projections that assume how the user works.** A mid-run card says the
+  plain counts ("6 of 20 shipped, 2 shifts left"). A pace projection ("about 18 of 20 at this
+  rate") assumes the work goes evenly, which it often doesn't, so Mike dropped it in Clanker Tycoon
+  (2026-11-17, replacing this line's old advice). A card that closes a period shows the period's
+  totals; per-step numbers say so ("this shift"). Copy never points at an action that doesn't
+  exist.
+- **Offer help where and when it's needed.** An option that only matters in one situation (a loan
+  when something is unaffordable) shows up next to that thing at that moment ("need some money?"),
+  rather than holding a fixed spot on the screen.
 - **Actors never start on top of each other.** Anything placed on spawn (robots, pieces, labels)
   gets its own spot, so names and carried items don't cover a neighbor.
 - **Hints show moves you missed** using plain rules. They point only at things the player can act
@@ -137,6 +148,11 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   Landing pages skip gratuitous stats. A single-screen page doesn't scroll at any size. Avoid
   scrolling wherever it can be avoided: only inner lists scroll, and on desktop use the width
   (columns side by side) rather than a tall stack. Content is fit and centered with generous padding.
+- **No tabs when it fits.** On a wide screen, sections that fit side by side show all at once in
+  columns, not behind tabs ("No tabs. All at once in columns.").
+- **Siblings line up.** Cards in a row share a height and their buttons a baseline; a primary
+  action sits aligned with what it acts on. Misaligned blocks read as "hideous" even when each one
+  is fine; measure edges, the same as centering.
 - **A lone picture is fullscreen**, never a floating panel. The footer always floats and is never
   inside a panel.
 - **Labels never sit on other marks.** After any change, sweep every label for collisions, not just
@@ -169,6 +185,8 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
 - **No colored stripe down the left edge** of rows, cards, quotes or callouts, for selection,
   status or emphasis (he asked why it keeps showing up). Mark the selected row by lighting the
   whole row, and show status with a chip or the thing's own color.
+- **Money is green, losses and costs red** (Mike, 2026-11-18: "Money amounts should generally be
+  green ... Or red for losses"). Prices on buttons stay neutral.
 - **One cue per distinction.** Don't stack a second channel that doesn't help, and don't propose a
   cue on a channel that already means something. Color picks one thing out of many or tells many
   apart. An entity's color carries to everything that represents it.
@@ -190,7 +208,9 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   part of the look, and distracting when lots of things pulse. Prefer color pulses on existing
   parts, with no size change.
 - **Asked for a small addition? Add only that.** Layer it onto the existing look. Don't restyle what
-  was approved or redesign what works. Color words in casual requests mean the nearest shade in
+  was approved or redesign what works. A cleanup removes only what he named: deleting a nearby
+  sentence or control he didn't mention is a regression ("I didn't say get rid of the 10% per
+  contract sentence"). Color words in casual requests mean the nearest shade in
   the existing palette.
 - **Several variants means genuinely different ones**, not one template with a single value
   swapped. Next to a big redesign, include a small-change option, since he often prefers tweaking.

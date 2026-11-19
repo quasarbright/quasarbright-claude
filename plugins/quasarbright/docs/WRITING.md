@@ -1,0 +1,33 @@
+# WRITING.md: lessons for in-product copy and humor
+
+General lessons from Mike's verdicts on words that ship in a project: labels, popups, character
+lines, jokes, headlines. Loaded on demand: read it before writing copy or jokes. The register for
+chat, commits and docs is in `CLAUDE.md` ("Writing"); low-level copy rules are in
+`UX-CHECKLIST.md` ("Copy and explanations"). How lessons get here is in `WORKING.md`, "Lessons from
+his verdicts". A project's own terms and gold-standard jokes stay in that project.
+
+## Humor
+
+- **The punchline is the project's own mechanic,** said in a dry, official voice. Never a generic
+  business or office joke that could be in any game. (Clanker Tycoon's gold standard: "Ships Its
+  Last Box (It Was Empty)", "Robots Finally Given Clear Instructions: 'Leave'". Rejected: an angry
+  quoted client, the lender's snacks, a forklift.)
+- **Naming a mechanic isn't a joke.** The mechanic is the setup; the punchline is a turn on it
+  (the box was empty, the machine outlives the company). Lines that only describe something that
+  happened read as a game log ("most of those aren't even headlines").
+- **A parody form has to be the real form.** A headline reads like a real newspaper headline
+  (subject, active verb, newspaper phrasing); a certificate reads like a real certificate.
+  "Official-sounding but ridiculous" is the tone.
+- **Fewer jokes, better ones.** One clever line beats a batch of near misses, and flavor lines
+  that only add theme ("Numbers must go up") turn cheesy. When unsure, leave it out.
+
+## Copy
+
+- **His wording wins.** When Mike rewrites a line, use his words verbatim, and keep them through
+  later edits.
+- **Say it once.** A popup has no subtitle restating its title, and no sentence that repeats what
+  its buttons already say ("Borrow $100 · pay back $110" makes a fee sentence redundant).
+- **Remove only what he named.** Cleaning up copy around a requested change doesn't delete other
+  sentences ("I didn't say get rid of the 10% per contract sentence").
+- **Pick the plain word for the state** ("In storage", not "To place"), and once a term is chosen,
+  use it everywhere and ban the old one with a test (`WORKING.md`, "One place, every place, a test").

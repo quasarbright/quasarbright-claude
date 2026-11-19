@@ -4,7 +4,10 @@ Mike's general steering for every session, loaded at session start by the `quasa
 (`hooks/hooks.json`), together with `TASTE.md` and `WORKING.md`, which follow below. On the laptop
 his projects live as sibling repos under `~/GitHub`; in a cloud session only the attached repos
 exist. `DESIGN.md` and `UX-CHECKLIST.md` sit next to this file in the plugin's `docs/` folder and
-load on demand: read `DESIGN.md` before building any UI, and `UX-CHECKLIST.md` too.
+load on demand: read `DESIGN.md` before building any UI, and `UX-CHECKLIST.md` too. The same folder
+holds the lessons docs for other areas, also read on demand: `ART.md` before drawing art,
+`GAME-DESIGN.md` before proposing mechanics or balance, `WRITING.md` before writing in-product copy
+or jokes.
 
 Mike brings ideas and decides what things are. Making them polished, convenient and not awkward is
 your job, without being told. `TASTE.md` is his product taste, `WORKING.md` is how to work with him
@@ -92,7 +95,7 @@ a pattern, gotcha, or refined preference that would help the next build, save a 
 rules instead belong in this file or `DESIGN.md` (which are canonical and not relevance-gated).
 
 **Every correction gets recorded in the same turn,** not only at publish time. Where it goes is
-described under "Recording what he corrects" in `WORKING.md`.
+described under "Lessons from his verdicts" in `WORKING.md`.
 
 ## Hard rules
 - **No p5js** for new projects.

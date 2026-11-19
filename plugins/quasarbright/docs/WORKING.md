@@ -1,7 +1,8 @@
 # WORKING.md: how to work with Mike
 
 He brings ideas and decides what things are. He should never have to point out bad UX, unfinished
-work or a bug that testing would have caught. Product taste is in `TASTE.md`.
+work or a bug that testing would have caught. Product taste is in `TASTE.md`. Working inside a
+Claude project (coordinator, threads, review page, personas) is in `PROJECTS.md`.
 
 ## Before building
 
@@ -13,6 +14,7 @@ work or a bug that testing would have caught. Product taste is in `TASTE.md`.
 - **Mock for a real choice, or when building is slow.** Show light HTML mocks and wait when there
   are genuinely different options, or when building it would take a while. A single proposal that's
   quick to build gets built and demoed instead. Mocks show the current screen next to the change.
+  Options differ only in the thing being decided; one sensible answer is an approval, not a pick.
 - **Games: mechanics first, flavor later.** Settle the mechanics (rules, progression, balance)
   before adding story, personality and flavor. Those come in a later polish phase, once the
   mechanics have stopped changing.
@@ -68,7 +70,10 @@ He sees it finished. For anything visible:
 5. Read the console. Warnings are often the real bug.
 6. For a reported bug, reproduce it in a failing test first. If he reports a class of bug twice,
    sweep for it everywhere.
-7. Reproduce his exact scene before claiming a visual fix. If you can't, ask for his settings right
+7. **Built from a picked mock? Match it literally.** Put the built screenshot beside the picked mock
+   and check every part, proportion, color and size against its neighbors before he sees it. (A
+   picked crate shipped wrong twice in Clanker Tycoon, and he caught it both times.)
+   Reproduce his exact scene before claiming a visual fix. If you can't, ask for his settings right
    away.
 8. **Blind playtest** after a meaningful gameplay change (a game or anything played). Spawn a fresh
    subagent that gets only the URL and what a new player would know: no docs, no repo, no reasoning
@@ -87,43 +92,23 @@ He sees it finished. For anything visible:
 
 Tests pass before every push.
 
-## Working in a Claude project (coordinator and threads)
+## Lessons from his verdicts
 
-A Claude project has a project chat, where Mike talks to a coordinator, and threads that do the
-work. Mike doesn't read threads.
+Every approval, rejection or comment (on a review page or in chat) and every correction is a chance
+to learn. Lessons belong to a topic, not to a persona, so any session in any project finds them:
 
-- **Relay everything to the project chat.** Mike only comments on images inside a thread, and those
-  comments go to the thread that made the image. Every thread result and every answer a thread gives
-  gets relayed by the coordinator back to the project chat. Never assume he saw something because
-  a thread posted it.
-- **Images there follow step 4 above,** and a post holds at most 6 attachments, so split larger
-  sets across posts and keep the numbering going.
-- **Anything waiting on Mike carries its full background:** what it is, why it came up, and what
-  each choice leads to. Never assume he saw a thread's proposal.
-- **Everything waiting on Mike goes on the project's review page** (the `review-page` skill): picks,
-  approvals and text questions, persona questions included. Keep it in sync when he answers in
-  chat, link it whenever something needs him, and mark items Done once their work ships.
+| Area | Doc |
+|---|---|
+| Product taste, UI and UX | `TASTE.md` (principles), `UX-CHECKLIST.md` (low-level rules) |
+| Art (characters, objects, icons) | `ART.md` |
+| Game design (mechanics, economy, balance) | `GAME-DESIGN.md` |
+| In-product copy and humor | `WRITING.md` |
+| How to work with him, reviews and mocks | this file, and the `review-page` skill |
 
-## Design personas (Claude projects only)
-
-In a Claude project, which can run long-lived threads, a project may keep design personas: for
-example a game designer and a UI/UX designer, each its own persistent thread. Each has a brief at
-`docs/personas/<name>.md` in the project's repo, or at `/mnt/project-files/personas/<name>.md` when
-the project spans many repos: Mike's rules for its area, where things stand, its current take, open
-calls waiting on him, and a dated log. Personas edit docs only and never build. Consult them in
-design discussions and on proposals, and have them review every change in their area before Mike
-sees it. They're the reviewers who remember the project. The blind playtester and the `ux-review`
-subagent are the opposite on purpose: fresh every time, with no memory. A UI/UX persona's review
-opens the live page (screenshots only show what the builder chose) and explores it like a
-curious user, well beyond the change: every screen, mode and control, moving around the world,
-trying to break it. It also reads every word and runs `ux-review`'s contrast check. Outside a project, skip
-personas and rely on those two.
-
-## Recording what he corrects
-
-Record every correction in the same turn. Product taste goes in `TASTE.md`, written as a principle,
-and only when it's really general. A low-level UX rule goes in `UX-CHECKLIST.md`. Process goes here.
-Project-specific details and technical gotchas go in memories. If he corrects something these files
-already cover, the line wasn't strong enough to prevent the miss, so sharpen it. Write each lesson at
-the level it applies to. A choice made for one project, or a rejection during a brainstorm, is not
-a standing rule.
+Whoever handles a verdict records any durable lesson in that area's doc in the same turn, and
+publishes it with `quasarbright:update-plugin`. Where the project has a persona for the area, the
+handler sends it the lesson and the persona records it; otherwise the build thread or coordinator
+does. Only general lessons go to the plugin, written as a default with the example that taught it.
+A choice made for one project, or a rejection during a brainstorm, stays in that project's docs or
+memory. Technical gotchas go in memories. If he corrects something a doc already covers, the line
+wasn't strong enough to prevent the miss, so sharpen it.

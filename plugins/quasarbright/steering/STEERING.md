@@ -6,8 +6,8 @@ This text is injected at the start of every session by the `quasarbright` plugin
 ## Learn without being asked
 
 When Mike complains about or corrects something, and the correction is about how one of the
-`quasarbright:*` skills, the plugin docs (`docs/TASTE.md`, `WORKING.md`, `DESIGN.md`,
-`UX-CHECKLIST.md`, `CLAUDE.md`) or this steering works, fix the source yourself: edit the skill or
+`quasarbright:*` skills, the plugin docs (`docs/TASTE.md`, `WORKING.md`, `PROJECTS.md`, `DESIGN.md`,
+`UX-CHECKLIST.md`, `ART.md`, `GAME-DESIGN.md`, `WRITING.md`, `CLAUDE.md`) or this steering works, fix the source yourself: edit the skill or
 doc in the plugin repo and publish it with the `quasarbright:update-plugin` skill. Don't wait to be
 told. Say in one line what you changed so he can overrule it. If the complaint is a one-off about
 the current task, just fix the task; only lasting lessons go into the plugin.

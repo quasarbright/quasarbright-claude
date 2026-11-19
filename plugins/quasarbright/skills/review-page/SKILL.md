@@ -41,6 +41,16 @@ republish them from the new template.
   the build thread. A thread can't message threads it doesn't depend on, so the desk sends routed
   notes to the coordinator with full context, and the coordinator relays them. The desk does no
   design or build work itself.
+- **Every verdict teaches something** (Mike, 2026-11-19). A pick, a rejection, a thumbs-down or a
+  note often carries a lesson beyond the item ("the button coloring makes the big loan look like a
+  cancel button"). Lessons belong to a topic, not a persona: UI/UX in `TASTE.md` and
+  `UX-CHECKLIST.md`, art in `ART.md`, game design in `GAME-DESIGN.md`, copy and humor in
+  `WRITING.md`, reviews and mocks in `WORKING.md` and this skill. Each routed note names the lesson
+  you see and the doc it belongs in. The owner records it in the same turn and publishes it with
+  `quasarbright:update-plugin`: the area's persona where the project has one (it also keeps that doc
+  tidy), otherwise the build thread or the coordinator. Only general lessons go to the plugin; a
+  choice for this project stays in the project's docs. Outside a project, the session handling the
+  answer records it. See `WORKING.md`, "Lessons from his verdicts".
 - **No polling.** Answers reach Claude only by push (below). The page says so when nobody is listening.
 
 ## Setting one up
@@ -116,6 +126,11 @@ shot's `title` and `desc`.
   approval sequence (one picture per state, each with a title and a line) and let him mark pictures.
   Mike, 2026-11-19, on a quarter-board pick: "it wasn't even really a choice, and there were
   unrelated differences between each thing."
+
+- **What he picked is what gets built.** Hand the build the picked option's image and source, and
+  put the built screenshot beside it before the result comes back as an approval item. An approval
+  of a build that doesn't match its picked mock wastes his look ("Still not the version you showed
+  me that I liked").
 
 ## How answers reach Claude
 
