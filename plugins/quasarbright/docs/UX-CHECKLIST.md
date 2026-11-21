@@ -150,14 +150,22 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   (columns side by side) rather than a tall stack. Content is fit and centered with generous padding.
 - **No tabs when it fits.** On a wide screen, sections that fit side by side show all at once in
   columns, not behind tabs ("No tabs. All at once in columns.").
-- **Siblings line up on a grid.** This is his most repeated layout complaint ("you keep fucking up
-  vertical alignment", 2026-11-21, after "hideous" contract/Start rows on 2026-11-18). Default to
-  an almost grid-like layout: things of the same kind share one height and/or width, items in a
-  row share top and bottom edges (never centered on mixed heights), and their buttons share a
-  baseline. A primary action sits aligned with what it acts on. Mixed-size items in one row (a
-  small box next to a taller crate) are the usual miss: give every slot the same cell size and fit
-  each item inside it. Don't eyeball it: measure every row's `getBoundingClientRect()` tops,
-  bottoms and heights in the browser, and any difference over 1px is a bug.
+- **Siblings line up on a grid.** This is his most repeated layout complaint: contracts "should all
+  have the same height" and the contract and Start row was "hideous" (2026-11-18 and 19), the review
+  page's buttons shifted with the caption's height (2026-11-19), and the Assembler row drew "you keep
+  fucking up vertical alignment" (2026-11-21). Default to an almost grid-like layout ("much nicer
+  that way"):
+  - Things of the same kind share one height and/or width: cards in a row, slots in a tray, buttons
+    in a group. Give every slot the same cell size and fit each item inside it (a box next to a
+    bigger crate is the usual miss).
+  - Items in a row share top and bottom edges, never centered on mixed heights. Edges line up
+    across sections too (a side panel's top meets the cards' top).
+  - Variable content never moves fixed parts. A caption gets a fixed slot (clamped lines), and each
+    card's action sits in the same place in every card (pinned to the bottom or a shared row), so
+    one long description doesn't push its button out of line.
+  - A primary action lines up with what it acts on.
+  - Measure, don't eyeball: read every row's `getBoundingClientRect()` tops, bottoms, heights and
+    centers in the browser, in every frame of a sequence. Any difference over 1px is a bug.
 - **Show the full and overflowing state.** A row, tray or list that grows (items waiting, crew,
   contracts) gets screenshotted at its largest realistic count, not just the tidy example. Decide
   up front what happens when it runs out of room (a fixed number of cells plus "+3", a scroll, or
@@ -168,7 +176,6 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   the reported one. Hand-placed fixes are fine. Never shorten Mike's content to make it fit: change
   the layout, or ask. Short-lived effects (a "+points" popup, a burst of confetti) may pass over a
   label for a moment; that's fine, though placing them clear of it is a little better.
-- **Check centering by measuring**, every frame of a sequence. He notices a few pixels off.
 - **Check every size:** 375×812 phone, desktop, and wide screens up to 4K.
 
 ## Visual

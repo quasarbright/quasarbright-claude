@@ -58,6 +58,8 @@ He sees it finished. For anything visible:
 2. Test every variant at several sizes, including the biggest allowed. Test the second instance of
    a repeated thing as well as the first. Drag every handle, and click across the whole clickable
    range.
+   Fill every row, tray and list that grows to its largest realistic count, and measure sibling
+   edges in the browser (`UX-CHECKLIST.md`, "Siblings line up on a grid").
 3. Look at mid-animation frames, not only rest states.
 4. Screenshot new controls in their hover, active and disabled states, at 375×812, at desktop, and
    on a wide screen when layout changed. Send each screenshot or mock as its own full-resolution
