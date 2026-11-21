@@ -33,6 +33,10 @@ verdicts". Each line is a default. A choice made for one game stays in that game
   over time.
 - **Steps, not creep.** A cost that should feel significant jumps at a threshold rather than
   rising a little each time ("just after some threshold, not like a continuous thing").
+- **Cut an option with no visible effect outright,** don't just hide it from the shop. A trait the
+  player can't see working is a trap to buy and clutter to read. (Clanker Tycoon: Smart gave more
+  thoughts, but robots never ran out; Mark proposed taking it out of Training, and Mike removed it
+  from the game: "let's just get rid of smart for now".) It can return once it would matter.
 - **No cheap downside traits** (annoying, not fun), and no traits the game can't really control or
   define cleanly ("notices problems").
 - **Roguelike shops offer three of each,** not everything.
