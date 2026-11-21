@@ -106,6 +106,11 @@ shot's `title` and `desc`.
     focuses the text field in both views (2026-11-21: in the list it didn't).
   - The sticky Send bar at the bottom stays above the round buttons as pictures scroll under it
     (2026-11-21: the buttons drew on top of Send).
+  - A saved note shows under its picture in the list as "Your note: …" with an Edit link; tapping
+    it reopens the note box with the text, focused (2026-11-21: "where it shows my note should be
+    edit-able"). Once the item is sent it's plain text.
+  - The Send bar's buttons wrap at phone width: a long "Send: …" label drops to its own full-width
+    row instead of running off the screen (found at 375px, 2026-11-21).
   - **A note is an answer on its own, on every kind of item** (feature parity, 2026-11-21). On a
     pick, a picture with only a note counts. On an approval, a picture with only a note counts as
     "Note", with no thumbs needed, and shows "Note" under the picture and in the enlarged view's bar.
