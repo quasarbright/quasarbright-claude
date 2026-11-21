@@ -148,6 +148,11 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   Landing pages skip gratuitous stats. A single-screen page doesn't scroll at any size. Avoid
   scrolling wherever it can be avoided: only inner lists scroll, and on desktop use the width
   (columns side by side) rather than a tall stack. Content is fit and centered with generous padding.
+- **Text never touches its container.** Text inside a band, badge, chip or button keeps visible
+  padding from the edges and from any mark beside it (a card's team letter, an icon). Check the
+  longest label at the smallest and the desktop size; shrink long labels rather than letting them
+  crowd. "need a bit more padding. i should not have to tell you this" (onuw card name band,
+  2026-11-21). Where a layout is generated, add a test that measures the gaps.
 - **No tabs when it fits.** On a wide screen, sections that fit side by side show all at once in
   columns, not behind tabs ("No tabs. All at once in columns.").
 - **Everything in a row is the same height.** His most repeated layout complaint, and the problem
