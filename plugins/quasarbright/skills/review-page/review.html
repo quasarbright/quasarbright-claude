@@ -1,4 +1,4 @@
-<title>Clanker Tycoon Review</title>
+<title>__PROJECT__ Review</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 /* Layout: one narrow column (phone first). A list of what needs Mike, and one item open at a time. */
@@ -73,7 +73,7 @@ button:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:2px solid
 .seq{display:flex;flex-direction:column;gap:18px}
 .seq-c{font-weight:600;margin:8px 2px 0}
 .marks{display:flex;gap:6px;margin:8px 0 0;flex-wrap:wrap}.mk{font:inherit;font-size:13px;padding:5px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer}.mk:hover{color:var(--text);border-color:var(--muted)}.mk.good.on{background:var(--good-bg);border-color:#2f5a42;color:var(--good)}.mk.bad.on{background:var(--bad-bg);border-color:#5a2f3c;color:var(--bad)}
-.seq-mark{display:inline-block;font-size:12px;font-weight:600;margin-left:6px}.seq-mark.good{color:var(--good)}.seq-mark.bad{color:var(--bad)}.seq-d{font-size:13px;color:var(--muted);margin:2px 2px 0}
+.seq-mark{display:inline-block;font-size:12px;font-weight:600;margin-left:6px}.seq-mark.good{color:var(--good)}.seq-mark.bad{color:var(--bad)}.seq-mark.note{color:var(--accent-hi)}.seq-d{font-size:13px;color:var(--muted);margin:2px 2px 0}
 .answer{position:sticky;bottom:0;background:var(--bg);padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));margin-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
 textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:44px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px}
 textarea::placeholder{color:var(--faint)}
@@ -135,7 +135,13 @@ body.lb-open{overflow:hidden}
 .pvb.note.on::after{content:"";position:absolute;top:3px;right:3px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px #101219}
 .pv-pop{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);width:min(460px,calc(100% - 40px));background:#151823f5;border:1px solid var(--border);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;z-index:4;box-shadow:0 10px 30px #000a}
 .shot .pv-pop{bottom:60px;right:10px;left:auto;transform:none;width:min(380px,calc(100% - 20px))}
-.pv-pop textarea{min-height:70px}.pv-pop .btns{justify-content:flex-end}.pv-pop small{color:var(--muted);font-size:12px}
+/* Note box: a comfortable field, then one row of two equal buttons on the right (Mike, 2026-11-21: the
+   old box was cramped, its hint wrapped and "Save note" broke onto two lines). In the list it opens in
+   the flow under the picture instead of covering it. */
+.pv-pop textarea{min-height:84px;resize:none;line-height:1.45;padding:10px 12px}
+.pv-pop .btns{display:flex;justify-content:flex-end;gap:8px}
+.pv-pop .btns .btn{flex:0 0 112px;padding:9px 0;font-size:14px;white-space:nowrap}
+.pv-pop.inline{position:static;transform:none;width:auto;margin:8px 0 0;box-shadow:none;background:var(--panel)}
 .seq-note{font-size:13px;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:6px 10px;margin-top:6px}.seq-note b{color:var(--accent);font-weight:600}
 .lb-opt.lb-shot{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px}
 @media (max-width:760px){
@@ -236,7 +242,7 @@ function pvButtons(it, x) {
 }
 function pvPop(it, x) {
   const k = keyOf(it, x);
-  return `<div class="pv-pop" data-pop="${esc(k)}"><textarea placeholder="What about this one?">${esc(notesOf(it)[k] || "")}</textarea><div class="btns"><small style="margin-right:auto;align-self:center">Goes with your answer when you send it.</small><button class="btn ghost" data-pvcancel>Cancel</button><button class="btn pri" data-pvsave>Save note</button></div></div>`;
+  return `<div class="pv-pop" data-pop="${esc(k)}"><textarea rows="3" placeholder="What about this one? It goes out with your answer.">${esc(notesOf(it)[k] || "")}</textarea><div class="btns"><button class="btn ghost" data-pvcancel>Cancel</button><button class="btn pri" data-pvsave>Save note</button></div></div>`;
 }
 function notesText(it) {
   const imgs = imagesOf(it), n = notesOf(it);
@@ -245,11 +251,15 @@ function notesText(it) {
 const marksOf = (it) => S.marks[it.id] || (S.marks[it.id] = {});
 const markBtns = (it, i) => { if (!canWrite || (it.status && it.status !== "open")) return ""; const m = marksOf(it)[i]; return `<div class="marks" role="group" aria-label="This picture"><button class="mk good ${m === "good" ? "on" : ""}" data-mark="${i}" data-v="good" aria-pressed="${m === "good"}">Looks good</button><button class="mk bad ${m === "changes" ? "on" : ""}" data-mark="${i}" data-v="changes" aria-pressed="${m === "changes"}">Needs changes</button></div>`; };
 const rangeList = (ns) => ns.join(", ");
+// A note on a picture is an answer on its own, like on a pick (Mike, 2026-11-21: feature parity with the
+// choice UI; typing a note shouldn't also need a thumbs up or down). Each picture is good, changes, or noted.
 function markSummary(it) {
-  const m = marksOf(it), n = (it.images || []).length, good = [], bad = [], none = [];
-  for (let i = 0; i < n; i++) (m[String(i)] === "good" ? good : m[String(i)] === "changes" ? bad : none).push(i + 1);
-  return { n, good, bad, none };
+  const m = marksOf(it), nt = notesOf(it), n = (it.images || []).length, good = [], bad = [], noted = [], none = [];
+  for (let i = 0; i < n; i++) { const k = String(i); (m[k] === "good" ? good : m[k] === "changes" ? bad : (nt[k] || "").trim() ? noted : none).push(i + 1); }
+  return { n, good, bad, noted, none };
 }
+const MARKTXT = { good: "Looks good", changes: "Needs changes", note: "Note" };
+const markSpan = (v) => v ? `<span class="seq-mark ${v === "good" ? "good" : v === "changes" ? "bad" : "note"}">${MARKTXT[v]}</span>` : "";
 const isRec = (it, id) => Array.isArray(it.recommended) ? it.recommended.includes(id) : it.recommended === id;
 // Every image an item shows, in order: pick options with a picture, or an approval's shots.
 function imagesOf(it) {
@@ -268,7 +278,8 @@ function renderLb(it) {
   const x = imgs[i], many = imgs.length > 1, k = keyOf(it, x);
   const st = it.kind === "approve" ? markState(it) : sendState(it);
   const mark = it.kind === "approve" ? (marksOf(it)[k] || (it.status !== "open" && it.answer?.marks?.[k])) : isSel(it, x.opt.id);
-  const tag = it.kind === "approve" ? (mark === "good" ? " · Looks good" : mark === "changes" ? " · Needs changes" : "") : mark ? " · Picked" : "";
+  const noteHere = !!((it.status && it.status !== "open" ? it.answer?.notes?.[k] : notesOf(it)[k]) || "").trim();
+  const tag = mark === "good" ? " · Looks good" : mark === "changes" ? " · Needs changes" : mark === true ? (noteHere ? " · Picked, with a note" : " · Picked") : noteHere ? " · Note" : "";
   el.classList.toggle("full", S.lbFull);
   el.innerHTML = `<div class="lb-bar"><span class="lb-cap"><b>${esc(it.title)}</b><span>${x.n} of ${imgs.length}${esc(tag)}</span></span><span class="lb-tools">${canAct(it) && st.ok ? `<button class="btn pri lb-send" data-act="${it.kind === "approve" ? "marks" : "send"}">${esc(st.label)}</button>` : ""}<button class="link" data-lbfull>${S.lbFull ? "Fit to screen" : "Actual size"}</button><button class="link" data-lbclose>Close</button></span></div>
     <div class="lb-stage">${many ? `<button class="lb-nav prev" data-lbgo="-1" aria-label="Previous picture">${ARROW(-1)}</button>` : ""}<div class="lb-scroll"><img src="${esc(x.img)}" alt="${esc(`${x.n} · ${x.label}`)}" referrerpolicy="no-referrer"></div>${many ? `<button class="lb-nav next" data-lbgo="1" aria-label="Next picture">${ARROW(1)}</button>` : ""}${S.lbNote ? pvPop(it, x) : ""}${pvButtons(it, x)}</div>
@@ -301,24 +312,24 @@ function body(it) {
 function shotPv(it, x, img, label, key, lbi) {
   const h = shot(img, label, key, lbi);
   const pop = S.pop && S.pop.id === it.id && S.pop.key === keyOf(it, x) ? pvPop(it, x) : "";
-  return h.replace(/<\/div>$/, `${pop}${pvButtons(it, x)}</div>`);
+  return h.replace(/<\/div>$/, `${pvButtons(it, x)}</div>`) + pop.replace('class="pv-pop"', 'class="pv-pop inline"');
 }
-function liveMark(it, i) { const v = marksOf(it)[String(i)]; return v ? `<span class="seq-mark ${v === "good" ? "good" : "bad"}">${v === "good" ? "Looks good" : "Needs changes"}</span>` : ""; }
+function liveMark(it, i) { const k = String(i); return markSpan(marksOf(it)[k] || ((notesOf(it)[k] || "").trim() ? "note" : "")); }
 function seqNote(it, k) { const t = (it.status && it.status !== "open" ? it.answer?.notes?.[k] : notesOf(it)[k]) || ""; return t.trim() ? `<div class="seq-note"><b>Your note:</b> ${esc(t)}</div>` : ""; }
 // After sending, each picture shows how it was judged.
-function doneMark(it, i) { const v = it.status && it.status !== "open" && it.answer?.marks?.[i]; return v ? `<span class="seq-mark ${v === "good" ? "good" : "bad"}">${v === "good" ? "Looks good" : "Needs changes"}</span>` : ""; }
+function doneMark(it, i) { if (!it.status || it.status === "open") return ""; return markSpan(it.answer?.marks?.[i] || ((it.answer?.notes?.[String(i)] || "").trim() ? "note" : "")); }
 function sentMarks(it, a) {
   const n = (it.images || []).length, g = [], b = [], u = [];
-  for (let i = 0; i < n; i++) (a.marks[i] === "good" ? g : a.marks[i] === "changes" ? b : u).push(i + 1);
+  const c = [];
+  for (let i = 0; i < n; i++) (a.marks[i] === "good" ? g : a.marks[i] === "changes" ? b : (a.notes?.[String(i)] || "").trim() ? c : u).push(i + 1);
   if (g.length === n) return `You approved all ${n}`;
-  const bits = []; if (g.length) bits.push(`Looks good: ${rangeList(g)}`); if (b.length) bits.push(`Needs changes: ${rangeList(b)}`); if (u.length) bits.push(`Not marked: ${rangeList(u)}`);
+  const bits = []; if (g.length) bits.push(`Looks good: ${rangeList(g)}`); if (b.length) bits.push(`Needs changes: ${rangeList(b)}`); if (c.length) bits.push(`Note: ${rangeList(c)}`); if (u.length) bits.push(`Not marked: ${rangeList(u)}`);
   return bits.join(" · ");
 }
 function markState(it) {
-  const { good, bad, none } = markSummary(it);
-  const nn = Object.values(notesOf(it)).filter((t) => (t || "").trim()).length;
-  if (!good.length && !bad.length && !nn) return { ok: false, label: "" };
-  const parts = []; if (good.length) parts.push(`${good.length} good`); if (bad.length) parts.push(`${bad.length} need${bad.length === 1 ? "s" : ""} changes`); if (!good.length && !bad.length) parts.push(`${nn} note${nn === 1 ? "" : "s"}`); else if (none.length) parts.push(`${none.length} unmarked`);
+  const { good, bad, noted, none } = markSummary(it);
+  if (!good.length && !bad.length && !noted.length) return { ok: false, label: "" };
+  const parts = []; if (good.length) parts.push(`${good.length} good`); if (bad.length) parts.push(`${bad.length} need${bad.length === 1 ? "s" : ""} changes`); if (noted.length) parts.push(`${noted.length} note${noted.length === 1 ? "" : "s"}`); if (none.length) parts.push(`${none.length} unmarked`);
   return { ok: true, label: `Send: ${parts.join(", ")}` };
 }
 function answerBar(it, inLb) {
@@ -332,7 +343,7 @@ function answerBar(it, inLb) {
   }
   if (it.kind === "approve") return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn bad" data-act="changes">Needs changes</button><button class="btn good" data-act="good">Looks good</button></div>${status}</div>`;
   const { ok, label } = sendState(it);
-  return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn pri" data-act="send" ${ok ? "" : "disabled"}>${label}</button></div>${status}</div>`;
+  return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn pri" data-act="send" ${ok ? "" : "hidden"}>${label}</button></div>${status}</div>`;
 }
 // Send works with a pick, a note, or both (Mike, 2026-11-18: "I should be able to send without a selection and only a note").
 function sendState(it) {
@@ -418,7 +429,7 @@ function bindItem(it) {
     });
   }));
   const note = $(`#note-${CSS.escape(it.id)}`);
-  note?.addEventListener("input", () => { S.drafts[it.id] = note.value; const b = document.querySelector('[data-act="send"]'); if (b) { const st = sendState(it); b.disabled = !st.ok; b.textContent = st.label; } });
+  note?.addEventListener("input", () => { S.drafts[it.id] = note.value; const b = document.querySelector('[data-act="send"]'); if (b) { const st = sendState(it); b.hidden = !st.ok; b.textContent = st.label; } });
   document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => act(it, b.dataset.act)));
   // Round picture buttons. Every action stays on the picture.
   const lbOn = () => S.lb && S.lb.id === it.id;
@@ -491,13 +502,13 @@ async function act(it, what) {
     }
     }
   } else if (what === "marks") {
-    const { n, good, bad, none } = markSummary(it);
-    if (!good.length && !bad.length && !notesText(it)) return;
+    const { n, good, bad, noted, none } = markSummary(it);
+    if (!good.length && !bad.length && !noted.length) return;
     const marks = {}; good.forEach((k) => (marks[k - 1] = "good")); bad.forEach((k) => (marks[k - 1] = "changes"));
-    const verdict = bad.length ? "changes" : none.length ? "partial" : "good";
-    const label = bad.length ? "Needs changes" : none.length ? "Some look good" : "Looks good";
+    const verdict = bad.length ? "changes" : none.length || noted.length ? "partial" : "good";
+    const label = bad.length ? "Needs changes" : noted.length && !good.length ? "Notes" : none.length || noted.length ? "Some look good" : "Looks good";
     patch = { status: "answered", answer: { verdict, marks, label, note, at: now } };
-    const lines = []; if (good.length) lines.push(`looks good: ${rangeList(good)}`); if (bad.length) lines.push(`needs changes: ${rangeList(bad)}`); if (none.length) lines.push(`not marked: ${rangeList(none)}`);
+    const lines = []; if (good.length) lines.push(`looks good: ${rangeList(good)}`); if (bad.length) lines.push(`needs changes: ${rangeList(bad)}`); if (noted.length) lines.push(`a note only: ${rangeList(noted)}`); if (none.length) lines.push(`not marked: ${rangeList(none)}`);
     text = `[review ${it.id}] "${it.title}": Mike judged the ${n} pictures one by one. ${lines.join("; ")}.${note ? `\n\n${note}` : ""}`;
   } else {
     if (what === "changes" && !note) { setStatus(it, "Say what should change first, in the box above.", "err"); $(`#note-${CSS.escape(it.id)}`)?.focus(); return; }

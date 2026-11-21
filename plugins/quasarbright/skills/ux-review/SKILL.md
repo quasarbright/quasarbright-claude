@@ -105,7 +105,9 @@ this plugin's `docs/` and `skills/` folders (`../../docs` and `..` from this ski
 > same states as the new thing, comparing behavior over time as well as stills. List what the
 > siblings do here that this doesn't, and where styling or behavior drifted: palettes, snaps,
 > labels scaling with pieces, hover outlines, actions that exist in one place but not the other.
-> For a new feature, list which existing variants lack it.
+> For a new feature, list which existing variants lack it. Variants inside the same page count
+> too: modes, item kinds, list and enlarged views. For each, list what it does well and check every
+> other one has it (a note counting as an answer, a hidden Send, a keyboard shortcut).
 >
 > **Report** a list of findings, most important first. Each finding gives: what's wrong, where (a
 > screenshot path and the state that shows it), which principle, rule or sibling it violates, and a

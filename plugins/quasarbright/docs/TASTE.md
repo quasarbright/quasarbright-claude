@@ -47,7 +47,8 @@ everything themed) turns cheesy. When unsure, do less.
 **7. It's one finished, cared-for object.** It works and looks right on a phone, a laptop and a 4K
 monitor. Effects like glow or bloom are done properly or left out. Differential growth's core is
 good, but its bloom and its scaling to big and small screens were never right, and that's what
-keeps it from feeling finished. It has one visual language, its variants feel like a family, and
+keeps it from feeling finished. It has one visual language, its variants feel like a family with
+feature parity (what one variant does well, every variant does), and
 nothing pops, jumps or jars. Everything in a row is the same height, and each section of like
 things is a grid ("vertical alignment, same height stuff in a row. Makes everything nice and
 neat"). A row of mismatched heights reads as disgusting even when each piece is fine.

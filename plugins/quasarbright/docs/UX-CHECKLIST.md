@@ -236,8 +236,13 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   carry each over, or say which ones are dropped.
 - **Highlight only what the point is about**, at the granularity of the meaningful unit (names, not
   regions). Recolor tokens rather than drawing boxes around them. Leave the surrounding text plain.
-- **Match siblings:** copy a sibling project's styling and every feature, including icons and the
-  dev server. Audit parity.
+- **Feature parity: the best of every variant, everywhere.** Whenever there are several versions
+  of a thing (sibling projects, variants, modes, or kinds of item on one page), list what each one
+  does well and give every one all of it: styling, icons, controls, shortcuts, the dev server. He
+  calls this a key principle and has had to repeat it ("I shouldn't really have to tell you this",
+  2026-11-21: on the review page a note on a pick counted as an answer, but a note on an approval
+  still needed a thumbs up or down). Check it before showing, in both directions: what this variant
+  lacks from its siblings, and what the siblings lack from it.
 
 ## Motion
 

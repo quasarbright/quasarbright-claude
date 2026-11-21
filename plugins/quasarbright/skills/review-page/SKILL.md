@@ -97,14 +97,21 @@ shot's `title` and `desc`.
   small circle buttons in its bottom-right corner, in the list and in the enlarged view:
   - Approve: thumbs up (Looks good), thumbs down (Needs changes), chat (a note).
   - Pick: a check (pick it; checkboxes when `multi`) and chat.
-  - Chat opens a small text box on the picture. Its note waits and goes out with the answer, never
-    on its own.
+  - Chat opens a note box: under the picture in the list (in the flow, never covering it), and over
+    the picture in the enlarged view. It's a 3-line field with Cancel and Save note as two equal
+    112px buttons on one row at the right, and no hint text (2026-11-21: the old box was cramped and
+    its buttons wrapped). The note waits and goes out with the answer, never on its own.
+  - **A note is an answer on its own, on every kind of item** (feature parity, 2026-11-21). On a
+    pick, a picture with only a note counts. On an approval, a picture with only a note counts as
+    "Note", with no thumbs needed, and shows "Note" under the picture and in the enlarged view's bar.
   - Every action stays on the picture: the button fills in and Mike moves on with the arrows himself
     (2026-11-19: "don't automatically advance to the next thing on good/bad"; auto-advance had hidden
     the filled button too).
 - **Pick**: Send names the picks ("Send picks 1, 2 and 4").
-- **Approve**: Send reports the marks and notes ("Send: 7 good, 1 needs changes, 1 unmarked") and
-  appears only once at least one picture is marked or noted. There is no overall comment box.
+- **Send appears only when there's something to send, on every kind of item** (parity: picks used
+  to show a disabled Send).
+- **Approve**: Send reports the marks and notes ("Send: 7 good, 1 needs changes, 2 notes, 1
+  unmarked"). `answer.marks` holds thumbs; a noted picture without a thumb is in `answer.notes` only. There is no overall comment box.
   "Approve all N" ("Looks good" for one picture) is in the list view only, never in the enlarged
   view: Mike pressed Looks good on one enlarged picture and it approved the whole sequence
   (2026-11-18).
