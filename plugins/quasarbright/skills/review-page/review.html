@@ -74,7 +74,7 @@ button:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:2px solid
 .seq-c{font-weight:600;margin:8px 2px 0}
 .marks{display:flex;gap:6px;margin:8px 0 0;flex-wrap:wrap}.mk{font:inherit;font-size:13px;padding:5px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer}.mk:hover{color:var(--text);border-color:var(--muted)}.mk.good.on{background:var(--good-bg);border-color:#2f5a42;color:var(--good)}.mk.bad.on{background:var(--bad-bg);border-color:#5a2f3c;color:var(--bad)}
 .seq-mark{display:inline-block;font-size:12px;font-weight:600;margin-left:6px}.seq-mark.good{color:var(--good)}.seq-mark.bad{color:var(--bad)}.seq-mark.note{color:var(--accent-hi)}.seq-d{font-size:13px;color:var(--muted);margin:2px 2px 0}
-.answer{position:sticky;bottom:0;background:var(--bg);padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));margin-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+.answer{position:sticky;bottom:0;z-index:6;background:var(--bg);padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));margin-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
 textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:44px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px}
 textarea::placeholder{color:var(--faint)}
 .btns{display:flex;gap:8px}
@@ -436,7 +436,7 @@ function bindItem(it) {
   document.querySelectorAll("[data-pv]").forEach((b) => b.addEventListener("click", (e) => {
     e.stopPropagation(); e.preventDefault(); keepDraft(it);
     const v = b.dataset.pv, k = b.dataset.key;
-    if (v === "note") { if (lbOn()) S.lbNote = !S.lbNote; else S.pop = S.pop && S.pop.id === it.id && S.pop.key === k ? null : { id: it.id, key: k }; render(); return; }
+    if (v === "note") { if (lbOn()) S.lbNote = !S.lbNote; else S.pop = S.pop && S.pop.id === it.id && S.pop.key === k ? null : { id: it.id, key: k }; render(); if (!lbOn() && S.pop) { const ta = document.querySelector(".pv-pop.inline textarea"); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } } return; }
     let on;
     if (v === "pick") { if (it.multi) { const cur = S.sel[it.id] || []; on = !cur.includes(k); S.sel[it.id] = on ? [...cur, k] : cur.filter((x) => x !== k); } else { on = S.sel[it.id] !== k; S.sel[it.id] = on ? k : undefined; } }
     else { const m = marksOf(it); on = m[k] !== v; if (on) m[k] = v; else delete m[k]; }

@@ -12,7 +12,9 @@ him on 2026-11-18. `review.html` in this folder is the template.
 
 **This skill is the source of truth.** Whenever a project's page improves (Mike asks for a change, or
 you fix something), copy the change into `review.html` and these instructions in the same turn, and
-publish with `quasarbright:update-plugin`. Pages already published pick up a change when you
+publish with `quasarbright:update-plugin`. This includes feedback Mike leaves inside an item's notes
+about the page or the review flow itself (2026-11-21: "update the reference/skill as well whenever I
+suggest improvements"). Fix it in the template, not only in the one project's page. Pages already published pick up a change when you
 republish them from the new template.
 
 ## The rules
@@ -100,7 +102,10 @@ shot's `title` and `desc`.
   - Chat opens a note box: under the picture in the list (in the flow, never covering it), and over
     the picture in the enlarged view. It's a 3-line field with Cancel and Save note as two equal
     112px buttons on one row at the right, and no hint text (2026-11-21: the old box was cramped and
-    its buttons wrapped). The note waits and goes out with the answer, never on its own.
+    its buttons wrapped). The note waits and goes out with the answer, never on its own. Opening it
+    focuses the text field in both views (2026-11-21: in the list it didn't).
+  - The sticky Send bar at the bottom stays above the round buttons as pictures scroll under it
+    (2026-11-21: the buttons drew on top of Send).
   - **A note is an answer on its own, on every kind of item** (feature parity, 2026-11-21). On a
     pick, a picture with only a note counts. On an approval, a picture with only a note counts as
     "Note", with no thumbs needed, and shows "Note" under the picture and in the enlarged view's bar.
