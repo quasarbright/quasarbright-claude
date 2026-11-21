@@ -48,9 +48,9 @@ everything themed) turns cheesy. When unsure, do less.
 monitor. Effects like glow or bloom are done properly or left out. Differential growth's core is
 good, but its bloom and its scaling to big and small screens were never right, and that's what
 keeps it from feeling finished. It has one visual language, its variants feel like a family, and
-nothing pops, jumps or jars. Its layout is close to a grid: things of the same kind share a size,
-and edges line up across the screen. A row of mismatched heights reads as ugly even when each
-piece is fine.
+nothing pops, jumps or jars. Everything in a row is the same height, and each section of like
+things is a grid ("vertical alignment, same height stuff in a row. Makes everything nice and
+neat"). A row of mismatched heights reads as disgusting even when each piece is fine.
 
 ## Reference projects
 

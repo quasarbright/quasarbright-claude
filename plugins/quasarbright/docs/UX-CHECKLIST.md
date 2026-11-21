@@ -150,22 +150,24 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   (columns side by side) rather than a tall stack. Content is fit and centered with generous padding.
 - **No tabs when it fits.** On a wide screen, sections that fit side by side show all at once in
   columns, not behind tabs ("No tabs. All at once in columns.").
-- **Siblings line up on a grid.** This is his most repeated layout complaint: contracts "should all
-  have the same height" and the contract and Start row was "hideous" (2026-11-18 and 19), the review
-  page's buttons shifted with the caption's height (2026-11-19), and the Assembler row drew "you keep
-  fucking up vertical alignment" (2026-11-21). Default to an almost grid-like layout ("much nicer
-  that way"):
-  - Things of the same kind share one height and/or width: cards in a row, slots in a tray, buttons
-    in a group. Give every slot the same cell size and fit each item inside it (a box next to a
-    bigger crate is the usual miss).
-  - Items in a row share top and bottom edges, never centered on mixed heights. Edges line up
-    across sections too (a side panel's top meets the cards' top).
-  - Variable content never moves fixed parts. A caption gets a fixed slot (clamped lines), and each
-    card's action sits in the same place in every card (pinned to the bottom or a shared row), so
-    one long description doesn't push its button out of line.
-  - A primary action lines up with what it acts on.
-  - Measure, don't eyeball: read every row's `getBoundingClientRect()` tops, bottoms, heights and
-    centers in the browser, in every frame of a sequence. Any difference over 1px is a bug.
+- **Everything in a row is the same height.** His most repeated layout complaint, and the problem
+  is big height differences, not pixels: "things have totally different heights ... when you have
+  something in a row, all of the heights should be the same. Otherwise, it looks disgusting"
+  (2026-11-21). Earlier: contracts "should all have the same height" and the contracts/Start row was
+  "hideous" (2026-11-18 and 19), the review page's buttons moved with caption height (2026-11-19),
+  and the Assembler row ("you keep fucking up vertical alignment", 2026-11-21).
+  - **Every row:** all items the same height, always. Stretch them to the tallest, or give them one
+    fixed height and fit the content inside.
+  - **Within a section, a grid.** Items of one kind presented together (the contracts, the shop's
+    cards, slots in a tray) share a cell size and line up in rows and columns.
+  - **Sections don't need to share a grid with each other** (the contracts and the shop below them
+    can differ). A one-off control beside a section (a Start button) may be the exception, but the
+    section itself stays a grid.
+  - Variable content never moves fixed parts: a caption gets a fixed slot (clamped lines), and each
+    card's action sits in the same place in every card, so one long description doesn't push its
+    button out of line. A primary action lines up with what it acts on.
+  - Check it in the browser: read each row's `getBoundingClientRect()` heights and edges, in every
+    frame of a sequence. Same-row heights that differ are a bug.
 - **Show the full and overflowing state.** A row, tray or list that grows (items waiting, crew,
   contracts) gets screenshotted at its largest realistic count, not just the tidy example. Decide
   up front what happens when it runs out of room (a fixed number of cells plus "+3", a scroll, or

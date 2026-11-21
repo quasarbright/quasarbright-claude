@@ -59,7 +59,7 @@ He sees it finished. For anything visible:
    a repeated thing as well as the first. Drag every handle, and click across the whole clickable
    range.
    Fill every row, tray and list that grows to its largest realistic count, and measure sibling
-   edges in the browser (`UX-CHECKLIST.md`, "Siblings line up on a grid").
+   edges in the browser (`UX-CHECKLIST.md`, "Everything in a row is the same height").
 3. Look at mid-animation frames, not only rest states.
 4. Screenshot new controls in their hover, active and disabled states, at 375×812, at desktop, and
    on a wide screen when layout changed. Send each screenshot or mock as its own full-resolution

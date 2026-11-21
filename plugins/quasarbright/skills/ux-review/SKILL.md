@@ -74,11 +74,13 @@ this plugin's `docs/` and `skills/` folders (`../../docs` and `..` from this ski
 > background, user images), force the brightest and busiest one with `--setup "<js>"` and use
 > `--show "<text>"` to see one label's number. Every failure is a finding.
 >
-> **Alignment pass.** Mike's most repeated complaint is ugly vertical alignment. For every row or
-> grid of sibling items (cards, buttons, icons, slots in a tray), measure with
-> `getBoundingClientRect()`: same-kind items should share height and/or width, and a row should share
-> top and bottom edges. Any difference over 1px is a finding. Then add items until the row is at its
-> largest realistic count and screenshot what happens when it runs out of room.
+> **Alignment pass.** Mike's most repeated complaint: things in a row with very different heights.
+> For every row of items, measure with `getBoundingClientRect()`. Every item in a row should be the
+> same height, and a section of like things (cards, shop items, slots in a tray) should read as a
+> grid with one cell size. Different sections don't need to share a grid, and a one-off control
+> beside a section may differ. Any same-row height difference is a finding, the big ones first.
+> Then add items until the row is at its largest realistic count and screenshot what happens when it
+> runs out of room.
 >
 > **Controls pass.** For every slider, toggle, field and button: before touching it, write down
 > what you think it does from its label alone, including the unit and whether the number is
