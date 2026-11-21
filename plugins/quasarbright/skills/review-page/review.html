@@ -165,7 +165,7 @@ body.lb-open{overflow:hidden}
 // Item: {title, kind: "pick"|"approve"|"question", multi (pick: choose any number), blocking, from, context, created (ISO),
 //   options:[{id,label,desc,img,tag}], recommended, recommendReason, images:[{img,title,desc}],
 //   status: "open"|"answered"|"chat"|"done", answer:{choice,label,verdict,note,at}}
-const S = { items: [], meta: {}, showDone: false, sel: {}, drafts: {}, marks: {}, pnotes: {}, lbNote: false, status: {}, ready: false, err: null, lb: null, lbFull: false };
+const S = { items: [], meta: {}, showDone: false, sel: {}, drafts: {}, marks: {}, pnotes: {}, typing: {}, lbNote: false, status: {}, ready: false, err: null, lb: null, lbFull: false };
 let db = null, comments = null, user = null, canWrite = true;
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -243,7 +243,7 @@ function pvButtons(it, x) {
 }
 function pvPop(it, x) {
   const k = keyOf(it, x);
-  return `<div class="pv-pop" data-pop="${esc(k)}"><textarea rows="3" placeholder="What about this one? It goes out with your answer.">${esc(notesOf(it)[k] || "")}</textarea><div class="btns"><button class="btn ghost" data-pvcancel>Cancel</button><button class="btn pri" data-pvsave>Save note</button></div></div>`;
+  return `<div class="pv-pop" data-pop="${esc(k)}"><textarea rows="3" placeholder="What about this one? It goes out with your answer.">${esc(S.typing[it.id]?.[k] ?? notesOf(it)[k] ?? "")}</textarea><div class="btns"><button class="btn ghost" data-pvcancel>Cancel</button><button class="btn pri" data-pvsave>Save note</button></div></div>`;
 }
 function notesText(it) {
   const imgs = imagesOf(it), n = notesOf(it);
@@ -405,7 +405,7 @@ const banner = () => {
   if (!S.ready || listen === "available") return "";
   return `<div class="calm" role="status">Your answers save here. When you're done, let Claude know in the project chat.</div>`;
 };
-function render() { const id = currentId(); if (id) renderItem(id); else { S.lb = null; renderLb(null); renderList(); } const b = banner(); if (b) $("#app").insertAdjacentHTML("afterbegin", b); }
+function render() { const id = currentId(); if (id) renderItem(id); else { S.lb = null; renderLb(null); renderList(); } const b = banner(); if (b) $("#app").insertAdjacentHTML("afterbegin", b); saveDrafts(); }
 
 function bindItem(it) {
   document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => { location.hash = ""; }));
@@ -438,7 +438,7 @@ function bindItem(it) {
     });
   }));
   const note = $(`#note-${CSS.escape(it.id)}`);
-  note?.addEventListener("input", () => { S.drafts[it.id] = note.value; const b = document.querySelector('[data-act="send"]'); if (b) { const st = sendState(it); b.hidden = !st.ok; b.textContent = st.label; } });
+  note?.addEventListener("input", () => { S.drafts[it.id] = note.value; saveDrafts(); const b = document.querySelector('[data-act="send"]'); if (b) { const st = sendState(it); b.hidden = !st.ok; b.textContent = st.label; } });
   document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => act(it, b.dataset.act)));
   // Round picture buttons. Every action stays on the picture.
   const lbOn = () => S.lb && S.lb.id === it.id;
@@ -460,11 +460,54 @@ function bindItem(it) {
   document.querySelectorAll(".pv-pop").forEach((pop) => {
     ["click", "keydown"].forEach((ev) => pop.addEventListener(ev, (x) => x.stopPropagation()));
     const ta = pop.querySelector("textarea"), k = pop.dataset.pop;
-    const save = () => { const t = ta.value.trim(); if (t) notesOf(it)[k] = t; else delete notesOf(it)[k]; S.pop = null; S.lbNote = false; render(); };
+    const drop = () => { if (S.typing[it.id]) delete S.typing[it.id][k]; };
+    const save = () => { const t = ta.value.trim(); if (t) notesOf(it)[k] = t; else delete notesOf(it)[k]; drop(); S.pop = null; S.lbNote = false; render(); };
+    const cancel = () => { drop(); S.pop = null; S.lbNote = false; render(); };
+    ta.addEventListener("input", () => { (S.typing[it.id] || (S.typing[it.id] = {}))[k] = ta.value; saveDrafts(); });
     pop.querySelector("[data-pvsave]").addEventListener("click", save);
-    pop.querySelector("[data-pvcancel]").addEventListener("click", () => { S.pop = null; S.lbNote = false; render(); });
-    ta.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); save(); } else if (e.key === "Escape") { e.preventDefault(); S.pop = null; S.lbNote = false; render(); } });
+    pop.querySelector("[data-pvcancel]").addEventListener("click", cancel);
+    ta.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); save(); } else if (e.key === "Escape") { e.preventDefault(); cancel(); } });
   });
+}
+// Everything Mike has typed or marked but not sent lives in the db (collection "drafts", one doc per item),
+// saved as he types, so a republish, reload or another device never loses it (Mike, 2026-11-21: a republish
+// wiped notes he hadn't sent; "any comments I write, even drafts, should be persisted as data").
+const draftsSaved = {}; let draftsT = 0, draftsLoaded = false;
+function draftOf(id) {
+  const d = { sel: S.sel[id] ?? null, note: S.drafts[id] || "", marks: S.marks[id] || {}, notes: S.pnotes[id] || {}, typing: S.typing[id] || {} };
+  const empty = d.sel == null || (Array.isArray(d.sel) && !d.sel.length) ? !d.note && !Object.keys(d.marks).length && !Object.keys(d.notes).length && !Object.keys(d.typing).length : false;
+  return empty ? null : d;
+}
+function saveDrafts(now) {
+  if (!db || !draftsLoaded || !canWrite) return;
+  clearTimeout(draftsT);
+  draftsT = setTimeout(() => {
+    const ids = new Set([...Object.keys(S.sel), ...Object.keys(S.drafts), ...Object.keys(S.marks), ...Object.keys(S.pnotes), ...Object.keys(S.typing), ...Object.keys(draftsSaved)]);
+    for (const id of ids) {
+      const d = draftOf(id), j = JSON.stringify(d);
+      if (j === (draftsSaved[id] ?? "null")) continue;
+      draftsSaved[id] = j;
+      const ref = db.collection("drafts").doc(id);
+      Promise.resolve(d ? ref.set({ ...d, at: new Date().toISOString() }) : (ref.delete ? ref.delete() : ref.set({}))).catch(() => { delete draftsSaved[id]; });
+    }
+  }, now ? 0 : 400);
+}
+addEventListener("pagehide", () => saveDrafts(true));
+document.addEventListener("visibilitychange", () => { if (document.hidden) saveDrafts(true); });
+function loadDrafts(snap) {
+  for (const doc of snap.docs) {
+    const d = doc.data() || {}, id = doc.id;
+    draftsSaved[id] = JSON.stringify(Object.keys(d).length ? { sel: d.sel ?? null, note: d.note || "", marks: d.marks || {}, notes: d.notes || {}, typing: d.typing || {} } : null);
+    if (d.sel != null && S.sel[id] == null) S.sel[id] = d.sel;
+    if (d.note && !S.drafts[id]) S.drafts[id] = d.note;
+    if (d.marks && !S.marks[id]) S.marks[id] = { ...d.marks };
+    if (d.notes && !S.pnotes[id]) S.pnotes[id] = { ...d.notes };
+    if (d.typing && Object.keys(d.typing).length && !S.typing[id]) S.typing[id] = { ...d.typing };
+  }
+  // Reopen a note box he was halfway through, on the item that's showing.
+  const cur = currentId(), t = cur && S.typing[cur];
+  if (t && !S.pop) { const k = Object.keys(t).find((x) => (t[x] || "") !== ((S.pnotes[cur] || {})[x] || "")); if (k) S.pop = { id: cur, key: k }; }
+  draftsLoaded = true; render();
 }
 const keepDraft = (it) => { const n = $(`#note-${CSS.escape(it.id)}`); if (n) S.drafts[it.id] = n.value; };
 function setStatus(it, text, cls) { S.status[it.id] = { text, cls }; const el = document.querySelector(".answer .status"); if (el) { el.textContent = text; el.className = "status " + (cls || ""); } }
@@ -536,7 +579,7 @@ async function act(it, what) {
   try { await ref.update(patch); }
   catch (e) { setStatus(it, "Couldn't save your answer: " + (e?.message || "try again") + ".", "err"); document.querySelectorAll(".answer .btn").forEach((b) => (b.disabled = false)); return; }
   const said = await tellClaude(it, text);
-  delete S.drafts[it.id]; delete S.sel[it.id]; delete S.marks[it.id]; delete S.pnotes[it.id]; S.lb = null; S.lbNote = false; S.pop = null;
+  delete S.drafts[it.id]; delete S.sel[it.id]; delete S.marks[it.id]; delete S.pnotes[it.id]; delete S.typing[it.id]; S.lb = null; S.lbNote = false; S.pop = null; saveDrafts(true);
   const next = queue().find((i) => i.id !== it.id);
   toast(`“${it.title}”: ${said.text}`, !said.ok && said.text !== NOT_HEARD);
   location.hash = next ? "i-" + encodeURIComponent(next.id) : "";
@@ -572,6 +615,7 @@ addEventListener("hashchange", () => { render(); scrollTo(0, 0); checkListen(); 
   claude.use("comments").then((c) => { comments = c; checkListen(); if (S.ready) render(); });
   addEventListener("focus", checkListen); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkListen(); });
   claude.use("user").then((u) => { user = u; if (u) Promise.resolve(u.can ? u.can("data.write") : null).then((v) => { if (v === false) { canWrite = false; render(); } }); });
+  { let first = true, un = null; un = db.collection("drafts").onSnapshot((snap) => { if (!first) return; first = false; loadDrafts(snap); if (typeof un === "function") un(); }, () => { draftsLoaded = true; }); }
   db.doc("meta/page").onSnapshot((s) => { S.meta = (s.exists && s.data()) || {}; render(); }, () => {});
   db.collection("items").onSnapshot((snap) => {
     clearTimeout(timer);

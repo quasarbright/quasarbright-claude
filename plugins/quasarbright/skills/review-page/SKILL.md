@@ -53,6 +53,12 @@ republish them from the new template.
   tidy), otherwise the build thread or the coordinator. Only general lessons go to the plugin; a
   choice for this project stays in the project's docs. Outside a project, the session handling the
   answer records it. See `WORKING.md`, "Lessons from his verdicts".
+- **Nothing Mike types or marks is ever lost** (Mike, 2026-11-21, after a republish wiped notes he
+  hadn't sent: "any comments I write, even drafts, should be persisted as data"). The page saves every
+  unsent pick, mark, note and half-typed note box to the db collection `drafts` (one doc per item) as he
+  types, and restores them on load, reopening a note box he was partway through. Sending an item deletes
+  its draft. Before changing the template, keep this working; and since a republish reloads his open
+  page, republish a page from a template that predates this only after checking he isn't mid-review.
 - **No polling.** Answers reach Claude only by push (below). The page says so when nobody is listening.
 
 ## Setting one up
