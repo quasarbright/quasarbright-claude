@@ -405,7 +405,17 @@ const banner = () => {
   if (!S.ready || listen === "available") return "";
   return `<div class="calm" role="status">Your answers save here. When you're done, let Claude know in the project chat.</div>`;
 };
-function render() { const id = currentId(); if (id) renderItem(id); else { S.lb = null; renderLb(null); renderList(); } const b = banner(); if (b) $("#app").insertAdjacentHTML("afterbegin", b); saveDrafts(); }
+// Rendering rebuilds the page, and new items or status changes arrive from the db at any moment. Whatever
+// Mike is typing in survives it: its text lives in state (S.drafts, S.typing) and focus and caret come back
+// (2026-11-21: an item added while he typed wiped his note twice).
+function render() {
+  const a = document.activeElement, ta = a && a.tagName === "TEXTAREA" ? a : null;
+  const where = ta && (ta.id ? "#" + CSS.escape(ta.id) : ta.closest(".pv-pop") ? `${ta.closest(".lb") ? ".lb " : ""}.pv-pop[data-pop="${CSS.escape(ta.closest(".pv-pop").dataset.pop)}"] textarea` : null);
+  const sel = ta ? [ta.selectionStart, ta.selectionEnd, ta.scrollTop] : null;
+  const id = currentId(); if (id) renderItem(id); else { S.lb = null; renderLb(null); renderList(); } const b = banner(); if (b) $("#app").insertAdjacentHTML("afterbegin", b);
+  if (where) { const t = document.querySelector(where); if (t) { t.focus({ preventScroll: true }); try { t.setSelectionRange(sel[0], sel[1]); } catch {} t.scrollTop = sel[2]; } }
+  saveDrafts();
+}
 
 function bindItem(it) {
   document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => { location.hash = ""; }));

@@ -57,7 +57,7 @@ republish them from the new template.
   hadn't sent: "any comments I write, even drafts, should be persisted as data"). The page saves every
   unsent pick, mark, note and half-typed note box to the db collection `drafts` (one doc per item) as he
   types, and restores them on load, reopening a note box he was partway through. Sending an item deletes
-  its draft. Before changing the template, keep this working; and since a republish reloads his open
+  its draft. A re-render (any item added or changed in the db, at any moment) keeps the text and the focus and caret of whatever he's typing in. Before changing the template, test both: type in a note box, write an item, then reload, and the text must survive each; and since a republish reloads his open
   page, republish a page from a template that predates this only after checking he isn't mid-review.
 - **No polling.** Answers reach Claude only by push (below). The page says so when nobody is listening.
 
