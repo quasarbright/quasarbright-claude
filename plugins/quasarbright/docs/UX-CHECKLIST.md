@@ -150,9 +150,18 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   (columns side by side) rather than a tall stack. Content is fit and centered with generous padding.
 - **No tabs when it fits.** On a wide screen, sections that fit side by side show all at once in
   columns, not behind tabs ("No tabs. All at once in columns.").
-- **Siblings line up.** Cards in a row share a height and their buttons a baseline; a primary
-  action sits aligned with what it acts on. Misaligned blocks read as "hideous" even when each one
-  is fine; measure edges, the same as centering.
+- **Siblings line up on a grid.** This is his most repeated layout complaint ("you keep fucking up
+  vertical alignment", 2026-11-21, after "hideous" contract/Start rows on 2026-11-18). Default to
+  an almost grid-like layout: things of the same kind share one height and/or width, items in a
+  row share top and bottom edges (never centered on mixed heights), and their buttons share a
+  baseline. A primary action sits aligned with what it acts on. Mixed-size items in one row (a
+  small box next to a taller crate) are the usual miss: give every slot the same cell size and fit
+  each item inside it. Don't eyeball it: measure every row's `getBoundingClientRect()` tops,
+  bottoms and heights in the browser, and any difference over 1px is a bug.
+- **Show the full and overflowing state.** A row, tray or list that grows (items waiting, crew,
+  contracts) gets screenshotted at its largest realistic count, not just the tidy example. Decide
+  up front what happens when it runs out of room (a fixed number of cells plus "+3", a scroll, or
+  smaller cells) and show that picture with the item; he will ask "what will it look like?"
 - **A lone picture is fullscreen**, never a floating panel. The footer always floats and is never
   inside a panel.
 - **Labels never sit on other marks.** After any change, sweep every label for collisions, not just
