@@ -28,6 +28,8 @@ his verdicts". A project's own terms and gold-standard jokes stay in that projec
 - **Say it once.** A popup has no subtitle restating its title, and no sentence that repeats what
   its buttons already say ("Borrow $100 · pay back $110" makes a fee sentence redundant).
 - **Remove only what he named.** Cleaning up copy around a requested change doesn't delete other
-  sentences ("I didn't say get rid of the 10% per contract sentence").
+  sentences ("I didn't say get rid of the 10% per contract sentence"). If another line looks
+  redundant too, list it up front as a proposal and keep it until he agrees. Before sending,
+  diff the copy against the last version he saw and account for every line that's gone.
 - **Pick the plain word for the state** ("In storage", not "To place"), and once a term is chosen,
   use it everywhere and ban the old one with a test (`WORKING.md`, "One place, every place, a test").
