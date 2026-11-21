@@ -142,6 +142,10 @@ shot's `title` and `desc`.
 
 ## Making a good item
 
+- **Open with what the thing is, in plain words, and how to read the pictures.** Mike didn't know what
+  a favicon sheet was (2026-11-21). Say "Browser-tab icon (favicon) candidates: each shown large, then
+  at real tab size", not a bare "favicon sheet", and say what each part of a composite picture shows.
+
 - **Check a build against what he approved before it goes up.** When an item shows built work for
   something he already picked (a mock, an art choice), put the screenshot side by side with the
   approved picture and list every difference first. Fix the drift, or say in `context` what differs
