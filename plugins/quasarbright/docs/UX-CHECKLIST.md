@@ -10,6 +10,16 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
 - **Show only what applies.** Hide a control, menu or panel that is empty, blank, disabled or
   meaningless in the current mode. Graying it out isn't enough. Don't render a view dropdown with
   nothing in it, or stats that read 0.
+- **Controls that appear never move the layout.** A control that shows up on select or hover (a
+  count stepper under a picked card, a toolbar under a row) gets its space reserved, or sits on top
+  of the thing it controls (a small pill on the card). Test it: measure the boxes of every item
+  before and after toggling, and fail if anything moved. A count stepper is a small −/×N/+ pill,
+  not a row of big separate buttons.
+- **An unselected item is the same item, dimmed** (lower brightness and saturation), not repainted
+  gray or swapped to a placeholder look. Its colors stay recognizable.
+- **No info button or tooltip that repeats text already on screen.** An info button is only for
+  items whose visible text doesn't explain them. Rules and help text only mention the things in
+  play (a win condition for a role that isn't in this game doesn't show).
 - **A disabled control looks disabled:** gray, no fill, not-allowed cursor. A control looks like
   what it does. Don't style a full-screen gallery opener as a dropdown. Symmetric controls get
   symmetric styling. A disabled control says why, on or next to it ("$25 short", "Needs a paint
