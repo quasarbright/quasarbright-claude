@@ -26,4 +26,5 @@ cloud is the default (`cloud-first.md`, next to this file).
   branch: if a push to `master` is refused, push the branch and tell Mike.
 - **Pushing `sketches` deploys it.** Its `master` is what Pages serves, so pushing there is a
   deploy, and the `deploy` skill's favicon step comes first. Ask before the first push of a new
-  sketch to `master`.
+  sketch to `master`. After pushing, wait until the live URL serves the new files before saying
+  it's live (push policy, "A push that deploys isn't done until it's live").

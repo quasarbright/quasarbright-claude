@@ -74,7 +74,23 @@ until [ "$(gh api repos/quasarbright/<slug>/pages --jq '.status')" = "built" ]; 
 ```
 (If the repo already exists: just commit + push; Pages is already enabled.)
 
-## After deploy
-- Confirm the live URL loads (open it / screenshot if useful).
+## After deploy: wait until the new version is live
+
+Never tell Mike it's live (or "pushed, try it") until the live site serves the new version. A push
+only starts a Pages build, and he has opened the link and seen the old version (2026-11-22: old
+card art right after "it's pushed").
+
+1. Wait for the Pages build of your commit to finish: the `pages-build-deployment` run for that
+   commit (GitHub MCP actions tools in the cloud, `gh run watch` on the laptop) or the Pages
+   `status` loop above. A failed build is a blocker to report, not a delay.
+2. Check the live site itself. Fetch a file you changed from the live URL with a cache-busting query
+   (`curl -s "https://quasarbright.github.io/<repo>/<path>?v=$(date +%s)"`) and compare it with the
+   committed file (`git show HEAD:<path>`, byte-for-byte or by hash for images). Retry every 20–30s
+   for up to about 10 minutes; if it still doesn't match, tell him what you saw instead of saying
+   it's live.
+3. Then load the page in a headless browser, read the console and screenshot the changed part.
+4. Report the URL. Pages' CDN caches for about 10 minutes, so if he might have the old version
+   open, tell him to hard-refresh.
+
 - Report the URL. If Mike wants it on the portfolio, that's `/publish-to-portfolio` (which needs the
   live `pageLink`).
