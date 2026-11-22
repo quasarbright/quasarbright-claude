@@ -279,6 +279,9 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
 - **Plain voice** (see CLAUDE.md). First person on his projects, never "Mike's". The bot is "the
   AI". Title case for titles and headers. Don't reference his other projects or internal lineage
   that visitors don't know about. Drop self-attribution on pages that are already about him.
+- **UI text is conventional, not chatty.** Labels, buttons, placeholders and prompts use the
+  stock wording apps and games use ("Enter your name", "Main Menu", "Play Again"), short and
+  neutral. See `WRITING.md`, "Copy". Flag any control text that reads like conversation.
 - **Name things in the domain's words** (cubers say "algorithms"; it warps, so "Warp to"). Use plain
   words over jargon and the established real-world name for known objects. Keep one naming pattern
   across a family. Destructive actions name their scope ("Kick from table"). The same action gets

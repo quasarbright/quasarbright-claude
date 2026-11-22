@@ -23,6 +23,16 @@ his verdicts". A project's own terms and gold-standard jokes stay in that projec
 
 ## Copy
 
+- **UI text uses the standard terms games and apps use: short, neutral, direct.** This is the
+  default for every label, button, placeholder, prompt, heading, status line and error. Before
+  writing one, ask what a typical shipped app or game says there, and say that. No chatty or
+  conversational phrasing, no second-person musing, no cute rewording of a stock term. Prose
+  is for explanations (about modals, rules text), not controls. Recurring complaint, 2026-11-22:
+  - "What should people call you?" → "Enter your name"
+  - "Back to the start" → "Main Menu"
+  Buttons are a verb or the standard noun in Title Case, as in games ("Join", "Create Room",
+  "Play Again", "Settings"); toggles use the stock pair ("Ready" / "Not Ready").
+  Status lines state the fact ("Waiting for Ana"), never narrate ("Hang tight while...").
 - **His wording wins.** When Mike rewrites a line, use his words verbatim, and keep them through
   later edits.
 - **Say it once.** A popup has no subtitle restating its title, and no sentence that repeats what
