@@ -64,6 +64,15 @@ A style reference can leak its content: props, background elements or scenery fr
 every result. Say in the prompt what this image should and shouldn't contain, and check each
 result for borrowed elements before showing it.
 
+## Transparent backgrounds
+
+gpt-image-2 always paints a background, and it never exactly matches the hex you asked for, so
+the image's rectangle shows on whatever it sits on (Mike spotted it on every onuw card). Art that
+sits on a colored surface gets its background keyed out locally, never by another GPT call:
+alpha ramps from the background color (median of the border) to the ink color, and edge colors
+are unmixed so soft edges sit cleanly on any color. `/mnt/project-files/image-gen-test/scripts/keyout.py`
+does it for flat two-tone art and exports webp with alpha.
+
 ## Edits
 
 To change an image, send it as the only reference with an instruction ("same figure and colors,
