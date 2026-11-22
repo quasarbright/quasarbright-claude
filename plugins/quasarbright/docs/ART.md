@@ -51,3 +51,25 @@ each line as a general default. A choice made for one project stays in that proj
   you show it"). (Clanker Tycoon, 2026-11-19: the picked crate shipped smaller, with a plain dot
   for its color tag and no corner plates: "wtf is this? we just agreed on the crate art and it was
   something else". The second try still missed: "Still not the version you showed me that I liked".)
+
+## Sound
+
+Game sounds are assets too, made from code first (a synthesis script with one short recipe per
+sound), the same way art starts as SVG.
+
+- **One sound, one gesture.** Most sounds have a single component: a thunk, a ding, a motor
+  grinding to a halt. Stacking parts (chug, then a clank, then steam) reads as busy and nobody can
+  tell what it means. A sound earns a second part only when the action really has two steps, like
+  packing a box (flaps, then tape). (Mike, 2026-11-22: "Most of these sounds should pretty much
+  just have one component".)
+- **Each sound sounds like its real thing and nothing else.** Two different actions never share a
+  texture: a tape pull made of filtered hiss sounded like the paint spray, and so did an
+  assembler's air release. Tape is a crackle, a spray is a hiss, a press is a ka-chunk.
+- **Pairs are opposites.** Put down mirrors pick up (a rising blip and a falling one), so the pair
+  reads as one idea.
+- **Period over generic.** A factory game's shift whistle is a breathy old steam whistle, not a
+  clean synth chord.
+- **Balance the parts by loudness, not by gain numbers.** A narrow band of noise is much quieter than
+  broad hiss at the same gain; normalize each part before mixing, or the hiss drowns the tone.
+- **You can't hear it, so show it.** Check spectrograms for shared textures, then give Mike a page
+  where every sound plays on its own and in a real scene, and change what he flags.
