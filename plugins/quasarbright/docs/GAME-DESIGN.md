@@ -23,6 +23,13 @@ verdicts". Each line is a default. A choice made for one game stays in that game
 - **Warn one step before the end.** When the next mistake ends a run, say so plainly, and end it
   only at the real bottom, not a step early.
 
+- **Hidden-information games leak nothing through the interface.** In a game where players act in
+  secret (a night phase, hidden roles), nobody's screen may change because of someone else's
+  secret turn: no progress bar, no turn counter, no moving marker, no timing difference. Mike: "You
+  shouldn't know anything that happens during the night. There should be no signals like that."
+  (A werewolf game's moon crept forward with each night turn; he'd already said no signals once.)
+  Add a test that every player's screen stays the same while others act.
+
 ## Choices and economy
 
 - **Every option costs something.** If an option has no downside, it's always taken and stops
