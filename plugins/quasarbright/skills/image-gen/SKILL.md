@@ -15,9 +15,9 @@ Mike asks for generated images, usually as a final polish pass on a project.
   `input_references: [{type: "image_url", image_url: {url: "data:image/png;base64,..."}}]`.
   The response has `data[0].b64_json` and `usage.cost` (matches real billing).
 - Model: **`openai/gpt-image-2`, `quality: "low"`.** Medium costs about 8x and looks about the
-  same; high is about $0.21 an image. It can't make transparent backgrounds; if something needs
-  one, ask first (`openai/gpt-image-1-mini`, about $0.03, takes `background: "transparent"`).
-- The key is `claude-image-gen`, capped at **$5 a month**. It's a cloud environment secret, so only
+  same; high is about 0.21 USD an image. It can't make transparent backgrounds; if something needs
+  one, ask first (`openai/gpt-image-1-mini`, about 0.03 USD, takes `background: "transparent"`).
+- The key is `claude-image-gen`, capped at **10 USD a month**. It's a cloud environment secret, so only
   sessions started after it was added (2026-11-22) see it. If it's missing, say so; don't look for
   another key.
 - `gen.py` next to this file makes one call, saves the PNG and logs the cost to `costs.jsonl`
@@ -26,7 +26,8 @@ Mike asks for generated images, usually as a final polish pass on a project.
 
 ## Cost, rate and spend
 
-- About **$0.006** an image with no references, **$0.013** with one, **$0.023** with two (1024px).
+- About **0.006 USD** an image with no references, **0.013 USD** with one, **0.023 USD** with two
+  (1024px).
 - **At most 2 or 3 requests in flight.** More than that can return a false 403 "Key limit
   exceeded": OpenRouter holds a worst-case amount per open request against the cap. If you see
   it, wait, check `--spend` (it lags about a minute) and continue with fewer in flight.
@@ -61,7 +62,7 @@ result for borrowed elements before showing it.
 ## Edits
 
 To change an image, send it as the only reference with an instruction ("same figure and colors,
-change only X"). gpt-image-2 keeps everything else intact. About $0.013.
+change only X"). gpt-image-2 keeps everything else intact. About 0.013 USD.
 
 ## Showing the results
 

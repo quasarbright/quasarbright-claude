@@ -29,6 +29,9 @@ grows or a new always-on file is added, put it in its own hook entry and check w
    one-off problems). Project specifics go in memory. (Mike, 2026-11-22: the new image-gen skill
    was full of werewolf-game details.)
    Keep paths relative to the skill (`../../docs/TASTE.md`), never `/Users/...`.
+   Never write a dollar sign directly followed by a digit in a SKILL.md, including this sentence's
+   own examples. When a skill is invoked with arguments, dollar-digit is replaced by an argument
+   word, so a price of five cents comes out as "an.05". Write amounts as `0.05 USD`.
 2. Bump `version` in `plugins/quasarbright/.claude-plugin/plugin.json` (patch for wording, minor for
    a new skill). Installed copies are cached by version, so without a bump an update may not
    pick up the change.
@@ -42,6 +45,11 @@ grows or a new always-on file is added, put it in its own hook entry and check w
 claude plugin marketplace update quasarbright-claude
 claude plugin update quasarbright@quasarbright-claude
 ```
+
+On Mike's laptop these commands do nothing: the plugin isn't installed through the CLI there. The
+desktop app syncs it from his claude.ai account, which never re-reads GitHub by itself. After
+pushing, tell Mike to refresh the quasarbright-claude marketplace in claude.ai's plugin settings,
+then run `/reload-plugins`.
 
 A running session keeps the skill list it started with. To use the new version right away, read
 the changed SKILL.md from the repo; new skills and steering load fully in the next session.
