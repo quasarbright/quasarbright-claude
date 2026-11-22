@@ -53,6 +53,18 @@ Claude project (coordinator, threads, review page, personas) is in `PROJECTS.md`
 
 He sees it finished. For anything visible:
 
+**First, the sibling sweep. It's mandatory and it's the check he most often has to do for you.**
+Before any other step, write down every instance of the kind of thing you changed: every card,
+button, pill, row, mode or screen of that kind, including the special cases (a fixed count, a
+locked item, an item with no options), the other viewers (host and guest, owner and visitor) and
+the disabled, empty and maxed states. Find them from the code (the registry, the list, the switch
+over kinds), not from memory. Then check each one has the change and looks and behaves like the
+rest. A special case is a state of the same component (shown, with controls disabled), never left
+out or given its own look. Put the list in your report to him and in the `ux-review` brief. (A
+card game showed "×2" as a plain badge on the one card with a fixed pair while every other card
+had a − ×N + pill, after a rule about feature parity was already in `TASTE.md`.)
+
+
 1. Drive it like a user, through the visible controls. Test every way state can enter: fresh load,
    refresh, link load, live parameter changes, scrambled or mid-game states.
 2. Test every variant at several sizes, including the biggest allowed. Test the second instance of

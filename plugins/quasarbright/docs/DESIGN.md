@@ -77,6 +77,21 @@ helper ~0.8rem `--muted`.
 These are the recurring pieces across Mike's best work. Standardize them in the shared lib; document
 intent here.
 
+### One renderer per kind  *(feature parity by construction)*
+- Every kind of thing (a card, a count, a row, a stat, a button group) is drawn by one function or
+  component, and every instance goes through it. Special cases are inputs to it (`disabled`,
+  `fixed`, `readOnly`, `empty`), never a separate branch with its own markup.
+- A control that can't be used on one instance is shown disabled, in the same place, not removed.
+  Removing it shifts the layout and makes that instance look like a different kind of thing.
+- Each such component gets a test that renders a normal instance and each special case and checks
+  they have the same parts (same buttons, same classes), differing only in the disabled flags.
+
+### UI copy
+- Labels, buttons, hints and toasts use standard, short, neutral app and game wording: "Enter your
+  name", "Start Game", "Main Menu", "Ready". Never chatty or explanatory ("What should people call
+  you?", "Back to the start"). Buttons are Title Case. Hints are one short sentence or none.
+- Details and examples are in `WRITING.md`, "Copy".
+
 ### Attribution footer  *(the constant)*
 - Text: `Made with ♥ by Mike Delmonaco` — the **name links to the site root** (`https://quasarbright.github.io/`), not a fixed path, so it survives repointing what root serves.
 - **Normal pages:** a real footer at the bottom of content, centered, `--muted`, small.
@@ -311,3 +326,4 @@ them**. Use that:
 - Always include the attribution footer.
 - AI projects always use the shared OpenRouter key component.
 - Dark theme by default; deviate only for a thematic reason, via token overrides.
+- One renderer per kind of thing; special cases are disabled states of it, never separate markup.

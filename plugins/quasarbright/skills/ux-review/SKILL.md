@@ -27,6 +27,9 @@ The subagent only knows what you give it. Collect:
   types, other modes), with the file that implements the oldest or most complete one, and any
   sibling projects with the same kind of UI (chips → card-table, 2048 → tetris). Name them from the
   code (a registry, a gallery list, a switch over kinds), not from memory.
+- **Instances of the changed kind:** the list from `WORKING.md`'s sibling sweep. Every instance of
+  the kind of thing that changed on this page, with the special cases (fixed, locked, empty,
+  maxed), and each viewer that sees it differently (host and guest, owner and visitor).
 - **States worth reaching:** for example mid-drag, mid-animation, zoomed far in and out, at the
   biggest size a stepper allows, loaded from a share link, scrambled, game over, empty.
 
@@ -108,6 +111,11 @@ this plugin's `docs/` and `skills/` folders (`../../docs` and `..` from this ski
 > For a new feature, list which existing variants lack it. Variants inside the same page count
 > too: modes, item kinds, list and enlarged views. For each, list what it does well and check every
 > other one has it (a note counting as an answer, a hidden Send, a keyboard shortcut).
+> This pass is mandatory and its output is a table: one row per instance of the changed kind
+> (from the brief, plus any you find that it missed), columns for each part and behavior the
+> normal instance has, and a mark for each instance that lacks it or shows it differently. A
+> special case drawn with different markup, or with a control removed instead of disabled, is a
+> finding even when it looks fine on its own.
 >
 > **Report** a list of findings, most important first. Each finding gives: what's wrong, where (a
 > screenshot path and the state that shows it), which principle, rule or sibling it violates, and a
