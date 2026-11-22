@@ -117,15 +117,18 @@ intent here.
 - Track + accent thumb. Value updates live as dragged. (See escher-warp: `view zoom … 0.03`.)
 
 ### Step-based sims (CA, particle/growth systems, anything with a discrete update rule)
-- Expose speed as a **steps-per-second slider** (label it `speed` or similar, value shown as `NN/s`),
-  never as a "1×–5×" multiplier on steps-per-frame — a multiplier ties the sim's rate to whatever
-  the display refresh rate happens to be. Decouple stepping from rendering with a frame-independent
-  accumulator, same pattern as `sandpile`'s `relaxAccumulator`:
+- Speed is **steps per second**, set with the halve/double buttons of the bottom control bar below
+  (value shown as `NN/s`), never a "1×–5×" multiplier on steps-per-frame: a multiplier ties the
+  sim's rate to the display's refresh rate. Decouple stepping from rendering with a
+  frame-independent accumulator, same pattern as `sandpile`'s `relaxAccumulator`:
   ```js
-  stepAccumulator += stepsPerSec / 60;
-  if (stepAccumulator > CAP) stepAccumulator = CAP; // clamp the catch-up burst after a throttled tab
-  while (stepAccumulator >= 1) { stepAccumulator -= 1; step(); }
+  acc += stepsPerSec * dt;               // dt in seconds, capped at ~0.1 for throttled tabs
+  if (acc > CAP) acc = CAP;              // clamp the catch-up burst
+  while (acc >= 1) { acc -= 1; step(); }
   ```
+  On the GPU, also drop a `gl.fenceSync` after each frame's steps and queue no new steps while the
+  last fence hasn't signaled (forgive the missed ones). Otherwise a heavy rule queues more work
+  than the GPU finishes and the page gets slower and slower (rock paper scissors' big rule did).
 - Every duration/rate *inside* the sim (decay windows, cooldowns, growth thresholds, event periods)
   must be a plain **step-count**, never seconds scaled by `dt` — that's the only way sim speed can
   change without silently changing the automaton's behavior. The steps-per-second control above is
@@ -194,8 +197,26 @@ intent here.
   `or drag & drop · PNG, JPG, WEBP, GIF`. Click and drag-drop both work.
 
 ### Bottom control bar  *(fullscreen canvas sims)*
-- Centered at the bottom: media-style controls (rewind / pause / step / speed) then `stats`, `about`.
-- Flat, subtle, mono labels. Sits above the attribution footer.
+Gold standard (Mike, 2026-11-22: "This should be the gold standard for similar frame-based steppy
+simulations"): the rock paper scissors automaton's bar, `quasarbright.github.io/p5js/
+rock-paper-scissors-automaton/` (`index.html` `.control-bar`, `style.css` `.rps-icon`/`.rps-speed`,
+`ui.js`). Copy it for any sim that advances in steps.
+- One centered row at the bottom, above the attribution footer, in this order: **pause/play**,
+  **slower**, the **speed readout**, **faster**, **scramble/restart**, then `about` (and `stats` if
+  any). Add step-once or skip-to-end in the same style where they fit.
+- Every button is a Lucide-style SVG icon (24 viewBox, `fill:none; stroke:currentColor;
+  stroke-width:2`, round caps and joins, drawn at 18px) in a 38×34 button. Pause swaps to play
+  and its `aria-label` swaps with it. Slower/faster are the double-triangle rewind and
+  fast-forward icons; scramble is Lucide `shuffle`.
+- Speed is a readout between the two buttons, `60/s`, in a pill the same 34px height as the
+  buttons (min-width 56px so the bar doesn't shift). Slower halves and faster doubles, clamped
+  (1 to 512 there). No slider.
+- Over a busy canvas each button and the readout gets a translucent dark fill with a 6px backdrop
+  blur, so the bar stays readable on bright colors without a scrim across the field.
+- Every control has a tooltip naming what it does and its key (`pause / resume (space)`,
+  `Start over from random colors (R)`). Keys: Space pauses, R scrambles, and they're ignored while
+  typing or while a modal is open.
+- On phones the buttons shrink to 34px wide with 4px gaps, and the row lifts clear of the footer.
 
 ### Editor layout: left tool rail  *(anything you draw or build on a canvas)*
 Mike likes this one. Use it whenever the page is an editor: you pick a tool, then act on the

@@ -69,7 +69,8 @@ Open these to calibrate. They're on Pages, and the source is in `~/GitHub`.
 
 Concrete choices he has confirmed. They are defaults, not laws.
 
-- Speed controls are halve and double buttons (plus skip-to-end where it fits), not a slider.
+- Speed controls are halve and double buttons (plus skip-to-end where it fits), not a slider. Step
+  sims copy rock paper scissors' bottom bar (`DESIGN.md`, "Bottom control bar"), his gold standard.
 - Icons are real SVG icons (Lucide style), never unicode glyphs.
 - Undo comes with redo and covers every change.
 - Glow means fading heat over a still-visible structure. No neon or bloom blobs.
