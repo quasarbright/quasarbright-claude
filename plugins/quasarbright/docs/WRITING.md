@@ -43,3 +43,10 @@ his verdicts". A project's own terms and gold-standard jokes stay in that projec
   diff the copy against the last version he saw and account for every line that's gone.
 - **Pick the plain word for the state** ("In storage", not "To place"), and once a term is chosen,
   use it everywhere and ban the old one with a test (`WORKING.md`, "One place, every place, a test").
+- **Descriptions only use words the screen shows or a newcomer already knows.** A control's
+  tooltip or readout never leans on terms from the code or an explanation elsewhere ("reach 2",
+  "threshold", "beating neighbor") or on history the user never saw ("the first version"). Say
+  what it looks like and what happens in everyday words: rock paper scissors' rule buttons went
+  from "A circle of reach 5" to "A few big, smooth spirals", and the readout to "A cell turns into
+  the color that beats it when at least 3 of the 8 cells touching it have that color." Mike:
+  "Use plain clear terminology that doesn't require context. Be considerate of the user."
