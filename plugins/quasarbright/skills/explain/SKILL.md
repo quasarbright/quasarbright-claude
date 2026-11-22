@@ -116,6 +116,11 @@ But scaling down is not the same as skipping it. Some of this always applies, no
   number, "the four X", a part of the screen: explain it in plain words at or before its first
   mention. Before finishing, list each term's first mention and first explanation and fix any
   where the explanation comes second.
+- **Say what an operation acts on.** Never "divides by distance" or "each corner is divided by
+  f": say what gets divided (a point's offset from the line of sight, divided by its distance).
+  Mike, on the Perspectiven't About: "Don't just say something is getting divided without saying
+  what." And when the simple story (rays per pixel) isn't how the thing really works (the GPU
+  places corners), explain the real way too, with its own picture.
 
 So read the material first and match the dose to it. For a heavy explanation, reach for the full
 method. For a short one, you might use just the context-and-motivation opener and a concrete example.
