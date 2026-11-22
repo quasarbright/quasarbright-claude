@@ -9,7 +9,7 @@ each line as a general default. A choice made for one project stays in that proj
 
 - **Hand-made SVG first; AI images only when Mike asks,** as a final polish pass with the
   `quasarbright:image-gen` skill (`steering/rules/art-svg-first.md`). The skill has the lessons on
-  generated art: style, keeping a set consistent, and showing it inside the real game.
+  generated art: prompts, references, edits, and showing it where it will be used.
 
 ## Drawing things
 

@@ -24,7 +24,11 @@ grows or a new always-on file is added, put it in its own hook entry and check w
 
 ## Publish
 
-1. Make the edit. Keep paths relative to the skill (`../../docs/TASTE.md`), never `/Users/...`.
+1. Make the edit. Skills and docs are general: they apply to all of Mike's projects, so write
+   the general process or lesson and leave out the project it came from (its names, assets and
+   one-off problems). Project specifics go in memory. (Mike, 2026-11-22: the new image-gen skill
+   was full of werewolf-game details.)
+   Keep paths relative to the skill (`../../docs/TASTE.md`), never `/Users/...`.
 2. Bump `version` in `plugins/quasarbright/.claude-plugin/plugin.json` (patch for wording, minor for
    a new skill). Installed copies are cached by version, so without a bump an update may not
    pick up the change.
