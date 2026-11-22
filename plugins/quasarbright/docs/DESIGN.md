@@ -86,7 +86,25 @@ intent here.
 - Each such component gets a test that renders a normal instance and each special case and checks
   they have the same parts (same buttons, same classes), differing only in the disabled flags.
 
+### One way to do each thing  *(consistency within an app)*
+Mike, 2026-11-22: "If there's a way to do something in one place, it should be the same way to do
+it in the other place. We don't want to have a bunch of different interfaces for the same objects
+in different places."
+- An app has one visual language. Each object (a player, a card, a setting) and each action on it
+  (rename, show info, list, remove) gets one control, one look and one wording, and every screen
+  that offers it reuses that same component. A game that renamed players with a text field in one
+  place and a pencil button in another, explained a card with a "What does this card do?" link in
+  one place and an ⓘ button in another, and listed the cards differently behind its rules button
+  had three of these misses.
+- Before adding a control, search the app for where that object or action already appears and
+  reuse it. When you change one, change all of them (`WORKING.md`, "One place, every place, a
+  test").
+- This is feature parity inside one app, alongside parity across variants (`TASTE.md` principle 7).
+
 ### UI copy
+- Hint verbs match the input device: "click" and "hover" with a mouse, "tap" and "press" on touch.
+  Pick the word from `matchMedia('(pointer: coarse)')` (or `(hover: none)`) at render time, never a
+  fixed string. "Tap to flip" on a desktop is wrong.
 - Labels, buttons, hints and toasts use standard, short, neutral app and game wording: "Enter your
   name", "Start Game", "Main Menu", "Ready". Never chatty or explanatory ("What should people call
   you?", "Back to the start"). Buttons are Title Case. Hints are one short sentence or none.

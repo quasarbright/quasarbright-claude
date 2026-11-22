@@ -101,6 +101,10 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
 - **The UI follows the project's flow:** phases rather than toggles, a left tool rail for editors,
   and a guided first state. Whether a game needs a start screen depends on the game: one with
   level select may want it, while something like 2048 just opens on the saved board.
+- **One interface per object or action, everywhere in the app.** If players are renamed with a
+  pencil button in one place, every rename is that pencil button. A card's details open the same way
+  (the same ⓘ button) and a list of cards is the same component wherever it appears. Different
+  controls for the same thing on different screens is a must-fix, even when each one works.
 - **Nothing waits without moving.** Anything that takes time shows progress. State changes show up
   immediately, with no stale objects that look usable. When several outcomes happen at once, show
   all of them. Say waiting in words ("thinking", "reading"): no filling meters for waits, no
@@ -282,6 +286,8 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
 - **UI text is conventional, not chatty.** Labels, buttons, placeholders and prompts use the
   stock wording apps and games use ("Enter your name", "Main Menu", "Play Again"), short and
   neutral. See `WRITING.md`, "Copy". Flag any control text that reads like conversation.
+- **Hint verbs match the device:** "click" and "hover" with a mouse, "tap" on touch screens,
+  chosen at runtime (`matchMedia('(pointer: coarse)')`). Check hints at desktop and at phone size.
 - **Name things in the domain's words** (cubers say "algorithms"; it warps, so "Warp to"). Use plain
   words over jargon and the established real-world name for known objects. Keep one naming pattern
   across a family. Destructive actions name their scope ("Kick from table"). The same action gets

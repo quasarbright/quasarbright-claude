@@ -111,6 +111,11 @@ this plugin's `docs/` and `skills/` folders (`../../docs` and `..` from this ski
 > For a new feature, list which existing variants lack it. Variants inside the same page count
 > too: modes, item kinds, list and enlarged views. For each, list what it does well and check every
 > other one has it (a note counting as an answer, a hidden Send, a keyboard shortcut).
+> Then check consistency inside the app: list every object (player, card, item, setting) and every
+> action on it (rename, info, list, remove, edit), find every screen where each one appears, and flag
+> any that uses a different control, look or wording somewhere else (a rename field here and a pencil
+> there, a text link here and an info button there). Read the hint copy at desktop and at phone
+> size: "click" with a mouse, "tap" on touch.
 > This pass is mandatory and its output is a table: one row per instance of the changed kind
 > (from the brief, plus any you find that it missed), columns for each part and behavior the
 > normal instance has, and a mark for each instance that lacks it or shows it differently. A

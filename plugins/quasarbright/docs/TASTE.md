@@ -48,7 +48,9 @@ everything themed) turns cheesy. When unsure, do less.
 monitor. Effects like glow or bloom are done properly or left out. Differential growth's core is
 good, but its bloom and its scaling to big and small screens were never right, and that's what
 keeps it from feeling finished. It has one visual language, its variants feel like a family with
-feature parity (what one variant does well, every variant does), and
+feature parity (what one variant does well, every variant does), and inside one app the same
+object or action looks and works the same on every screen (one way to rename, one info button, one
+card list), and
 nothing pops, jumps or jars. Everything in a row is the same height, and each section of like
 things is a grid ("vertical alignment, same height stuff in a row. Makes everything nice and
 neat"). A row of mismatched heights reads as disgusting even when each piece is fine.
