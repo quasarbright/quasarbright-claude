@@ -64,6 +64,11 @@ A style reference can leak its content: props, background elements or scenery fr
 every result. Say in the prompt what this image should and shouldn't contain, and check each
 result for borrowed elements before showing it.
 
+Check every result's anatomy before showing it, zoomed in: each held object is gripped by the hand
+on its own side, no arm crosses the body to reach a far shoulder, and hands, feet and limbs are
+countable. (onuw's Apprentice Tanner held a hide on one shoulder with the opposite arm and Mike
+caught it.) When one is wrong, say in the prompt which arm holds what and on which side.
+
 ## Transparent backgrounds
 
 gpt-image-2 always paints a background, and it never exactly matches the hex you asked for, so
