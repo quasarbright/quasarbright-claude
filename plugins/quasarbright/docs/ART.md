@@ -5,6 +5,12 @@ demand: read it before drawing or mocking art. Screens and controls are in `TAST
 `UX-CHECKLIST.md`; how lessons get here is in `WORKING.md`, "Lessons from his verdicts". Write
 each line as a general default. A choice made for one project stays in that project.
 
+## Medium
+
+- **Hand-made SVG first; AI images only when Mike asks,** as a final polish pass with the
+  `quasarbright:image-gen` skill (`steering/rules/art-svg-first.md`). The skill has the lessons on
+  generated art: style, keeping a set consistent, and showing it inside the real game.
+
 ## Drawing things
 
 - **Different things never read alike.** Check every new object next to its neighbors at the size
