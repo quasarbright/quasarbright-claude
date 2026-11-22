@@ -55,6 +55,11 @@ subject or layout to keep, or the style to match. For a set of related images, a
 the item's existing drawing (for subject and composition) plus one approved generated image (for
 style). Get Mike's OK on the first image before using it as the style reference for the rest.
 
+The old drawing pulls the drawing quality toward itself too. When the old version is crude, a
+result can come out as a near-trace of it (onuw's Lookalike and first Villager redo did, and Mike
+said they looked like the old SVG). Compare each result with the old version before showing it,
+and when it's too close, regenerate from the subject in words plus approved generated images only.
+
 A style reference can leak its content: props, background elements or scenery from it show up in
 every result. Say in the prompt what this image should and shouldn't contain, and check each
 result for borrowed elements before showing it.

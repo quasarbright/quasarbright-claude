@@ -37,6 +37,11 @@ each line as a general default. A choice made for one project stays in that proj
   pose, and keep the same head, proportions and lighting, so it's clearly the same one.
 - **Reference photos are for calibrating, not copying.** Mike may reject a whole set of references
   ("I don't like any of those"); then the current drawing stands. Don't keep pushing references.
+- **Generated art: simple and flat, matched across the set.** GPT's default look was "too
+  maximalist"; Mike picked minimalist two-tone silhouettes (one card color, one ink color, thin cut
+  lines) and called them "night and day" better than the SVGs (onuw, 2026-11-22). He then had the
+  background stars removed: decoration only where it belongs. Every card in a set must look drawn
+  by the same hand; one that echoes the old art's crudeness gets redone.
 
 ## From mock to build
 
