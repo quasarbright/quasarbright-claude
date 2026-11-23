@@ -13,7 +13,7 @@ Claude project (coordinator, threads, review page, personas) is in `PROJECTS.md`
   explanation and suggestions, not edits.
 - **Visual work starts as mocks a judge filters.** Before building a new screen, art or a restyle,
   make two to four quick mocks in different directions; the UI/UX persona (or a fresh subagent)
-  picks one against his past verdicts (`taste-examples/README.md`). He sees it next to the current
+  picks one against his past verdicts (`TASTE-EXAMPLES.md`). He sees it next to the current
   screen as an approval, or a pick if two real directions are close. Exact small asks skip this.
 - **Games: mechanics first, flavor later.** Settle the mechanics (rules, progression, balance)
   before adding story, personality and flavor. Those come in a later polish phase, once the
@@ -129,6 +129,6 @@ publishes it with `quasarbright:update-plugin`. Where the project has a persona 
 handler sends it the lesson and the persona records it; otherwise the build thread or coordinator
 does. Only general lessons go to the plugin, written as a default with the example that taught it.
 A choice made for one project, or a rejection during a brainstorm, stays in that project's docs or
-memory. Visual verdicts also save an example (picture, verdict, his words) in `docs/taste-examples/`.
+memory. Visual verdicts also save an example (picture, verdict, his words): `TASTE-EXAMPLES.md`.
 Technical gotchas go in memories. If he corrects something a doc already covers, the line
 wasn't strong enough to prevent the miss, so sharpen it.

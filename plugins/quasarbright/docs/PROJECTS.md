@@ -50,17 +50,17 @@ trying to break it. It also reads every word and runs `ux-review`'s contrast che
 personas and rely on those two.
 
 **A UI/UX or art persona is the judge of taste, not only of defects.** It learns what Mike likes
-from screenshots of his past verdicts in this plugin's `docs/taste-examples/` (its `README.md` has
+from screenshots of his past verdicts, kept in a private gallery artifact (`TASTE-EXAMPLES.md` has
 the steps):
 
 - **Every review compares.** Before reviewing visual work, it opens the 5 to 8 closest examples
-  from `INDEX.md` and judges "would Mike pick this?", naming the examples behind the call.
+  and judges "would Mike pick this?", naming the examples behind the call.
 - **It filters mocks before he sees them.** For visual work the builder sends it two to four quick
   mocks before building anything (`WORKING.md`, "Before building"). The persona picks one against
   the examples, or sends them all back with what's wrong (two rounds at most). Mike sees the picked
   one, with the persona's one-line reason, and the build then matches it.
 - **It saves his verdicts as examples.** When a verdict in its area is routed to it, it saves the
   example with the lesson, marking what it had said before he saw it.
-- **It keeps score.** A thing it approved that he then rejected or corrected is a miss: one line in
-  `MISSES.md`. On cleanup it reads the misses; a run on one kind means its brief or a lessons doc
+- **It keeps score.** A thing it approved that he then rejected or corrected is a miss, marked on its
+  example. On cleanup it reads the misses; a run on one kind means its brief or a lessons doc
   is missing something, and it fixes that.
