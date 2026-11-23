@@ -186,4 +186,7 @@ is a general rule rather than a one-off goes into `UX-CHECKLIST.md`, which the p
 In a Claude project that keeps a UI/UX persona (see "Design personas" in `PROJECTS.md`), send it the
 change, the live URL and the screenshots after this review, before Mike sees them. The persona
 opens the live page and does the read, contrast, controls and default-view passes itself, so a miss here gets a second chance with someone who remembers
-the project's rules. It sends back what to fix; you fix it, then demo.
+the project's rules. It also compares the change with the closest screenshots of Mike's past
+verdicts (`docs/taste-examples/README.md`, "Judging against them") and says whether he'd pick it.
+It sends back what to fix; you fix it, then demo. Tell it whether this build came from a mock it
+picked, so it can check the build against that mock too.

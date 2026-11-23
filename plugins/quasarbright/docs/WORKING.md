@@ -11,10 +11,10 @@ Claude project (coordinator, threads, review page, personas) is in `PROJECTS.md`
   Say in one line which one you're doing, so he can ask for the restatement.
 - **Brainstorm means options, then wait.** "Why does X happen?" and "anything missing?" get an
   explanation and suggestions, not edits.
-- **Mock for a real choice, or when building is slow.** Show light HTML mocks and wait when there
-  are genuinely different options, or when building it would take a while. A single proposal that's
-  quick to build gets built and demoed instead. Mocks show the current screen next to the change.
-  Options differ only in the thing being decided; one sensible answer is an approval, not a pick.
+- **Visual work starts as mocks a judge filters.** Before building a new screen, art or a restyle,
+  make two to four quick mocks in different directions; the UI/UX persona (or a fresh subagent)
+  picks one against his past verdicts (`taste-examples/README.md`). He sees it next to the current
+  screen as an approval, or a pick if two real directions are close. Exact small asks skip this.
 - **Games: mechanics first, flavor later.** Settle the mechanics (rules, progression, balance)
   before adding story, personality and flavor. Those come in a later polish phase, once the
   mechanics have stopped changing.
@@ -129,5 +129,6 @@ publishes it with `quasarbright:update-plugin`. Where the project has a persona 
 handler sends it the lesson and the persona records it; otherwise the build thread or coordinator
 does. Only general lessons go to the plugin, written as a default with the example that taught it.
 A choice made for one project, or a rejection during a brainstorm, stays in that project's docs or
-memory. Technical gotchas go in memories. If he corrects something a doc already covers, the line
+memory. Visual verdicts also save an example (picture, verdict, his words) in `docs/taste-examples/`.
+Technical gotchas go in memories. If he corrects something a doc already covers, the line
 wasn't strong enough to prevent the miss, so sharpen it.
