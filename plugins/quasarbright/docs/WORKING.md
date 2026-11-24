@@ -9,6 +9,13 @@ Claude project (coordinator, threads, review page, personas) is in `PROJECTS.md`
 - **Check alignment when it matters.** When the idea is big or ambiguous, restate your
   understanding (or lay out options as light HTML mocks) and wait. When it's clear, just build.
   Say in one line which one you're doing, so he can ask for the restatement.
+- **Give a few options with a recommendation, then record what he actually picks.** He decides by
+  picking from short option lists, and often reshapes the pick: offered four ways to make a missed
+  contract cost something, he took "strikes" and turned it into reputation (Clanker Tycoon decision
+  78). Write down his reshaped version, not the option as you wrote it.
+- **His rules are his current view, not law.** When one of his standing rules blocks what he's
+  asking for, name the rule and let him choose. He reversed "no factory building" himself once the
+  game needed it (Clanker Tycoon decision 85).
 - **Brainstorm means options, then wait.** "Why does X happen?" and "anything missing?" get an
   explanation and suggestions, not edits.
 - **Visual work starts as mocks a judge filters.** Before building a new screen, art or a restyle,
