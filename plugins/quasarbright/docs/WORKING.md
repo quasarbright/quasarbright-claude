@@ -13,8 +13,9 @@ Claude project (coordinator, threads, review page, personas) is in `PROJECTS.md`
   explanation and suggestions, not edits.
 - **Visual work starts as mocks a judge filters.** Before building a new screen, art or a restyle,
   make two to four quick mocks in different directions; the UI/UX persona (or a fresh subagent)
-  picks one against his past verdicts (`TASTE-EXAMPLES.md`). He sees it next to the current
-  screen as an approval, or a pick if two real directions are close. Exact small asks skip this.
+  picks one against his past verdicts (the `persona` skill, "A review"). He sees it next to the
+  current screen as an approval, or a pick if two real directions are close. Exact small asks skip
+  this. Before building in an area, read its lessons from the taste store (`persona` skill).
 - **Games: mechanics first, flavor later.** Settle the mechanics (rules, progression, balance)
   before adding story, personality and flavor. Those come in a later polish phase, once the
   mechanics have stopped changing.
@@ -71,7 +72,7 @@ had a − ×N + pill, after a rule about feature parity was already in `TASTE.md
    a repeated thing as well as the first. Drag every handle, and click across the whole clickable
    range.
    Fill every row, tray and list that grows to its largest realistic count, and measure sibling
-   edges in the browser (`UX-CHECKLIST.md`, "Everything in a row is the same height").
+   edges in the browser (the UI lesson "Everything in a row is the same height").
 3. Look at mid-animation frames, not only rest states.
 4. Screenshot new controls in their hover, active and disabled states, at 375×812, at desktop, and
    on a wide screen when layout changed. Send each screenshot or mock as its own full-resolution
@@ -101,7 +102,7 @@ had a − ×N + pill, after a rule about feature parity was already in `TASTE.md
    online, and use a cloud bridge only when the Mac can't be reached. The playtester still gets only the URL
    and how to open the page.
 9. Run the `ux-review` skill. A fresh subagent, without your reasoning, plays with it in a
-   browser, judges it against `TASTE.md` and `UX-CHECKLIST.md`, and compares it with sibling
+   browser, judges it against `TASTE.md` and the UI lessons, and compares it with sibling
    variants and projects. You decide which findings are real: fix those, drop the ones that are
    clearly the reviewer misunderstanding, and ask him about anything you're unsure of. If the
    project has a UI/UX persona (below), it reviews the change and the screenshots too. Then demo.
@@ -114,21 +115,13 @@ Tests pass before every push.
 ## Lessons from his verdicts
 
 Every approval, rejection or comment (on a review page or in chat) and every correction is a chance
-to learn. Lessons belong to a topic, not to a persona, so any session in any project finds them:
+to learn. Taste lessons (UI and UX, art, game design, in-product copy, video) live in one live taste
+store that every session and project shares, with his verdicts and their pictures: the `persona`
+skill says how to read and add to it. Whoever handles a verdict records it there in the same turn,
+through the area's persona where the project has one. No plugin publish is needed for that.
 
-| Area | Doc |
-|---|---|
-| Product taste, UI and UX | `TASTE.md` (principles), `UX-CHECKLIST.md` (low-level rules) |
-| Art (characters, objects, icons) | `ART.md` |
-| Game design (mechanics, economy, balance) | `GAME-DESIGN.md` |
-| In-product copy and humor | `WRITING.md` |
-| How to work with him, reviews and mocks | this file, and the `review-page` skill |
-
-Whoever handles a verdict records any durable lesson in that area's doc in the same turn, and
-publishes it with `quasarbright:update-plugin`. Where the project has a persona for the area, the
-handler sends it the lesson and the persona records it; otherwise the build thread or coordinator
-does. Only general lessons go to the plugin, written as a default with the example that taught it.
-A choice made for one project, or a rejection during a brainstorm, stays in that project's docs or
-memory. Visual verdicts also save an example (picture, verdict, his words): `TASTE-EXAMPLES.md`.
-Technical gotchas go in memories. If he corrects something a doc already covers, the line
-wasn't strong enough to prevent the miss, so sharpen it.
+How to work with him, reviews and mocks are process, not taste: those lessons go in this file and
+the skills, published with `quasarbright:update-plugin`. A choice made for one project, or a
+rejection during a brainstorm, stays in that project's docs or memory. Technical gotchas go in
+memories. If he corrects something a lesson already covers, the line wasn't strong enough to
+prevent the miss, so sharpen it (a new lesson superseding the old one).

@@ -21,8 +21,8 @@ work. Mike doesn't read threads.
   approvals and text questions, persona questions included. Keep it in sync when he answers in
   chat, link it whenever something needs him, and mark items Done once their work ships.
 - **Every verdict teaches something.** Whoever handles an answer from the page or chat records
-  any general lesson in its area's doc in the same turn, through the area's persona when there is
-  one (`WORKING.md`, "Lessons from his verdicts").
+  the verdict and any general lesson in the live taste store in the same turn, through the area's
+  persona when there is one (the `persona` skill, "When Mike gives a verdict").
 
 ## Where threads run
 
@@ -35,32 +35,19 @@ would fix it; then the fix goes into that rule's checklist.
 ## Design personas (Claude projects only)
 
 In a Claude project, which can run long-lived threads, a project may keep design personas: for
-example a game designer and a UI/UX designer, each its own persistent thread. Each has a brief at
-`docs/personas/<name>.md` in the project's repo, or at `/mnt/project-files/personas/<name>.md` when
-the project spans many repos: Mike's rules for its area, where things stand, its current take, open
-calls waiting on him, and a dated log. Personas edit docs only and never build. Each persona also
-owns its area's lessons doc in this plugin (`WORKING.md`, "Lessons from his verdicts"): it keeps it current and periodically cleans it
-up, merging duplicates and sharpening lines that failed to prevent a repeat. Consult them in
-design discussions and on proposals, and have them review every change in their area before Mike
-sees it. They're the reviewers who remember the project. The blind playtester and the `ux-review`
-subagent are the opposite on purpose: fresh every time, with no memory. A UI/UX persona's review
-opens the live page (screenshots only show what the builder chose) and explores it like a
-curious user, well beyond the change: every screen, mode and control, moving around the world,
-trying to break it. It also reads every word and runs `ux-review`'s contrast check. Outside a project, skip
-personas and rely on those two.
+example a game designer and a UI/UX designer, each its own persistent thread. How every persona
+works, in any project, is the `persona` skill: it maps itself onto a domain of Mike's taste, reads
+and adds to the live taste store his other projects share, filters mocks before he sees them,
+judges "would Mike pick this?" against his past verdicts, and keeps score of its misses. Its
+project brief (`docs/personas/<name>.md` in the project's repo, or
+`/mnt/project-files/personas/<name>.md` when the project spans many repos) holds project state
+only: where things stand, its current take, open calls waiting on him, and a dated log. Personas
+edit docs and the store only and never build.
 
-**A UI/UX or art persona is the judge of taste, not only of defects.** It learns what Mike likes
-from screenshots of his past verdicts, kept in a private gallery artifact (`TASTE-EXAMPLES.md` has
-the steps):
-
-- **Every review compares.** Before reviewing visual work, it opens the 5 to 8 closest examples
-  and judges "would Mike pick this?", naming the examples behind the call.
-- **It filters mocks before he sees them.** For visual work the builder sends it two to four quick
-  mocks before building anything (`WORKING.md`, "Before building"). The persona picks one against
-  the examples, or sends them all back with what's wrong (two rounds at most). Mike sees the picked
-  one, with the persona's one-line reason, and the build then matches it.
-- **It saves his verdicts as examples.** When a verdict in its area is routed to it, it saves the
-  example with the lesson, marking what it had said before he saw it.
-- **It keeps score.** A thing it approved that he then rejected or corrected is a miss, marked on its
-  example. On cleanup it reads the misses; a run on one kind means its brief or a lessons doc
-  is missing something, and it fixes that.
+Consult them in design discussions and on proposals, and have them review every change in their
+area before Mike sees it. They're the reviewers who remember. The blind playtester and the
+`ux-review` subagent are the opposite on purpose: fresh every time, with no memory, and they never
+read the store. A UI/UX persona's review opens the live page (screenshots only show what the
+builder chose) and explores it like a curious user, well beyond the change: every screen, mode and
+control, moving around the world, trying to break it. It also reads every word and runs
+`ux-review`'s contrast check. Outside a project, skip personas and rely on those two.

@@ -20,14 +20,19 @@ plugins/quasarbright/
     publish-to-portfolio/              add a project to the portfolio
     ux-review/                         fresh-eyes UX review before a demo
     update-plugin/                     how to change, publish and announce this plugin
+    persona/                           how review personas work, and the live taste store
   hooks/hooks.json, session-start.sh   SessionStart hooks that inject the always-on steering
   steering/
     STEERING.md                        standing rules for every session (self-learning, pushing)
     push-policy.md                     per-project push rules
     rules/                             american.md, draw-it.md, github.md
   docs/
-    CLAUDE.md TASTE.md WORKING.md DESIGN.md UX-CHECKLIST.md
+    CLAUDE.md TASTE.md WORKING.md PROJECTS.md DESIGN.md
 ```
+
+What Mike's taste looks like in detail (the lessons from his corrections, his past verdicts with
+screenshots, each persona's learned preferences) isn't in this repo. It lives in a private
+claude.ai artifact that every session reads and writes live; `skills/persona/SKILL.md` describes it.
 
 Skills refer to the docs by paths relative to their own folder (`../../docs/TASTE.md`). Plugin docs
 aren't loaded automatically the way a `CLAUDE.md` is; a skill reads them when it runs.
@@ -61,7 +66,7 @@ Skills are namespaced: `/quasarbright:deploy`, `/quasarbright:project-ideas`, an
 A plugin can't ship a `CLAUDE.md`, so `hooks/hooks.json` runs SessionStart hooks that print the
 always-on files: `steering/*.md`, the rules in `steering/rules/` (American spelling, drawing
 visual explanations, GitHub conventions), and `docs/CLAUDE.md`, `TASTE.md` and `WORKING.md`. Claude
-Code adds that output to the session's context. `DESIGN.md` and `UX-CHECKLIST.md` load on demand.
+Code adds that output to the session's context. `DESIGN.md` loads on demand.
 
 Each hook's output has to stay under about 10,000 characters; past that, Claude Code shows a 2KB
 preview and saves the rest to a file. That's why the files are split across five hooks. Everything

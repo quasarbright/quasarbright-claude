@@ -45,15 +45,13 @@ republish them from the new template.
   design or build work itself.
 - **Every verdict teaches something** (Mike, 2026-11-19). A pick, a rejection, a thumbs-down or a
   note often carries a lesson beyond the item ("the button coloring makes the big loan look like a
-  cancel button"). Lessons belong to a topic, not a persona: UI/UX in `TASTE.md` and
-  `UX-CHECKLIST.md`, art in `ART.md`, game design in `GAME-DESIGN.md`, copy and humor in
-  `WRITING.md`, reviews and mocks in `WORKING.md` and this skill. Each routed note names the lesson
-  you see and the doc it belongs in. The owner records it in the same turn and publishes it with
-  `quasarbright:update-plugin`: the area's persona where the project has one (it also keeps that doc
-  tidy), otherwise the build thread or the coordinator. For a visual item, the routed note also
-  gives each picture's asset id and title, what Mike marked on it, and whether a persona had
-  approved it, so the owner can save it as a taste example (`docs/TASTE-EXAMPLES.md`) and
-  mark a miss. Only general lessons go to the plugin; a
+  cancel button"). Taste lessons go in the live taste store, under their domain (UI and UX, art,
+  game design, copy and humor, video); reviews and mocks are process and go in `WORKING.md` and
+  this skill. Each routed note names the lesson you see and its domain. The owner records the
+  verdict and lesson in the store in the same turn (the `persona` skill, "When Mike gives a
+  verdict"): the area's persona where the project has one, otherwise the build thread or the
+  coordinator. The routed note also gives each picture's asset id and title, what Mike marked on
+  it, and what a persona had said about it, so the owner can save the example and mark a miss. Only general lessons go to the plugin; a
   choice for this project stays in the project's docs. Outside a project, the session handling the
   answer records it. See `WORKING.md`, "Lessons from his verdicts".
 - **Nothing Mike types or marks is ever lost** (Mike, 2026-11-21, after a republish wiped notes he

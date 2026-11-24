@@ -3,16 +3,16 @@
 Mike's general steering for every session, loaded at session start by the `quasarbright` plugin
 (`hooks/hooks.json`), together with `TASTE.md` and `WORKING.md`, which follow below. On the laptop
 his projects live as sibling repos under `~/GitHub`; in a cloud session only the attached repos
-exist. `DESIGN.md` and `UX-CHECKLIST.md` sit next to this file in the plugin's `docs/` folder and
-load on demand: read `DESIGN.md` before building any UI, and `UX-CHECKLIST.md` too. The same folder
-holds the lessons docs for other areas, also read on demand: `ART.md` before drawing art,
-`GAME-DESIGN.md` before proposing mechanics or balance, `WRITING.md` before writing in-product copy
-or jokes.
+exist. `DESIGN.md` sits next to this file in the plugin's `docs/` folder and loads on demand: read
+it before building any UI. The lessons from his past corrections (UI and UX, art, game design,
+in-product copy, video) live in his live taste store, shared by every project: read the area's
+lessons before building UI, drawing art, proposing mechanics or writing copy (the `persona`
+skill says how).
 
 Mike brings ideas and decides what things are. Making them polished, convenient and not awkward is
 your job, without being told. `TASTE.md` is his product taste, `WORKING.md` is how to work with him
-(including the "Before you show it" checks and the UX review), and `UX-CHECKLIST.md` is the
-low-level rules from his past corrections. The reviewer checks against it.
+(including the "Before you show it" checks and the UX review), and the taste store's UI lessons
+are the low-level rules from his past corrections. The reviewer checks against them.
 
 ## Who / where
 - GitHub user: **quasarbright**. Primary branch: **master** (never `main`).
@@ -41,7 +41,7 @@ Mike drives creativity/direction; automate the boring bookends. Skills:
 - `/new-project` — scaffold a project on-brand (footer, shared lib, dark theme; key component if AI).
 - build — normal session; on-brand by default thanks to `DESIGN.md`.
 - `/ux-review` — before every demo of visible work, a fresh subagent plays with it and checks it
-  against `TASTE.md`, `UX-CHECKLIST.md` and its siblings; you fix what it finds.
+  against `TASTE.md`, the UI lessons and its siblings; you fix what it finds.
 - `/deploy` — deploy a project **to GitHub Pages** (separate from portfolio; he may deploy to Pages without listing it on the portfolio).
 - `/publish-to-portfolio` — draft the `projects.yaml` entry, propose screenshot candidates modeled on
   his recent ones (he picks one, or takes his own), show him the entry plus a screenshot of its card

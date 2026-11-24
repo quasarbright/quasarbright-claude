@@ -92,4 +92,4 @@ set, beside the current version when he's deciding whether it's better.
 
 After he approves, wire them in for real (keep the originals they replaced), resize and compress
 for the web (the raw PNGs are about 1MB), and test like any visible change (`WORKING.md`, "Before
-you show it"). Record his verdicts in `docs/ART.md`.
+you show it"). Record his verdicts in the taste store under art (the `persona` skill).

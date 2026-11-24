@@ -35,6 +35,13 @@ The subagent only knows what you give it. Collect:
 
 ## 2. Spawn the reviewer
 
+First export the UI lessons from Mike's taste store to a file the reviewer can read: `ArtifactData`
+`query` on `lessons` where `domain == ui` with `out_dir`, then
+`python3 -I <plugin skills>/persona/store.py lessons <dir> --domain ui > <scratch>/ui-lessons.md`
+(the `persona` skill, "Reading it"). The reviewer reads only that file and `TASTE.md`: it stays
+blind, so it never opens the store, the examples or any persona's notes. If the store can't be
+reached, say so in the demo and review against `TASTE.md` alone.
+
 Use the Agent tool (general-purpose). Don't tell it what you think is wrong or right. In a cloud session, add the headless-browser
 notes from the plugin's `steering/rules/cloud.md` (WebGL flags, one browser at a time, no pointer
 lock) to the brief, or it will stall on a blank canvas. Give it the
@@ -45,7 +52,7 @@ this plugin's `docs/` and `skills/` folders (`../../docs` and `..` from this ski
 > anything awkward, unpolished, inconvenient, distracting, cheesy, inconsistent or broken. Your job
 > is to find those things first.
 >
-> Read `<plugin docs>/TASTE.md` (his product taste) and `<plugin docs>/UX-CHECKLIST.md` (concrete rules from
+> Read `<plugin docs>/TASTE.md` (his product taste) and `<ui lessons file>` (concrete rules from
 > his past corrections). Then use the page like a real user, with headless Playwright (from any
 > project's node_modules, e.g. `~/GitHub/cutwist`; launch with `--mute-audio`, see the memories on
 > headless Chromium flags). Use real clicks, drags and keys through the visible controls. Do this at
@@ -65,7 +72,7 @@ this plugin's `docs/` and `skills/` folders (`../../docs` and `..` from this ski
 > **Taste pass.** Go through each TASTE.md principle and ask whether this meets it. Does the subject
 > get the screen? Is it good the moment it loads? Does it explain itself? Is anything distracting,
 > cheesy, dev-tool-like, unfinished on some screen size, or janky in motion? Check the
-> UX-CHECKLIST.md rules that apply.
+> rules in the lessons file that apply.
 >
 > **Read pass.** Open every screenshot at full size and read every word on it: labels, counts,
 > dates, captions, descriptions, links. Small muted text over a busy or changing background is the
@@ -135,7 +142,7 @@ missed a control that was there, it applied a rule outside the situation the rul
 parity gap doesn't fit this variant. Sort every finding, must-fix or consider, into one of three
 groups:
 
-- **Fix it** when it's clearly a real problem by `TASTE.md` and `UX-CHECKLIST.md`.
+- **Fix it** when it's clearly a real problem by `TASTE.md` and the UI lessons.
 - **Drop it** when it's clearly a misunderstanding. Check before dropping: reproduce what it saw,
   or find where Mike asked for it. If you can't confirm it's a misunderstanding, it isn't clearly
   one.
@@ -146,10 +153,9 @@ groups:
 When you demo, mention what you dropped in one line each with the reason, so he can overrule you.
 If the fixes were substantial (layout, interaction model), run the review once more on the result.
 Don't loop more than twice.
-- If the review found a kind of problem that `TASTE.md` or `UX-CHECKLIST.md` doesn't cover, add the
-  lesson there (see "Lessons from his verdicts" in `WORKING.md`). Edit the copies in the plugin
-  repo, `~/GitHub/quasarbright-claude/plugins/quasarbright/docs/`, not the installed cache, since he would have had to
-  correct it.
+- If the review found a kind of problem that `TASTE.md` and the UI lessons don't cover, add a UI
+  lesson to the taste store (the `persona` skill, "When Mike gives a verdict", step 2), since he
+  would have had to correct it.
 
 Then demo as usual: screenshots in the states that show the change, sent with `SendUserFile`.
 
@@ -179,7 +185,7 @@ reaching, and ask for a real start-to-finish session. The reviewer stays blind, 
 In a Claude project with a UI/UX persona (see "Design personas" in `PROJECTS.md`), the persona owns
 this: it runs the review, sorts the findings with what it knows about the project, and folds the
 real ones into its brief's current take, ordered by how much they get in the way. A finding that
-is a general rule rather than a one-off goes into `UX-CHECKLIST.md`, which the persona keeps tidy.
+is a general rule rather than a one-off becomes a UI lesson in the taste store (`persona` skill).
 
 ## With a UI/UX persona
 
@@ -187,6 +193,6 @@ In a Claude project that keeps a UI/UX persona (see "Design personas" in `PROJEC
 change, the live URL and the screenshots after this review, before Mike sees them. The persona
 opens the live page and does the read, contrast, controls and default-view passes itself, so a miss here gets a second chance with someone who remembers
 the project's rules. It also compares the change with the closest screenshots of Mike's past
-verdicts (`docs/TASTE-EXAMPLES.md`, "Judging against them") and says whether he'd pick it.
+verdicts (the `persona` skill, "A review") and says whether he'd pick it.
 It sends back what to fix; you fix it, then demo. Tell it whether this build came from a mock it
 picked, so it can check the build against that mock too.

@@ -3,8 +3,8 @@
 What makes a good website, little game, simulation or tool, for Mike. Creative direction (what the
 thing is) is his. Whether it's nice to use (polished, convenient, not awkward) is yours to get right
 without being told. These principles come from the projects he likes and from about 1,000 of his
-corrections across past sessions. The detailed, low-level rules behind them live in
-`UX-CHECKLIST.md`, which the UX reviewer uses. How to work with him is in `WORKING.md`.
+corrections across past sessions. The detailed, low-level rules behind them are the UI lessons
+in his taste store (the `persona` skill), which the UX reviewer uses. How to work with him is in `WORKING.md`.
 
 All of these are judgment calls. Each one says what to aim for. When to apply it is up to you.
 
@@ -66,15 +66,3 @@ Open these to calibrate. They're on Pages, and the source is in `~/GitHub`.
 - **Core UX fine, not finished: Differential growth** (`sketches/differential-growth/`). Bloom and
   big and small screens were never right, and its controls are physics constants. Its empty
   opening screen and its growth filling the whole window are on purpose.
-
-## Confirmed defaults
-
-Concrete choices he has confirmed. They are defaults, not laws.
-
-- Speed controls are halve and double buttons (plus skip-to-end where it fits), not a slider. Step
-  sims copy rock paper scissors' bottom bar (`DESIGN.md`, "Bottom control bar"), his gold standard.
-- Icons are real SVG icons (Lucide style), never unicode glyphs.
-- Undo comes with redo and covers every change.
-- Glow means fading heat over a still-visible structure. No neon or bloom blobs.
-- Simple toys skip the about modal. Ideas worth explaining get one, scaled to the idea.
-- Copy is first person ("my", never "Mike's"), and a game's bot is "the AI".

@@ -1,6 +1,6 @@
 ---
 name: video-review
-description: Review one of Mike's (quasarbright) YouTube videos with a panel of reviewers (fact check, clarity, entertainment, pacing, hook and packaging, script vs screen, visual polish) at the script stage or on a draft render. Each reviewer keeps a long-term file of what Mike wants, so they learn across videos. Use whenever Mike asks for a script or video review, before recording the real voiceover, and before final render.
+description: Review one of Mike's (quasarbright) YouTube videos with a panel of reviewers (fact check, clarity, entertainment, pacing, hook and packaging, script vs screen, visual polish) at the script stage or on a draft render. Each reviewer keeps a long-term file of what Mike wants in his live taste store, so they learn across videos. Use whenever Mike asks for a script or video review, before recording the real voiceover, and before final render.
 ---
 
 # Video review
@@ -11,23 +11,28 @@ funny, what to cut) stay his. You run the panel, sort what comes back, and show 
 
 ## The reviewers
 
-Each one has a file in `reviewers/` with its job, what to look for, **Mike's preferences** learned so
-far and a dated **log**. The file is the reviewer's long-term memory: it's in this plugin, so it
-travels to every machine and every video.
+Each one is a persona in Mike's live taste store (domain `video`; the `persona` skill): its job,
+what to look for, **what Mike wants** learned so far and a dated **log**. That's the reviewer's
+long-term memory, shared live by every session and machine.
 
-| reviewer | file | sees | script stage | draft render |
+| reviewer | persona id | sees | script stage | draft render |
 |---|---|---|---|---|
-| Fact check | `fact-check.md` | informed | yes | |
-| Clarity | `clarity.md` | **blind** | yes | yes |
-| Entertainment | `entertainment.md` | informed | yes | yes |
-| Pacing | `pacing.md` | informed | yes | yes |
-| Hook and packaging | `hook.md` | **blind** | yes | |
-| Script vs screen | `script-screen.md` | informed | yes, once `>` notes exist | yes |
-| Visual polish | `visual-polish.md` | informed | | yes |
+| Fact check | `video-fact-check` | informed | yes | |
+| Clarity | `video-clarity` | **blind** | yes | yes |
+| Entertainment | `video-entertainment` | informed | yes | yes |
+| Pacing | `video-pacing` | informed | yes | yes |
+| Hook and packaging | `video-hook` | **blind** | yes | |
+| Script vs screen | `video-script-screen` | informed | yes, once `>` notes exist | yes |
+| Visual polish | `video-visual-polish` | informed | | yes |
 
-**Blind** reviewers judge as a stranger would. They get the reviewer file and the material, and
-nothing else: no notes on the video, no reflections, no project memory, none of your opinions.
-Their file still grows (what to look for), but it never holds facts about a particular video.
+Before a run, build each reviewer's file from the store: export `personas`, `log`, and `lessons`
+where `domain == video` with `ArtifactData` `query` and `out_dir`, then
+`python3 -I ../persona/store.py persona <dir> <persona id> > <scratch>/<id>.md`.
+
+**Blind** reviewers judge as a stranger would. They get their file and the material, and nothing
+else: no notes on the video, no reflections, no project memory, none of your opinions, and never
+the store itself (you build their file for them). Their file still grows (what to look for), but
+it never holds facts about a particular video.
 
 **Informed** reviewers get the reviewer file plus the context a collaborator would have, listed
 below. They're the ones who remember Mike.
@@ -58,7 +63,7 @@ video (project memory). Give paths, not summaries, so the reviewer reads the rea
    the script-stage reviewers that apply on just those lines (with their surroundings for context),
    alongside the render reviewers.
 2. Spawn one subagent per reviewer, in parallel (Agent tool, general-purpose). The prompt is: the
-   reviewer file's full text, the material's paths, the context paths if informed, and this:
+   reviewer's file (built above, full text), the material's paths, the context paths if informed, and this:
 
    > Review this as described in your file. Read all of it before writing anything. Report
    > findings most important first. Each finding gives: where (a line number or a quote, or a
@@ -68,13 +73,13 @@ video (project memory). Give paths, not summaries, so the reviewer reads the rea
    > stage. Don't pad: if something works, say nothing about it, except for at most three lines
    > on what works best, so it doesn't get cut. Don't edit any files.
 
-   Blind reviewers get only the file text, the material path and that paragraph.
+   Blind reviewers get only their file text, the material path and that paragraph.
 3. Sort the findings yourself (below). Merge duplicates across reviewers and say which reviewers
    raised them.
 
 ## Sorting
 
-The reviewers suggest; you decide. Check each finding against the reviewer files' preferences and
+The reviewers suggest; you decide. Check each finding against the reviewers' learned preferences and
 what Mike has decided for this video:
 
 - **Keep** findings that are real by those standards.
@@ -91,11 +96,14 @@ what you dropped and why, so he can overrule it. Keep it skimmable: he reads on 
 This is what makes the panel get better. After Mike reacts to a review:
 
 - **He rejects a finding** ("I do that on purpose", "no, the ending stays"): add the preference
-  behind it to that reviewer's **Mike's preferences**, phrased as a general rule when it's general
-  ("ends with downtime for the end card") and as a one-video note in project memory when it isn't.
-- **He agrees, or catches something none of them did:** add what to look for to the right
-  reviewer's checklist, so it's caught next time.
-- **Add a log line** to each reviewer file you touched: date, video, what changed.
+  behind it as a lesson for that reviewer (`persona` set to its id, `kind` `preference`), phrased
+  as a general rule when it's general ("ends with downtime for the end card") and as a one-video
+  note in project memory when it isn't.
+- **He agrees, or catches something none of them did:** add what to look for as a lesson for the
+  right reviewer (`kind` `rule`), so it's caught next time.
+- **Save the verdict** as an example (`area` `video`, kind `script line`, `title`, `joke`...) with
+  his words, and mark what the reviewer had said, so misses get counted.
+- **Add a log line** for each reviewer you touched: date, video, what changed.
 
-Then publish with `quasarbright:update-plugin`. Blind reviewers' files only ever get general
-"look for" rules, never a video's facts.
+All of this goes in the store, live, with no plugin publish (the `persona` skill, "When Mike gives
+a verdict"). Blind reviewers only ever get general "look for" lessons, never a video's facts.

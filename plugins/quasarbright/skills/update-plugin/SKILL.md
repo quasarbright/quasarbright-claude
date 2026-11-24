@@ -16,10 +16,11 @@ the single source of truth. Every installed copy (laptop, cloud sessions) is a c
 
 Layout: `plugins/quasarbright/` holds `skills/<name>/SKILL.md`, `docs/`, `steering/` and
 `.claude-plugin/plugin.json`. `hooks/hooks.json` injects `steering/*` plus `docs/CLAUDE.md`,
-`TASTE.md`, `WORKING.md` and `PROJECTS.md` at every session start; the other docs (`DESIGN.md`,
-`UX-CHECKLIST.md`, `TASTE-EXAMPLES.md` and the area lessons docs `ART.md`, `GAME-DESIGN.md`,
-`WRITING.md`) load on demand. The taste examples themselves (screenshots of his verdicts) live in a
-private artifact, not this public repo, so saving one needs no publish (`TASTE-EXAMPLES.md`). Each hook's output must stay under about
+`TASTE.md`, `WORKING.md` and `PROJECTS.md` at every session start; `DESIGN.md` loads on demand.
+Taste (the lessons from his verdicts, persona files, the screenshots of his verdicts) lives in the
+live taste store, a private artifact, not this public repo: adding to it needs no publish (the
+`persona` skill). This plugin holds how personas and reviews work; the store holds what they've
+learned. Each hook's output must stay under about
 10,000 characters, or Claude Code shows only a 2KB preview and saves the rest to a file. When a file
 grows or a new always-on file is added, put it in its own hook entry and check with `wc -c`.
 
