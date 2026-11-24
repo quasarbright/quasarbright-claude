@@ -105,6 +105,11 @@ judgment. Raw findings: `.taste-audit/findings-2026-11-16.json`.
   pencil button in one place, every rename is that pencil button. A card's details open the same way
   (the same ⓘ button) and a list of cards is the same component wherever it appears. Different
   controls for the same thing on different screens is a must-fix, even when each one works.
+- **A recap of events is a static list of small pictures, one per event.** Each picture shows only
+  what that event touched (who acted, the cards or pieces involved, the change), laid out so the
+  whole sequence scans at once. Don't redraw the whole state at every step, and don't hide the
+  sequence behind Back/Next. (Mike rejected a step-through table for a game's night recap: "just go
+  one by one on each event and visualize what happened... laid out all static.")
 - **Nothing waits without moving.** Anything that takes time shows progress. State changes show up
   immediately, with no stale objects that look usable. When several outcomes happen at once, show
   all of them. Say waiting in words ("thinking", "reading"): no filling meters for waits, no
