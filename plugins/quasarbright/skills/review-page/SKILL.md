@@ -172,6 +172,10 @@ shot's `title` and `desc`.
   X working (a render or a mock), never the closest thing that exists today. Mike, 2026-11-25, on a
   fisheye pick whose pictures were both today's perspective mode at 170° and 179°: "neither of these
   show >180".
+- **Animated work isn't reviewed from stills.** When the thing being judged moves (a demo, an
+  animation, a transition), the item carries an MP4 clip of it plus the live link, or it doesn't go
+  on the page at all: send the live link in chat. Mike, 2026-11-25, on 14 stills of an About
+  modal's 3D demos: "this artifact is not useful since I cannot see the animations".
 - **What he picked is what gets built.** Hand the build the picked option's image and source, and
   put the built screenshot beside it before the result comes back as a new item.
 
