@@ -15,15 +15,17 @@ Each one is a persona in Mike's live taste store (domain `video`; the `persona` 
 what to look for, **what Mike wants** learned so far and a dated **log**. That's the reviewer's
 long-term memory, shared live by every session and machine.
 
-| reviewer | persona id | sees | script stage | draft render |
-|---|---|---|---|---|
-| Fact check | `video-fact-check` | informed | yes | |
-| Clarity | `video-clarity` | **blind** | yes | yes |
-| Entertainment | `video-entertainment` | informed | yes | yes |
-| Pacing | `video-pacing` | informed | yes | yes |
-| Hook and packaging | `video-hook` | **blind** | yes | |
-| Script vs screen | `video-script-screen` | informed | yes, once `>` notes exist | yes |
-| Visual polish | `video-visual-polish` | informed | | yes |
+| reviewer | name | persona id | sees | script stage | draft render |
+|---|---|---|---|---|---|
+| Fact check | Clippy | `video-fact-check` | informed | yes | |
+| Clarity | Ben | `video-clarity` | **blind** | yes | yes |
+| Entertainment | Quentin | `video-entertainment` | informed | yes | yes |
+| Pacing | Fletcher | `video-pacing` | informed | yes | yes |
+| Hook and packaging | Hooky | `video-hook` | **blind** | yes | |
+| Script vs screen | Annie | `video-script-screen` | informed | yes, once `>` notes exist | yes |
+| Visual polish | Grant | `video-visual-polish` | informed | | yes |
+
+Refer to each reviewer by its name (the persona skill's Names table), in the report too.
 
 Before a run, build each reviewer's file from the store: export `personas`, `log`, and `lessons`
 where `domain == video` with `ArtifactData` `query` and `out_dir`, then

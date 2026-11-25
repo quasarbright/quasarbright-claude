@@ -28,6 +28,11 @@ def active(lessons):
     return [r for r in lessons if r['id'] not in gone and not r.get('retired')]
 
 
+def ids_of(d, pid):
+    """The persona id plus any ids merged into it (personas with mergedInto == pid)."""
+    return {pid} | {x['id'] for x in load(d, 'personas') if x.get('mergedInto') == pid}
+
+
 def opt(args, name):
     return args[args.index(name) + 1] if name in args else None
 
@@ -52,7 +57,11 @@ def main(argv):
         dom, per = opt(rest, '--domain'), opt(rest, '--persona')
         if dom:
             rows = [r for r in rows if r.get('domain') == dom]
-        rows = [r for r in rows if r.get('persona') in (None, per)] if per else [r for r in rows if not r.get('persona')]
+        if per:
+            mine = ids_of(d, per)
+            rows = [r for r in rows if r.get('persona') is None or r.get('persona') in mine]
+        else:
+            rows = [r for r in rows if not r.get('persona')]
         print(lessons_md(rows), end='')
     elif cmd == 'persona':
         pid = rest[0]
@@ -62,19 +71,23 @@ def main(argv):
         print(f"# {p['name']}\n\n{p.get('role', '').strip()}\n")
         if p.get('looksFor'):
             print(f"## What to look for\n\n{p['looksFor'].strip()}\n")
-        mine = [r for r in active(load(d, 'lessons')) if r.get('persona') == pid]
+        if p.get('mergedInto'):
+            print(f"(merged into {p['mergedInto']}; read that persona instead)\n")
+        ids = ids_of(d, pid)
+        mine = [r for r in active(load(d, 'lessons')) if r.get('persona') in ids]
         if mine:
             print("## What Mike wants (learned)\n")
             print(lessons_md(mine, '###'))
-        log = sorted((x for x in load(d, 'log') if x.get('persona') == pid), key=lambda x: x.get('at', ''))
+        log = sorted((x for x in load(d, 'log') if x.get('persona') in ids), key=lambda x: x.get('at', ''))
         if log:
             print("## Log\n")
             for x in log:
                 print(f"- {x.get('at', '')}: {x['text']}")
     elif cmd == 'misses':
         per = opt(rest, '--persona')
+        ids = ids_of(d, per) if per else None
         for e in load(d, 'examples'):
-            if e.get('persona') == 'approved' and e.get('verdict') != 'approved' and (not per or e.get('personaId') == per):
+            if e.get('persona') == 'approved' and e.get('verdict') != 'approved' and (not per or e.get('personaId') in ids):
                 print(f"- {e.get('date')} {e['id']} [{e.get('kind')}] persona said: {e.get('personaSaid') or '-'} | Mike: {e.get('words')}")
     else:
         sys.exit(__doc__)

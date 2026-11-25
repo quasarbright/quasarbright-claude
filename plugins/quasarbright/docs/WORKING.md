@@ -98,7 +98,7 @@ had a − ×N + pill, after a rule about feature parity was already in `TASTE.md
    Reproduce his exact scene before claiming a visual fix. If you can't, ask for his settings right
    away.
 8. **Blind playtest** after a meaningful gameplay change (a game or anything played). Spawn a fresh
-   subagent that gets only the URL and what a new player would know: no docs, no repo, no reasoning
+   subagent, called Darby (the persona skill's Names table), that gets only the URL and what a new player would know: no docs, no repo, no reasoning
    of yours, no memory of past playtests. It plays a real run through the visible controls and
    reports where it got confused, stuck, bored, or did something you didn't expect. It's a step in
    testing, not a persona: a new one every time, so it stays blind. Fix what it finds the same way

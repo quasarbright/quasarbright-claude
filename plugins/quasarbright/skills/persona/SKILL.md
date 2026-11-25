@@ -11,6 +11,43 @@ can't talk to each other, and plugin updates are too slow and too unreliable for
 day to day (2026-11-24). So this skill holds how personas work, and everything they learn lives in
 one live store that every session reads and writes.
 
+## Names
+
+Every role has one standard name, the same in every project (Mike, 2026-11-25: "I don't like having
+different names for personas across projects"). A persona's `name` in the store, its thread's
+title, its brief's filename and how other sessions refer to it all use this name.
+
+| role | name | store persona id |
+|---|---|---|
+| UI/UX designer | Pam | `pam` |
+| Game designer | Mark | `mark` |
+| Art and sound designer | Squidward | `rosa` |
+| Product copy and humor (domain `writing`) | Tim | none yet |
+| Video fact check | Clippy | `video-fact-check` |
+| Video clarity | Ben | `video-clarity` |
+| Video entertainment | Quentin | `video-entertainment` |
+| Video pacing | Fletcher | `video-pacing` |
+| Video hook and packaging | Hooky | `video-hook` |
+| Video script vs screen | Annie | `video-script-screen` |
+| Video visual polish | Grant | `video-visual-polish` |
+| Blind playtester (fresh every time, not in the store) | Darby | none |
+
+- **A role is one persona, however many projects run it.** Two projects that each want a UI/UX
+  designer each start a thread named Pam, and both use the one `pam` document, its learned
+  preferences and its log. What's particular to a project lives in that project's brief
+  (`docs/personas/pam.md` or `/mnt/project-files/personas/pam.md`), never in the persona's store
+  file. Add the project to the persona's `projects` when it starts there.
+- **Ids don't change with names.** Lessons, logs and examples point at persona ids, and nothing in
+  the store is rewritten, so an old id (like `rosa`) stays under its new name.
+- **When two personas turn out to be one role**, keep the one whose id is the role's (above): copy
+  the other's active preferences across as new lessons superseding the old ones, add its id to the
+  kept one's `aliases`, set `mergedInto` on the other, and log both. The gallery shows a merged
+  persona as the one it merged into. (Iris, the Misc project's UI/UX persona, merged into `pam`
+  this way.)
+- **A new role gets a new name from Mike.** Before setting up a persona for a role not in the
+  table, ask him for its name (alongside the domain question, below), add the row here and publish
+  with `quasarbright:update-plugin`.
+
 ## The store
 
 One private claude.ai artifact, **Taste Examples**: https://claude.ai/artifact/YHKnAetx2RnNmVt8Gong51
@@ -23,7 +60,7 @@ live for every session at once, with no plugin publish.
 | collection | one document per | fields |
 |---|---|---|
 | `domains` | area of taste | `id`, `name`, `covers`, `notCovered`, `store` (null, or another artifact's url once split), `createdAt`, `createdBy` |
-| `personas` | persona | `id`, `name`, `domain`, `role` (its job and what it sees), `looksFor`, `blind`, `projects`, `createdAt`, `createdBy` |
+| `personas` | persona | `id`, `name` (the role's standard name, above), `domain`, `role` (its job and what it sees), `looksFor`, `blind`, `projects`, `aliases` (ids merged into it), `mergedInto` (on a merged one), `createdAt`, `createdBy` |
 | `lessons` | lesson | `id`, `domain`, `topic`, `title`, `text` (markdown, bold lead), `kind` (`rule` or `preference`), `persona` (only for one persona's own preferences), `supersedes` (ids), `retired`, `source`, `createdAt`, `createdBy` |
 | `examples` | verdict of Mike's | `id`, `date`, `project`, `area` (the domain id), `kind`, `verdict` (`approved`, `rejected`, `corrected`), `persona` (what the persona said first: `approved`, `flagged`, `none`), `personaId`, `personaSaid`, `shows`, `words` (his exact words, or what he tapped), `lesson` (a lesson id), `image`, `after` (asset ids) |
 | `log` | log line | `id`, `persona`, `at`, `text` |
@@ -58,7 +95,7 @@ mechanic, balance, copy, joke, script line, title, ...).
    `<dir>/<collection>/<id>.json`.
 2. `python3 -I store.py lessons <dir> --domain ui` prints the active lessons by topic.
    `persona <dir> <id>` prints a persona's file (role, what it looks for, its own learned
-   preferences, log). `misses <dir> --persona <id>` lists its misses.
+   preferences, log), including what's under ids merged into it. `misses <dir> --persona <id>` lists its misses.
 
 ## Who reads what
 
@@ -77,13 +114,15 @@ mechanic, balance, copy, joke, script line, title, ...).
 A persona is a reviewer with a memory: a long-lived thread in a Claude project (a game designer, a
 UI/UX designer) or a reviewer that a skill spawns (the `video-review` panel).
 
-1. **Map it onto a domain.** List `domains` and pick the one whose `covers` fits what it judges.
+1. **Name it** with its role's standard name (Names, above). If its role is already a persona in
+   another project, it is that persona: reuse the document and skip to step 3.
+2. **Map it onto a domain.** List `domains` and pick the one whose `covers` fits what it judges.
    If none fits, or two do, or you're unsure at all, ask Mike before going on: list every existing
    domain by name and what it covers, then your proposed new one (name, covers, not covered), and
    let him pick. Never create a domain without his yes (Mike, 2026-11-24).
-2. **Write its `personas` document**: id, name, domain, role, what it looks for, whether it's blind,
+3. **Write its `personas` document**: id, name, domain, role, what it looks for, whether it's blind,
    which projects it serves. Log "created".
-3. **A long-lived project persona also keeps a project brief** (`docs/personas/<name>.md` in the
+4. **A long-lived project persona also keeps a project brief** (`docs/personas/<name>.md` in the
    repo, or `/mnt/project-files/personas/<name>.md` for a project across repos) for project state
    only: where things stand, its current take, open calls waiting on Mike, decisions for this
    project. Its general taste lives in the store, so other projects' personas in its domain learn

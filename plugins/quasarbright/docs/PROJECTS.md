@@ -35,7 +35,8 @@ would fix it; then the fix goes into that rule's checklist.
 ## Design personas (Claude projects only)
 
 In a Claude project, which can run long-lived threads, a project may keep design personas: for
-example a game designer and a UI/UX designer, each its own persistent thread. How every persona
+example a game designer (Mark) and a UI/UX designer (Pam), each its own persistent thread. Every
+role has one name in every project (the `persona` skill's Names table). How every persona
 works, in any project, is the `persona` skill: it maps itself onto a domain of Mike's taste, reads
 and adds to the live taste store his other projects share, filters mocks before he sees them,
 judges "would Mike pick this?" against his past verdicts, and keeps score of its misses. Its
