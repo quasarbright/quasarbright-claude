@@ -214,5 +214,9 @@ re-registers it after a restart.
 - **Reviewed with no comments on the item:** on a look-over, he's fine with it as shown, so treat
   it as approved and say so in the reply. On a pick or a question he hasn't chosen anything, so
   don't assume the recommendation: ask in the reply which one he wants.
+- **Check whether it already shipped before routing an approval.** Look at the live site or the
+  repo first. If the work is already out, mark the item `done` right away instead of routing it as
+  "to push". Mike, 2026-11-25: "You need to mark the portfolio thing as done". He said that about a
+  portfolio card the desk had routed as "to push", which had been live for three days.
 - Replies are short and plain. They're the record of what happened to his feedback, and he reads
   them on his phone.
