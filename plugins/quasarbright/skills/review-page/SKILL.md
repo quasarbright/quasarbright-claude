@@ -168,6 +168,10 @@ shot's `title` and `desc`.
   `approve` sequence (one picture per state, each with a title and a line). Mike, 2026-11-19, on a
   quarter-board pick: "it wasn't even really a choice, and there were unrelated differences between
   each thing."
+- **Each option's picture shows that option itself.** For "add X" versus "keep", the add side shows
+  X working (a render or a mock), never the closest thing that exists today. Mike, 2026-11-25, on a
+  fisheye pick whose pictures were both today's perspective mode at 170° and 179°: "neither of these
+  show >180".
 - **What he picked is what gets built.** Hand the build the picked option's image and source, and
   put the built screenshot beside it before the result comes back as a new item.
 
