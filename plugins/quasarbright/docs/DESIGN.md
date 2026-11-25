@@ -108,7 +108,7 @@ in different places."
 - Labels, buttons, hints and toasts use standard, short, neutral app and game wording: "Enter your
   name", "Start Game", "Main Menu", "Ready". Never chatty or explanatory ("What should people call
   you?", "Back to the start"). Buttons are Title Case. Hints are one short sentence or none.
-- Details and examples are in the taste store's writing lessons (the `persona` skill).
+- Details and examples are in the taste store's ui lessons, topic Wording (the `persona` skill).
 
 ### Attribution footer  *(the constant)*
 - Text: `Made with ♥ by Mike Delmonaco` — the **name links to the site root** (`https://quasarbright.github.io/`), not a fixed path, so it survives repointing what root serves.

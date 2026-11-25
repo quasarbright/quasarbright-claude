@@ -1,6 +1,6 @@
 ---
 name: persona
-description: How every one of Mike's (quasarbright) review personas works, in any project - the UI/UX, art, game design, writing and video reviewers - and how any session reads or adds to his live taste store (lessons, past verdicts with pictures, persona files, misses). Use when you are a persona or are setting one up, before building UI, art, mechanics or copy (to read the lessons), whenever Mike gives a verdict worth learning from, and for the weekly tidy.
+description: How every one of Mike's (quasarbright) review personas works, in any project - the UI/UX, art, game design, humor, writing and video reviewers - and how any session reads or adds to his live taste store (lessons, past verdicts with pictures, persona files, misses). Use when you are a persona or are setting one up, before building UI, art, mechanics or copy (to read the lessons), whenever Mike gives a verdict worth learning from, and for the weekly tidy.
 ---
 
 # Personas and the taste store
@@ -19,10 +19,11 @@ title, its brief's filename and how other sessions refer to it all use this name
 
 | role | name | store persona id |
 |---|---|---|
-| UI/UX designer | Pam | `pam` |
+| UI/UX designer, including UI wording (labels, buttons, hints, errors) | Pam | `pam` |
 | Game designer | Mark | `mark` |
 | Art and sound designer | Squidward | `rosa` |
-| Product copy and humor (domain `writing`) | Tim | none yet |
+| Humor: jokes, character lines, flavor text (domain `humor`) | Tim | none yet |
+| Writer for longer text: about modals, descriptions, READMEs, blog posts (domain `writing`) | Pierce | none yet |
 | Video fact check | Clippy | `video-fact-check` |
 | Video clarity | Ben | `video-clarity` |
 | Video entertainment | Quentin | `video-entertainment` |
@@ -101,7 +102,8 @@ mechanic, balance, copy, joke, script line, title, ...).
 
 - **Any session building in a domain** reads that domain's active lessons first: UI before building
   a screen (with `docs/DESIGN.md`), art before drawing, game design before proposing mechanics,
-  writing before in-product copy or jokes. The `TASTE.md` principles load at every start anyway.
+  UI (topic Wording) before labels, buttons and other UI text, humor before jokes or character lines,
+  writing before about modals, descriptions and other longer text. The `TASTE.md` principles load at every start anyway.
 - **A persona** reads its own file, its domain's lessons, and the 5 to 8 closest examples at every
   review (below).
 - **Blind reviewers never read the store**: the `ux-review` subagent, the blind playtester, and

@@ -46,7 +46,7 @@ republish them from the new template.
 - **Every verdict teaches something** (Mike, 2026-11-19). A pick, a rejection, a thumbs-down or a
   note often carries a lesson beyond the item ("the button coloring makes the big loan look like a
   cancel button"). Taste lessons go in the live taste store, under their domain (UI and UX, art,
-  game design, copy and humor, video); reviews and mocks are process and go in `WORKING.md` and
+  game design, humor, writing, video); reviews and mocks are process and go in `WORKING.md` and
   this skill. Each routed note names the lesson you see and its domain. The owner records the
   verdict and lesson in the store in the same turn (the `persona` skill, "When Mike gives a
   verdict"): the area's persona where the project has one, otherwise the build thread or the
