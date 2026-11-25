@@ -1,0 +1,78 @@
+---
+name: voiceover-cleanup
+description: Clean Mike's (quasarbright) raw voiceover take automatically, the way he does it by hand in Audacity - keep the last good read of each line, obey spoken notes in the take ("use the first take"), noise-gate, spectrally delete leftover breaths and mouth clicks, fix plosives - and hand back a cleaned file, Audacity label tracks and a report. Use whenever Mike has recorded a voiceover and wants it edited or cleaned up.
+---
+
+# Cleaning a raw voiceover take
+
+Mike records a whole script in one take. He re-reads any line he fumbles, and sometimes talks to
+the editor in between ("let me redo that", "actually use the first take, that one was better").
+By hand he then cut the retakes, ran Audacity's Noise Gate, spectrally deleted the breaths and
+mouth clicks the gate let through, and pulled the lows off plosives. This skill does all of it and
+leaves him a report to skim instead of an hour in a spectrogram.
+
+The tool is `narration/cleanup.py` in the manim-videos repo. Its module docstring has the
+measurements behind every default; read it before changing a number.
+
+## Where it runs
+
+On Mike's Mac. Whisper weights and the raw takes live there, and the repo's venv has
+`mlx_whisper`. From a cloud thread use Remote Control in `~/GitHub/manim-videos`. Raw takes from
+past videos are Audacity projects in OneDrive/Videos/<video>/<name>.aup3; the tracks are named
+raw, cut, dry, wet, and wet (or the last row) is the final. A cloud session can read the audio
+out of an .aup3 without Audacity: it is SQLite, see `sampleblocks` and the binary XML in
+`project.doc`.
+
+## Steps
+
+1. **Run it.** `.venv/bin/python -m narration.cleanup <take> --script <video>/script.py`. The
+   script can also be his Obsidian note (`.md`: code blocks, `>` notes and headings are skipped)
+   or plain text. The first run transcribes the take verbatim, with false starts kept, into
+   `<take>.whisper-small-verbatim.json` next to it, and reuses that file after.
+2. **Read `<take>.cleanup/report.md`, all of it.** That is where your judgment goes:
+   - **Everything cut** lists the earlier takes, false starts and anything said off script. Look
+     for directions to the editor. "Use the first take", "that one was better" and "keep that" all
+     name a take; "cut that" or "redo that" confirm the default. Also look for ad-libs worth
+     keeping, and say so in your summary rather than deciding for him.
+   - **Retakes** lists each block read more than once, numbered in recording order, with the kept
+     take marked. By default the last read is kept; every cut Mike has made follows that rule.
+   - **Off script but kept** are words glued to a kept line because they were said in the same
+     breath. Check that none of them is a note to the editor.
+   - **Script words never heard** are usually Whisper's misses, and their audio stays. A whole
+     line missing means he didn't record it. Tell him which line.
+3. **Obey the directions.** Put the take number for each block he asked about in
+   `<take>.cleanup/choices.json`, then run again with `--choose <take>.cleanup/choices.json`. If a
+   direction can't be expressed as a take choice, do the edit in code or tell him.
+4. **Spot-check the fixes.** `labels-clean.txt` marks every deleted breath, de-clicked click and
+   plosive fix on the cleaned file, and `labels-raw.txt` marks every keep and cut on the raw take.
+   He imports them in Audacity (File > Import > Labels). Before calling the clean finished, listen
+   to a few plosive fixes on the real recording: plosives only show up on a real voice, never in
+   the draft.
+5. **Report to him** in a few lines. Say what you obeyed, any ad-lib you cut that he might want
+   back, any line that was never recorded, and the counts of fixes. Attach `clean.wav` or a short
+   excerpt, not the whole report.
+6. **Hand it on.** `clean.wav` is the master recording that `narrated-video`'s
+   `MasterRecordingService` aligns to. Mastering (loudness) happens later, on the finished render.
+
+## What it does, and the defaults
+
+| Step | Default | Why |
+|---|---|---|
+| Takes | last full read of each line; jumps of more than about 300 script words cost much more | every retake cut he made kept the last read; a common phrase repeated in a recap shouldn't look like a retake |
+| Splices | butt splice at the quietest point of the pause, keeping up to 0.25 s lead-in and 0.3 s tail, 3 ms fades | his splices are butt splices; the fades stop a join from clicking |
+| Noise Gate | threshold −40 dBFS (peak), reduction −35 dB, attack 20 ms, hold 50 ms, decay 100 ms | fitted to his own wet track to within 0.17 dB per frame |
+| Leftover breaths and clicks | deleted (gate floor) when a gate opening is unvoiced, under −35 dBFS RMS and not inside a heard word | he deletes them rather than turning them down; his deletes measured −44 to −58 dBFS before |
+| Mouth clicks | top end (>2 kHz) down 20 dB on ≤8 ms spikes 25 dB over their surroundings | the thin vertical strips in a spectrogram; consonants spike less than that |
+| Plosives | lows (<150 Hz) down 15 dB where they jump 15 dB over their 200 ms median | rare on purpose: he fixed about one every few minutes |
+| High-pass | off (`--highpass 80` to turn on) | his MV7+ setup filters at 75 Hz in the mic; turn it on for a take recorded without that |
+
+`--no-cut` skips take picking and only gates and repairs, for a file that is already edited.
+
+## Changing it
+
+When Mike corrects the result ("you cut a good take", "that breath is still there"), find the
+case in the report and labels, fix the rule in `cleanup.py`, add a test to
+`narration/test_cleanup.py`, and say in the docstring which recording taught it. To re-calibrate
+against a new hand-edited project, compare its tracks sample by sample: the cut track is exact
+copies of raw spans, so matching 32-sample hashes recovers every splice, and the wet track lines
+up with the cut track by cross-correlation of 0.5 s chunks.

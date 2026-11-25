@@ -296,7 +296,9 @@ a confident wrong conclusion here:
 ## Real voice
 
 Mike reads the whole script in one continuous take and drops the file into the
-video's `content/`. Point `MASTER` at it; nothing else in the scenes changes.
+video's `content/`. Clean it first with the `voiceover-cleanup` skill (retakes,
+his spoken notes, gate, breaths, clicks, plosives), then point `MASTER` at the
+cleaned file; nothing else in the scenes changes.
 
 Ask him to leave a beat between blocks. Those pauses become the transitions —
 the slice boundaries land inside them — and a block he runs straight into the
