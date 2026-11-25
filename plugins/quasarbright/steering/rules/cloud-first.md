@@ -46,6 +46,7 @@ What it took for Clanker Tycoon on 2026-11-19. Not every project needs every ste
    `claude plugin update` fails in the cloud and on the Mac desktop install, so a running session
    picks up a change by re-reading the changed doc from the repo.
 7. **Artifacts can't wake a sleeping thread.** The Remote connector doesn't load inside artifacts,
-   so a review page's sends only reach its thread while that thread's container is awake. After
-   Mike sends answers from a page, he (or the coordinator, when he says "sent") messages the thread
-   to pull them.
+   so a review page's comments sent to Claude, and its Reviewed button, only wake the owning thread
+   while that thread's container is awake. Comments still save. After Mike reviews on a page while
+   nobody is listening, he (or the coordinator, when he says he's done) messages the thread to read
+   the page's comments and reviewed items.

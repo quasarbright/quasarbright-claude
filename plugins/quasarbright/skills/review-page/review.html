@@ -1,13 +1,14 @@
 <title>__PROJECT__ Review</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-/* Layout: one narrow column (phone first). A list of what needs Mike, and one item open at a time. */
+/* One narrow column, phone first: a list of what needs Mike, and one item open at a time.
+   Feedback goes in the artifact's own comments; the only control on an item is Reviewed. */
 :root{
   color-scheme:dark;
   --bg:#0e0f16;--panel:#171a24;--panel-2:#1f2330;--border:#2a2f3d;--border-hi:#3a4157;
   --text:#e6e8ef;--muted:#8a8fa3;--faint:#5b6072;
   --accent:#7c8cf8;--accent-hi:#9aa6ff;--on-accent:#0e0f16;
-  --good:#5fd08a;--good-bg:#1b2e24;--bad:#ff8fa0;--bad-bg:#33202a;--warn:#e8b450;
+  --good:#5fd08a;--good-bg:#1b2e24;--bad:#ff8fa0;--warn:#e8b450;
   --ui:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,monospace;
 }
@@ -15,9 +16,10 @@ html,body{background:var(--bg);color:var(--text)}
 body{font-family:var(--ui);font-size:15px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 32px}
 main{max-width:760px;margin:0 auto}
 button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:2px solid var(--accent-hi);outline-offset:2px}
+button:focus-visible{outline:2px solid var(--accent-hi);outline-offset:2px}
+[hidden]{display:none!important}
 .top{display:flex;align-items:center;gap:10px;padding:18px 0 6px}
-.top h1{font-size:21px;font-weight:650;margin:0;text-wrap:balance}
+.top h1{font-size:21px;font-weight:650;margin:0}
 .count{background:var(--accent);color:var(--on-accent);font-weight:700;font-size:12.5px;border-radius:20px;padding:1px 9px}
 .proj{margin-left:auto;color:var(--muted);font-size:13px}
 .sec{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:650;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:20px 2px 8px}
@@ -29,7 +31,7 @@ button:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:2px solid
 .thumb{width:68px;height:48px;border-radius:7px;background:var(--panel-2) center/cover no-repeat;flex:none;border:1px solid var(--border);display:grid;place-items:center;color:var(--warn);font-weight:700;font-size:20px}
 .thumb.stack{box-shadow:4px -4px 0 -1px #2b3044,8px -8px 0 -2px #232838}
 .row-b{flex:1;min-width:0}
-.row-t{font-weight:600;font-size:15px;line-height:1.3}
+.row-t{font-weight:600;font-size:15px;line-height:1.3;display:block}
 .row-m{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:4px;font-size:12.5px;color:var(--muted)}
 .kind{font-size:10.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;border-radius:5px;padding:2px 6px;background:var(--panel-2);color:var(--accent-hi)}
 .kind.question{color:var(--warn)}.kind.approve{color:var(--good)}
@@ -38,6 +40,7 @@ button:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:2px solid
 .done-toggle{width:100%;display:flex;justify-content:space-between;background:none;border:1px dashed var(--border);border-radius:10px;padding:10px 12px;color:var(--muted);font-size:13.5px}
 .empty{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px 18px;color:var(--muted);margin-top:16px}
 .empty b{color:var(--text);display:block;font-size:16px;margin-bottom:4px}
+.calm{margin-top:14px;background:var(--panel);border:1px solid var(--border);color:var(--muted);border-radius:12px;padding:12px 14px;font-size:14px}
 /* item */
 .nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0 4px}
 .link{background:none;border:none;color:var(--accent-hi);padding:6px 0;font-size:14.5px}
@@ -45,64 +48,44 @@ button:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:2px solid
 .pos .link{padding:6px 8px}
 .it-title{font-size:22px;font-weight:650;line-height:1.25;margin:8px 0 4px;text-wrap:balance}
 .from{font-size:12.5px;color:var(--muted);margin-bottom:12px}
-.ctx{color:#c7cbd8;margin:0 0 16px;max-width:65ch}
+.ctx{color:#c7cbd8;margin:0 0 10px;max-width:65ch}
 .ctx b{color:var(--text)}
+.how{font-size:13px;color:var(--muted);margin:0 0 16px}
+/* Pictures: every one the same box, so a row of options lines up on a grid. */
 .opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
-.opt{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:8px;text-align:left;display:flex;flex-direction:column;gap:2px;min-width:0}
-.opt.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.seq{display:flex;flex-direction:column;gap:18px}
 .shot{position:relative;border-radius:8px;overflow:hidden;background:#000}
-.shot img{display:block;width:100%;height:auto}
-.opt .shot img{aspect-ratio:3/2;object-fit:contain}
-.shot .zoom{position:absolute;right:6px;top:6px;background:#0e0f16cc;border:1px solid var(--border);border-radius:7px;padding:3px 8px;font-size:12px;color:var(--text)}
-.opt-h{display:flex;align-items:center;gap:8px;padding:9px 4px 2px;font-weight:600}
-.radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--faint);flex:none}
-.opt.sel .radio{border-color:var(--accent);background:radial-gradient(var(--accent) 42%,transparent 47%)}
-.opt.multi .radio{border-radius:5px}
-.opt.multi.sel .radio{background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8.5l3 3 6-7' fill='none' stroke='%230e0f16' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/80% no-repeat}
+.shot img{display:block;width:100%;height:auto;cursor:zoom-in}
+.opts .shot img{aspect-ratio:3/2;object-fit:contain}
+.shot.broken{display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;color:var(--muted);font-size:13px;text-align:center;padding:16px}
+.cmt{position:absolute;right:10px;bottom:10px;width:40px;height:40px;border-radius:50%;border:1px solid #ffffff33;background:#101219e6;color:#e7e9f2;display:grid;place-items:center;box-shadow:0 4px 14px #0009;padding:0}
+.cmt:hover{border-color:#ffffff88;background:#1b1e29f0}
+.cap{display:flex;align-items:baseline;gap:8px;padding:9px 4px 2px;font-weight:600}
+.seq .cap{padding:8px 2px 0}
 .num{font-family:var(--mono);color:var(--muted);font-weight:500}
 .tag{font-size:10.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;margin-left:auto;color:var(--muted);white-space:nowrap}
 .tag.rec{color:var(--good)}
-.opt-d{font-size:13px;color:var(--muted);padding:0 4px 4px 30px}
-.opt-l{align-self:flex-start;margin:0 0 0 30px;color:var(--accent-hi);font-size:12.5px;padding:2px 0;text-decoration:none}.opt-l:hover{text-decoration:underline}
-.shot.broken{display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;color:var(--muted);font-size:13px;text-align:center;padding:16px}
-.opt-c{align-self:flex-start;margin:2px 0 2px 26px;background:none;border:none;color:var(--accent-hi);font-size:12.5px;padding:4px}
+.desc{font-size:13px;color:var(--muted);padding:0 4px 4px}
+.seq .desc{padding:2px 2px 0}
+.src{align-self:flex-start;margin:0 4px;color:var(--accent-hi);font-size:12.5px;padding:2px 0;text-decoration:none}.src:hover{text-decoration:underline}
 .qopts{display:flex;flex-direction:column;gap:8px}
-.qopt{text-align:left;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start}
-.qopt.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.qopt{background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
 .qopt small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
-.seq{display:flex;flex-direction:column;gap:18px}
-.seq-c{font-weight:600;margin:8px 2px 0}
-.marks{display:flex;gap:6px;margin:8px 0 0;flex-wrap:wrap}.mk{font:inherit;font-size:13px;padding:5px 10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer}.mk:hover{color:var(--text);border-color:var(--muted)}.mk.good.on{background:var(--good-bg);border-color:#2f5a42;color:var(--good)}.mk.bad.on{background:var(--bad-bg);border-color:#5a2f3c;color:var(--bad)}
-.seq-mark{display:inline-block;font-size:12px;font-weight:600;margin-left:6px}.seq-mark.good{color:var(--good)}.seq-mark.bad{color:var(--bad)}.seq-mark.note{color:var(--accent-hi)}.seq-d{font-size:13px;color:var(--muted);margin:2px 2px 0}
-.answer{position:sticky;bottom:0;z-index:6;background:var(--bg);padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));margin-top:16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
-textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:44px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px}
-textarea::placeholder{color:var(--faint)}
-.btns{display:flex;gap:8px}
-.btn{flex:1;border-radius:10px;padding:12px 14px;border:1px solid var(--border);background:var(--panel-2);font-weight:600;font-size:15px}
-.answer .btns{flex-wrap:wrap}.answer .btns .btn{white-space:nowrap}.btn.wide{flex:2 1 auto}.answer .btns .btn.wide{white-space:normal;max-width:100%}
-.btn:disabled{opacity:.45;cursor:default}
-.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-.btn.good{background:var(--good-bg);border-color:#2f5a42;color:var(--good)}
-.btn.bad{background:var(--bad-bg);border-color:#5a2f3c;color:var(--bad)}
-.btn.ghost{background:none;flex:.7}
-.status{font-size:13px;color:var(--muted);min-height:1em}
+.qopt .tag{margin-left:6px}
+.was{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:16px;color:#c7cbd8}
+.was b{color:var(--text)}
+.was .note{margin-top:4px;white-space:pre-wrap}
+/* The one control: Reviewed, in a sticky bar at the bottom. */
+.foot{position:sticky;bottom:0;z-index:5;background:var(--bg);padding:12px 0 calc(8px + env(safe-area-inset-bottom,0px));margin-top:16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.btn{border-radius:10px;padding:12px 18px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);font-weight:650;font-size:15px;white-space:nowrap}
+.btn:disabled{opacity:.5;cursor:default}
+.status{font-size:13.5px;color:var(--muted);flex:1 1 220px;min-width:0}
 .status.ok{color:var(--good)}.status.err{color:var(--bad)}
-.sent{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-top:16px}
-.sent b{color:var(--good)}
-.sent .note{color:#c7cbd8;margin-top:4px;white-space:pre-wrap}
-.chatbox{background:#1a1d2a;border:1px solid #33395a;border-radius:12px;padding:12px 14px;margin-top:16px;color:#c7cbd8}
-.chatbox b{color:var(--accent-hi)}
-.toast{position:fixed;z-index:15;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom,0px));width:min(560px,calc(100% - 32px));box-sizing:border-box;background:#22283c;border:1px solid #3a4266;border-radius:10px;padding:10px 14px;font-size:13.5px;box-shadow:0 6px 20px #0008}
-[hidden]{display:none!important}
-.toast.bad{border-color:#5a2f3c;background:var(--bad-bg)}
-.cbox{display:flex;flex-direction:column;gap:6px;margin:4px 4px 6px 30px}.seq .cbox{margin-left:0}
-.cbox .btns .btn{padding:8px 12px;font-size:14px}
-.deaf .link{padding:0;font-size:inherit}
-.calm{margin-top:14px;background:var(--panel);border:1px solid var(--border);color:var(--muted);border-radius:12px;padding:12px 14px;font-size:14px}
-.deaf{margin-top:14px;background:var(--bad-bg);border:1px solid #5a2f3c;color:var(--bad);border-radius:12px;padding:12px 14px;font-size:14px}.deaf b{color:var(--text)}
-/* lightbox */
-.lb{position:fixed;inset:0;z-index:20;background:#07080c;display:grid;grid-template:"bar bar" auto "stage panel" minmax(0,1fr) / minmax(0,1fr) 420px;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
-.lb[hidden]{display:none}
+.revd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--good);font-weight:600}
+.revd .link{font-weight:400;font-size:14px}
+/* Enlarged view */
+.lb{position:fixed;inset:0;z-index:20;background:#07080c;display:grid;grid-template:"bar" auto "stage" minmax(0,1fr) "foot" auto / minmax(0,1fr);padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 body.lb-open{overflow:hidden}
 .lb-bar{grid-area:bar;display:flex;justify-content:space-between;align-items:center;padding:10px 16px;color:var(--muted);font-size:13px;gap:12px;min-width:0}
 .lb-cap{display:flex;gap:10px;align-items:baseline;min-width:0}.lb-cap b{color:var(--text);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lb-cap span{white-space:nowrap}
@@ -111,62 +94,34 @@ body.lb-open{overflow:hidden}
 .lb-scroll{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;padding:0 64px 16px;min-height:0}
 .lb-scroll img{max-width:100%;max-height:100%;object-fit:contain;display:block}
 .lb.full .lb-scroll{align-items:flex-start;justify-content:flex-start}
-.lb.full .lb-scroll img{max-width:none;max-height:none;width:auto}
-.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid var(--border);background:#14161dcc;color:var(--text);display:grid;place-items:center;z-index:2;cursor:pointer}
+.lb.full .lb-scroll img{max-width:none;max-height:none}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid var(--border);background:#14161dcc;color:var(--text);display:grid;place-items:center;z-index:2}
 .lb-nav:hover{background:var(--panel-2);border-color:var(--accent)}
 .lb-nav.prev{left:10px}.lb-nav.next{right:10px}
-.lb-panel{grid-area:panel;overflow:auto;padding:4px 16px 16px;display:flex;flex-direction:column;gap:12px;border-left:1px solid var(--border);min-height:0}
-.lb-panel .answer{margin-top:0;padding:0;border-top:0;position:static;background:none}
-.lb-panel .answer textarea{min-height:64px}
-.lb-panel .btns{flex-wrap:wrap}.lb-panel .btns .btn{flex:1 1 auto;white-space:nowrap}
-.lb{grid-template:"bar" auto "stage" minmax(0,1fr) "foot" auto / minmax(0,1fr)!important}
 .lb-foot{grid-area:foot;height:64px;padding:8px 72px 12px;display:flex;flex-direction:column;justify-content:center;gap:2px;overflow:hidden;border-top:1px solid #1c1f2a}
 .lb-foot b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.lb-foot span{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.lb-send{white-space:nowrap}
-#lb .lb-scroll{padding-bottom:96px}
-#lb.full .lb-scroll{padding-bottom:96px}
-.pv{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:14px;z-index:3}
-.shot .pv{left:auto;right:10px;bottom:10px;transform:none;gap:8px}
-.pvb{width:56px;height:56px;border-radius:50%;border:1px solid #ffffff33;background:#101219e6;color:#e7e9f2;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px #0009;position:relative;padding:0}
-.shot .pvb{width:40px;height:40px}.shot .pvb svg{width:19px;height:19px}
-.pvb:hover{border-color:#ffffff88;background:#1b1e29f0}
-.pvb.good.on{background:#1f6b45;border-color:#4fd18b;color:#fff}.pvb.bad.on{background:#7a2335;border-color:#ff7a93;color:#fff}.pvb.pick.on{background:var(--accent);border-color:var(--accent);color:#14161d}.pvb.note.on{border-color:var(--accent);color:var(--accent)}
-@keyframes pvon{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}.pvb.good.on,.pvb.bad.on,.pvb.pick.on{animation:pvon .25s ease-out}
-.pvb.note.on::after{content:"";position:absolute;top:3px;right:3px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px #101219}
-.pv-pop{position:absolute;left:50%;bottom:92px;transform:translateX(-50%);width:min(460px,calc(100% - 40px));background:#151823f5;border:1px solid var(--border);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;z-index:4;box-shadow:0 10px 30px #000a}
-.shot .pv-pop{bottom:60px;right:10px;left:auto;transform:none;width:min(380px,calc(100% - 20px))}
-/* Note box: a comfortable field, then one row of two equal buttons on the right (Mike, 2026-11-21: the
-   old box was cramped, its hint wrapped and "Save note" broke onto two lines). In the list it opens in
-   the flow under the picture instead of covering it. */
-.pv-pop textarea{min-height:84px;resize:none;line-height:1.45;padding:10px 12px}
-.pv-pop .btns{display:flex;justify-content:flex-end;gap:8px}
-.pv-pop .btns .btn{flex:0 0 112px;padding:9px 0;font-size:14px;white-space:nowrap}
-.pv-pop.inline{position:static;transform:none;width:auto;margin:8px 0 0;box-shadow:none;background:var(--panel)}
-.seq-note{font-size:13px;color:var(--text);background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:6px 10px;margin-top:6px}.seq-note b{color:var(--accent);font-weight:600}
-.seq-note.edit{display:flex;gap:6px;align-items:baseline;width:100%;box-sizing:border-box;text-align:left;font:inherit;font-size:13px;cursor:pointer}.seq-note.edit:hover{border-color:var(--muted)}.seq-note.edit b{flex:none}.seq-edit{margin-left:auto;padding-left:10px;color:var(--accent-hi);font-size:12.5px;flex:none}
-.lb-opt.lb-shot{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px}
 @media (max-width:760px){
-  .lb{grid-template:"bar" auto "stage" minmax(0,1fr) "panel" auto / minmax(0,1fr)}
   .lb-cap b{display:none}
   .lb-scroll{padding:0 8px 8px}
   .lb-nav{width:40px;height:40px;top:auto;bottom:14px;transform:none}
-  .lb-panel{border-left:0;border-top:1px solid var(--border);max-height:48vh;padding-top:12px}
+  .lb-foot{padding:8px 60px 12px}
 }
 @media (max-width:480px){.it-title{font-size:20px}.opts{grid-template-columns:1fr}}
-@media (prefers-reduced-motion:no-preference){.row,.opt,.qopt{transition:border-color .12s}}
+@media (prefers-reduced-motion:no-preference){.row{transition:border-color .12s}}
 </style>
 
 <main id="app"><div class="empty"><b>Loading what needs you…</b>This page reads its items from its own store.</div></main>
-<div class="toast" id="toast" role="status" hidden></div>
-<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Enlarged picture"></div>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Enlarged picture" data-uncommentable></div>
 
 <script>
-// Items live in the page's db, collection "items" (one doc each). Claude writes them; Mike answers here.
-// Item: {title, kind: "pick"|"approve"|"question", multi (pick: choose any number), blocking, from, context, created (ISO),
-//   options:[{id,label,desc,img,tag}], recommended, recommendReason, images:[{img,title,desc}],
-//   status: "open"|"answered"|"chat"|"done", answer:{choice,label,verdict,note,at}}
-const S = { items: [], meta: {}, showDone: false, sel: {}, drafts: {}, marks: {}, pnotes: {}, typing: {}, lbNote: false, status: {}, ready: false, err: null, lb: null, lbFull: false };
-let db = null, comments = null, user = null, canWrite = true;
+// Items live in the page's db, collection "items" (one doc each). Claude writes them. Mike comments with the
+// artifact's own comments and presses Reviewed when he has said everything about an item.
+// Item: {title, kind: "pick"|"approve"|"question", blocking, from, context, created (ISO),
+//   options:[{id,label,desc,img,tag,link,source}], recommended, recommendReason, images:[{img,title,desc}],
+//   status: "open"|"reviewed"|"chat"|"done" (older pages also wrote "answered", with answer:{label,note,...}),
+//   reviewedAt}
+const S = { items: [], meta: {}, showDone: false, status: {}, ready: false, err: null, lb: null, lbFull: false };
+let db = null, comments = null, canWrite = true, listen = null;
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const ago = (iso) => {
@@ -176,456 +131,191 @@ const ago = (iso) => {
   const h = Math.round(m / 60); if (h < 24) return h + " h ago";
   return Math.round(h / 24) + " d ago";
 };
-const KIND = { pick: "Pick one", approve: "Approve", question: "Question" };
-const kindLabel = (it) => it.kind === "pick" ? `${it.multi ? "Pick any" : "Pick one"} · ${(it.options || []).length}` : it.kind === "approve" && (it.images || []).length > 1 ? `Approve · ${it.images.length} shots` : KIND[it.kind] || it.kind;
+const KIND = { pick: "Choice", approve: "Look over", question: "Question" };
+const kindLabel = (it) => it.kind === "pick" ? `Choice · ${(it.options || []).length}` : it.kind === "approve" && (it.images || []).length > 1 ? `Look over · ${it.images.length} shots` : KIND[it.kind] || it.kind;
 const thumbOf = (it) => (it.options || []).find((o) => o.img)?.img || (it.images || [])[0]?.img;
 const byNew = (a, b) => String(b.created || "").localeCompare(String(a.created || ""));
-const open = () => S.items.filter((i) => (i.status || "open") === "open");
-const groups = () => ({
-  blocking: open().filter((i) => i.blocking).sort(byNew),
-  look: open().filter((i) => !i.blocking).sort(byNew),
-  chat: S.items.filter((i) => i.status === "chat").sort(byNew),
-  sent: S.items.filter((i) => i.status === "answered").sort(byNew),
-  done: S.items.filter((i) => i.status === "done").sort(byNew),
-});
+const stOf = (it) => it.status === "answered" ? "reviewed" : it.status || "open";
+const groups = () => {
+  const open = S.items.filter((i) => stOf(i) === "open");
+  return {
+    blocking: open.filter((i) => i.blocking).sort(byNew),
+    look: open.filter((i) => !i.blocking).sort(byNew),
+    chat: S.items.filter((i) => stOf(i) === "chat").sort(byNew),
+    reviewed: S.items.filter((i) => stOf(i) === "reviewed").sort(byNew),
+    done: S.items.filter((i) => stOf(i) === "done").sort(byNew),
+  };
+};
 const queue = () => { const g = groups(); return [...g.blocking, ...g.look]; };
 const currentId = () => (location.hash.startsWith("#i-") ? decodeURIComponent(location.hash.slice(3)) : null);
+const isRec = (it, id) => Array.isArray(it.recommended) ? it.recommended.includes(id) : it.recommended === id;
+const ICO_CMT = '<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>';
+const ARROW = (d) => `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="${d < 0 ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}"/></svg>`;
 
 function row(it) {
-  const t = thumbOf(it), multi = it.kind === "pick" || (it.images || []).length > 1;
-  const meta = it.status === "chat" ? "Talking in the project chat" : it.status === "answered" ? `You answered ${ago(it.answer?.at)} · waiting on Claude` : it.status === "done" ? (it.answer?.label === "Just a note" ? "You sent a note" : it.answer?.label === "None" ? "You picked none" : it.answer?.label ? `You chose ${esc(it.answer.label)}` : "Done") : `${esc(it.from || "")}${it.from ? " · " : ""}${ago(it.created)}`;
-  return `<button class="row ${it.blocking && (it.status || "open") === "open" ? "blocking" : ""}" data-open="${esc(it.id)}">
-    <span class="thumb ${t && multi ? "stack" : ""}" ${t ? `style="background-image:url('${esc(t)}')"` : ""}>${t ? "" : it.kind === "question" ? "?" : "·"}</span>
+  const t = thumbOf(it), many = it.kind === "pick" || (it.images || []).length > 1, st = stOf(it);
+  const meta = st === "chat" ? "Talking in the project chat" : st === "reviewed" ? `You reviewed it ${ago(it.reviewedAt || it.answer?.at)} · waiting on Claude` : st === "done" ? "Done" : `${esc(it.from || "")}${it.from ? " · " : ""}${ago(it.created)}`;
+  return `<button class="row ${it.blocking && st === "open" ? "blocking" : ""}" data-open="${esc(it.id)}">
+    <span class="thumb ${t && many ? "stack" : ""}" ${t ? `style="background-image:url('${esc(t)}')"` : ""}>${t ? "" : it.kind === "question" ? "?" : "·"}</span>
     <span class="row-b"><span class="row-t">${esc(it.title)}</span><span class="row-m"><span class="kind ${esc(it.kind)}">${kindLabel(it)}</span>${meta}</span></span>
-    ${(it.status || "open") === "open" ? `<span class="dot" aria-label="needs you"></span>` : `<span class="chev">›</span>`}</button>`;
+    ${st === "open" ? `<span class="dot" aria-label="needs you"></span>` : `<span class="chev">›</span>`}</button>`;
 }
-function section(title, list) {
-  return list.length ? `<div class="sec">${title} <span>${list.length}</span></div><div class="list">${list.map(row).join("")}</div>` : "";
-}
+const section = (title, list) => list.length ? `<div class="sec">${title} <span>${list.length}</span></div><div class="list">${list.map(row).join("")}</div>` : "";
 function renderList() {
   const g = groups(), n = g.blocking.length + g.look.length;
-  const proj = S.meta.project || "";
-  let h = `<div class="top"><h1>Needs you</h1>${n ? `<span class="count">${n}</span>` : ""}<span class="proj">${esc(proj)}</span></div>`;
+  let h = `<div class="top"><h1>Needs you</h1>${n ? `<span class="count">${n}</span>` : ""}<span class="proj">${esc(S.meta.project || "")}</span></div>`;
   if (S.err) h += `<div class="empty"><b>Can't load the items.</b>${esc(S.err)}</div>`;
   else if (!S.ready) h += `<div class="empty"><b>Loading what needs you…</b>This page reads its items from its own store.</div>`;
-  else if (!S.items.length || (!n && !g.chat.length && !g.sent.length && !g.done.length)) h += `<div class="empty"><b>Nothing needs you.</b>When a thread has a screenshot to approve, a choice or a question, it shows up here.</div>`;
+  else if (!S.items.length) h += `<div class="empty"><b>Nothing needs you.</b>When a thread has something to look at, a choice or a question, it shows up here.</div>`;
   else {
     if (!n) h += `<div class="empty"><b>You're caught up.</b>Nothing is waiting on you right now.</div>`;
-    h += section("Blocking work", g.blocking) + section("Look when you can", g.look) + section("Talking in chat", g.chat) + section("Answered, waiting on Claude", g.sent);
+    h += section("Blocking work", g.blocking) + section("Look when you can", g.look) + section("Talking in chat", g.chat) + section("Reviewed, waiting on Claude", g.reviewed);
     if (g.done.length) h += `<div class="sec"></div><button class="done-toggle" id="doneT"><span>Done · ${g.done.length}</span><span>${S.showDone ? "hide" : "show"}</span></button>${S.showDone ? `<div class="list" style="margin-top:8px">${g.done.map(row).join("")}</div>` : ""}`;
   }
   $("#app").innerHTML = h;
   $("#doneT")?.addEventListener("click", () => { S.showDone = !S.showDone; render(); });
 }
 
-function shot(img, label, i, lbi) {
-  return `<div class="shot" data-shot="${i}"><img src="${esc(img)}" alt="${esc(label)}" loading="lazy" referrerpolicy="no-referrer" data-zoom="${esc(img)}" data-lbi="${lbi}" data-cap="${esc(label)}"><span class="zoom" aria-hidden="true">Enlarge</span></div>`;
-}
-// Multi-pick items keep an array of option ids; single picks keep one id.
-const selOf = (it) => { const v = S.sel[it.id] ?? it.answer?.choice; return it.multi ? (Array.isArray(v) ? v : v ? [v] : []) : v; };
-const isSel = (it, id) => it.multi ? selOf(it).includes(id) : selOf(it) === id;
-// Approvals with several pictures are judged picture by picture (Mike, 2026-11-18: one "Looks good" in the
-// enlarged view approved the whole sequence when he meant one picture). Marks live in S.marks until sent.
-const multiShot = (it) => it.kind === "approve" && (it.images || []).length > 0;
-const ICON = { good: '<path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/>', changes: '<path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/>', note: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>', pick: '<path d="M20 6 9 17l-5-5"/>' };
-const ico = (k) => `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
-// One note per picture, kept with the answer and sent with it (never on its own).
-const notesOf = (it) => S.pnotes[it.id] || (S.pnotes[it.id] = {});
-const keyOf = (it, x) => x.opt ? x.opt.id : String(x.n - 1);
-const canAct = (it) => canWrite && (!it.status || it.status === "open");
-// Round buttons on a picture: thumbs up / thumbs down / note for approvals, pick / note for choices (Mike, 2026-11-19).
-function pvButtons(it, x) {
-  if (!canAct(it)) return "";
-  const k = keyOf(it, x), has = !!(notesOf(it)[k] || "").trim();
-  const b = (cls, v, label, on) => `<button class="pvb ${cls} ${on ? "on" : ""}" data-pv="${v}" data-key="${esc(k)}" aria-pressed="${!!on}" title="${label}" aria-label="${label}">${ico(v)}</button>`;
-  const m = it.kind === "approve" ? marksOf(it)[k] : null;
-  return `<div class="pv">${it.kind === "approve" ? b("good", "good", "Looks good", m === "good") + b("bad", "changes", "Needs changes", m === "changes") : b("pick", "pick", isSel(it, x.opt.id) ? "Picked" : "Pick this one", isSel(it, x.opt.id))}${b("note", "note", has ? "Edit your note" : "Add a note", has)}</div>`;
-}
-function pvPop(it, x) {
-  const k = keyOf(it, x);
-  return `<div class="pv-pop" data-pop="${esc(k)}"><textarea rows="3" placeholder="What about this one? It goes out with your answer.">${esc(S.typing[it.id]?.[k] ?? notesOf(it)[k] ?? "")}</textarea><div class="btns"><button class="btn ghost" data-pvcancel>Cancel</button><button class="btn pri" data-pvsave>Save note</button></div></div>`;
-}
-function notesText(it) {
-  const imgs = imagesOf(it), n = notesOf(it);
-  return imgs.filter((x) => (n[keyOf(it, x)] || "").trim()).map((x) => `On ${x.n} (${x.label}): ${n[keyOf(it, x)].trim()}`).join("\n");
-}
-const marksOf = (it) => S.marks[it.id] || (S.marks[it.id] = {});
-const markBtns = (it, i) => { if (!canWrite || (it.status && it.status !== "open")) return ""; const m = marksOf(it)[i]; return `<div class="marks" role="group" aria-label="This picture"><button class="mk good ${m === "good" ? "on" : ""}" data-mark="${i}" data-v="good" aria-pressed="${m === "good"}">Looks good</button><button class="mk bad ${m === "changes" ? "on" : ""}" data-mark="${i}" data-v="changes" aria-pressed="${m === "changes"}">Needs changes</button></div>`; };
-const rangeList = (ns) => ns.join(", ");
-// A note on a picture is an answer on its own, like on a pick (Mike, 2026-11-21: feature parity with the
-// choice UI; typing a note shouldn't also need a thumbs up or down). Each picture is good, changes, or noted.
-function markSummary(it) {
-  const m = marksOf(it), nt = notesOf(it), n = (it.images || []).length, good = [], bad = [], noted = [], none = [];
-  for (let i = 0; i < n; i++) { const k = String(i); (m[k] === "good" ? good : m[k] === "changes" ? bad : (nt[k] || "").trim() ? noted : none).push(i + 1); }
-  return { n, good, bad, noted, none };
-}
-const MARKTXT = { good: "Looks good", changes: "Needs changes", note: "Note" };
-const markSpan = (v) => v ? `<span class="seq-mark ${v === "good" ? "good" : v === "changes" ? "bad" : "note"}">${MARKTXT[v]}</span>` : "";
-const isRec = (it, id) => Array.isArray(it.recommended) ? it.recommended.includes(id) : it.recommended === id;
-// Every image an item shows, in order: pick options with a picture, or an approval's shots.
+// Every picture an item shows, in order: choice options with a picture, or a sequence's shots.
 function imagesOf(it) {
-  if (it.kind === "pick") return (it.options || []).map((o, i) => ({ o, i })).filter((x) => x.o.img).map(({ o, i }) => ({ img: o.img, n: i + 1, label: o.label, desc: o.desc, opt: o, key: `${it.id}-${o.id}` }));
-  if (it.kind === "approve") return (it.images || []).map((m, i) => ({ img: m.img, n: i + 1, label: m.title || "", desc: m.desc, key: `${it.id}-${i}` }));
+  if (it.kind === "pick") return (it.options || []).map((o, i) => ({ o, i })).filter((x) => x.o.img).map(({ o, i }) => ({ img: o.img, n: i + 1, label: o.label, desc: o.desc, opt: o }));
+  if (it.kind === "approve") return (it.images || []).map((m, i) => ({ img: m.img, n: i + 1, label: m.title || "", desc: m.desc }));
   return [];
 }
-// The enlarged view carries the item's whole UI: arrows (and arrow keys) between its images, this image's
-// pick or check and comment box, and the item's note and send controls (Mike, 2026-11-18).
-const ARROW = (d) => `<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="${d < 0 ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}"/></svg>`;
-function renderLb(it) {
-  const el = $("#lb");
-  const imgs = it ? imagesOf(it) : [];
-  if (!S.lb || !it || !imgs.length) { el.hidden = true; el.innerHTML = ""; document.body.classList.remove("lb-open"); return; }
-  const i = ((S.lb.i % imgs.length) + imgs.length) % imgs.length; S.lb.i = i;
-  const x = imgs[i], many = imgs.length > 1, k = keyOf(it, x);
-  const st = it.kind === "approve" ? markState(it) : sendState(it);
-  const mark = it.kind === "approve" ? (marksOf(it)[k] || (it.status !== "open" && it.answer?.marks?.[k])) : isSel(it, x.opt.id);
-  const noteHere = !!((it.status && it.status !== "open" ? it.answer?.notes?.[k] : notesOf(it)[k]) || "").trim();
-  const tag = mark === "good" ? " · Looks good" : mark === "changes" ? " · Needs changes" : mark === true ? (noteHere ? " · Picked, with a note" : " · Picked") : noteHere ? " · Note" : "";
-  el.classList.toggle("full", S.lbFull);
-  el.innerHTML = `<div class="lb-bar"><span class="lb-cap"><b>${esc(it.title)}</b><span>${x.n} of ${imgs.length}${esc(tag)}</span></span><span class="lb-tools">${canAct(it) && st.ok ? `<button class="btn pri lb-send" data-act="${it.kind === "approve" ? "marks" : "send"}">${esc(st.label)}</button>` : ""}<button class="link" data-lbfull>${S.lbFull ? "Fit to screen" : "Actual size"}</button><button class="link" data-lbclose>Close</button></span></div>
-    <div class="lb-stage">${many ? `<button class="lb-nav prev" data-lbgo="-1" aria-label="Previous picture">${ARROW(-1)}</button>` : ""}<div class="lb-scroll"><img src="${esc(x.img)}" alt="${esc(`${x.n} · ${x.label}`)}" referrerpolicy="no-referrer"></div>${many ? `<button class="lb-nav next" data-lbgo="1" aria-label="Next picture">${ARROW(1)}</button>` : ""}${S.lbNote ? pvPop(it, x) : ""}${pvButtons(it, x)}</div>
-    <div class="lb-foot"><b>${x.n} · ${esc(x.label)}${x.opt && isRec(it, x.opt.id) ? ` <span class="tag rec" style="display:inline;margin-left:6px">Recommended</span>` : ""}</b>${x.desc ? `<span>${esc(x.desc)}</span>` : ""}</div>`;
-  el.hidden = false; document.body.classList.add("lb-open");
-  const ta = el.querySelector(".pv-pop textarea"); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+// Stable ids on everything Mike might comment on, so a comment stays on its picture or line.
+const cid = (it, part) => `c-${it.id}-${part}`.replace(/[^A-Za-z0-9_-]/g, "_");
+function shot(it, x, lbi) {
+  return `<div class="shot" id="${cid(it, "pic" + x.n)}" data-comment-target><img src="${esc(x.img)}" alt="${esc(`${x.n} · ${x.label}`)}" loading="lazy" referrerpolicy="no-referrer" data-lbi="${lbi}"><button class="cmt" data-cmt="${cid(it, "pic" + x.n)}" title="Comment on picture ${x.n}" aria-label="Comment on picture ${x.n}">${ICO_CMT}</button></div>`;
 }
-function lbGo(d) { if (!S.lb) return; S.lbNote = false; const it = S.items.find((t) => t.id === S.lb.id); if (it) keepDraft(it); S.lb.i += d; render(); }
-function lbClose() { if (!S.lb) return; S.lbNote = false; const it = S.items.find((t) => t.id === S.lb.id); if (it) keepDraft(it); S.lb = null; render(); }
 function body(it) {
-  const answered = it.status !== "open" && it.status;
+  const xs = imagesOf(it);
   if (it.kind === "pick") {
-    return `<div class="opts" ${it.multi ? `role="group"` : `role="radiogroup"`}>${(it.options || []).map((o, i) => `
-      <div class="opt ${isSel(it, o.id) ? "sel" : ""} ${it.multi ? "multi" : ""}" data-opt="${esc(o.id)}" tabindex="0" role="${it.multi ? "checkbox" : "radio"}" aria-checked="${isSel(it, o.id)}">
-        ${o.img ? shotPv(it, imagesOf(it).find((x) => x.opt === o), o.img, `${i + 1} · ${o.label}`, `${it.id}-${o.id}`, imagesOf(it).findIndex((x) => x.opt === o)) : ""}
-        <div class="opt-h"><span class="radio"></span><span><span class="num">${i + 1}</span> · ${esc(o.label)}</span>${isRec(it, o.id) ? `<span class="tag rec">Recommended</span>` : o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ""}</div>
-        ${o.desc ? `<div class="opt-d">${esc(o.desc)}</div>` : ""}
-        ${o.link ? `<a class="opt-l" href="${esc(o.link)}" target="_blank" rel="noopener noreferrer">${esc(o.source || "Source")} ↗</a>` : ""}
-        ${seqNote(it, o.id)}
-      </div>`).join("")}</div>`;
+    return `<div class="opts">${(it.options || []).map((o, i) => { const k = xs.findIndex((x) => x.opt === o); return `
+      <div class="card" id="${cid(it, "opt" + (i + 1))}" data-comment-target>
+        ${k >= 0 ? shot(it, xs[k], k) : ""}
+        <div class="cap"><span><span class="num">${i + 1}</span> · ${esc(o.label)}</span>${isRec(it, o.id) ? `<span class="tag rec">Recommended</span>` : o.tag ? `<span class="tag">${esc(o.tag)}</span>` : ""}</div>
+        ${o.desc ? `<div class="desc">${esc(o.desc)}</div>` : ""}
+        ${o.link ? `<a class="src" href="${esc(o.link)}" target="_blank" rel="noopener noreferrer">${esc(o.source || "Source")} ↗</a>` : ""}
+      </div>`; }).join("")}</div>`;
   }
   if (it.kind === "question") {
-    const sel = S.sel[it.id] ?? it.answer?.choice;
-    return `<div class="qopts">${(it.options || []).map((o) => `<button class="qopt ${sel === o.id ? "sel" : ""}" data-opt="${esc(o.id)}"><span class="radio"></span><span>${esc(o.label)}${it.recommended === o.id ? ` <span class="tag rec" style="margin-left:6px">Recommended</span>` : ""}${o.desc ? `<small>${esc(o.desc)}</small>` : ""}</span></button>`).join("")}</div>`;
+    return `<div class="qopts">${(it.options || []).map((o, i) => `<div class="qopt" id="${cid(it, "opt" + (i + 1))}" data-comment-target><span class="num">${i + 1}</span> · ${esc(o.label)}${isRec(it, o.id) ? `<span class="tag rec">Recommended</span>` : ""}${o.desc ? `<small>${esc(o.desc)}</small>` : ""}</div>`).join("")}</div>`;
   }
-  const xs = imagesOf(it);
-  return `<div class="seq">${(it.images || []).map((m, i) => `<div>${shotPv(it, xs[i], m.img, `${i + 1} · ${m.title || ""}`, `${it.id}-${i}`, i)}<div class="seq-c"><span class="num">${i + 1}</span> · ${esc(m.title || "")}${doneMark(it, i)}${!it.status || it.status === "open" ? liveMark(it, i) : ""}</div>${m.desc ? `<div class="seq-d">${esc(m.desc)}</div>` : ""}${seqNote(it, String(i))}</div>`).join("")}</div>`;
+  return `<div class="seq">${xs.map((x, i) => `<div>${shot(it, x, i)}<div class="cap"><span><span class="num">${x.n}</span> · ${esc(x.label)}</span></div>${x.desc ? `<div class="desc">${esc(x.desc)}</div>` : ""}</div>`).join("")}</div>`;
 }
-// A picture in the list, with the same round buttons as the enlarged view in its corner.
-function shotPv(it, x, img, label, key, lbi) {
-  const h = shot(img, label, key, lbi);
-  const pop = S.pop && S.pop.id === it.id && S.pop.key === keyOf(it, x) ? pvPop(it, x) : "";
-  return h.replace(/<\/div>$/, `${pvButtons(it, x)}</div>`) + pop.replace('class="pv-pop"', 'class="pv-pop inline"');
+// What an older version of the page recorded as his answer, read-only.
+function was(it) {
+  const a = it.answer; if (!a || !(a.label || a.note || a.notes)) return "";
+  const notes = Object.values(a.notes || {}).filter((t) => (t || "").trim());
+  return `<div class="was"><b>Your earlier answer:</b> ${esc(a.label || "")}${a.note ? `<div class="note">${esc(a.note)}</div>` : ""}${notes.map((t) => `<div class="note">${esc(t)}</div>`).join("")}</div>`;
 }
-function liveMark(it, i) { const k = String(i); return markSpan(marksOf(it)[k] || ((notesOf(it)[k] || "").trim() ? "note" : "")); }
-// A saved note under a picture in the list. While the item is open it's a button that reopens the note box
-// to edit it (Mike, 2026-11-21: "where it shows my note should be edit-able"); hidden while that box is open.
-function seqNote(it, k) {
-  const t = (it.status && it.status !== "open" ? it.answer?.notes?.[k] : notesOf(it)[k]) || "";
-  if (!t.trim()) return "";
-  if (!canAct(it)) return `<div class="seq-note"><b>Your note:</b> ${esc(t)}</div>`;
-  if (S.pop && S.pop.id === it.id && S.pop.key === k) return "";
-  return `<button class="seq-note edit" data-noteedit data-key="${esc(k)}" title="Edit your note"><b>Your note:</b> ${esc(t)}<span class="seq-edit">Edit</span></button>`;
-}
-// After sending, each picture shows how it was judged.
-function doneMark(it, i) { if (!it.status || it.status === "open") return ""; return markSpan(it.answer?.marks?.[i] || ((it.answer?.notes?.[String(i)] || "").trim() ? "note" : "")); }
-function sentMarks(it, a) {
-  const n = (it.images || []).length, g = [], b = [], u = [];
-  const c = [];
-  for (let i = 0; i < n; i++) (a.marks[i] === "good" ? g : a.marks[i] === "changes" ? b : (a.notes?.[String(i)] || "").trim() ? c : u).push(i + 1);
-  if (g.length === n) return `You approved all ${n}`;
-  const bits = []; if (g.length) bits.push(`Looks good: ${rangeList(g)}`); if (b.length) bits.push(`Needs changes: ${rangeList(b)}`); if (c.length) bits.push(`Note: ${rangeList(c)}`); if (u.length) bits.push(`Not marked: ${rangeList(u)}`);
-  return bits.join(" · ");
-}
-function markState(it) {
-  const { good, bad, noted, none } = markSummary(it);
-  if (!good.length && !bad.length && !noted.length) return { ok: false, label: "" };
-  const parts = []; if (good.length) parts.push(`${good.length} good`); if (bad.length) parts.push(`${bad.length} need${bad.length === 1 ? "s" : ""} changes`); if (noted.length) parts.push(`${noted.length} note${noted.length === 1 ? "" : "s"}`); if (none.length) parts.push(`${none.length} unmarked`);
-  return { ok: true, label: `Send: ${parts.join(", ")}` };
-}
-function answerBar(it, inLb) {
-  const st = S.status[it.id] || {};
-  const note = `<textarea id="note-${esc(it.id)}" rows="1" placeholder="${it.kind === "approve" ? "What should change? (needed for Needs changes)" : "Add a note (optional)"}">${esc(S.drafts[it.id] || "")}</textarea>`;
-  const status = `<div class="status ${st.cls || ""}" role="status">${esc(st.text || "")}</div>`;
-  if (!canWrite) return `<div class="answer"><div class="status">You can look at this, but only the project owner can answer.</div></div>`;
-  if (multiShot(it)) {
-    const ms = markState(it), n = it.images.length;
-    return `<div class="answer"><div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn good" data-act="good">${n === 1 ? "Looks good" : `Approve all ${n}`}</button>${ms.ok ? `<button class="btn pri wide" data-act="marks">${ms.label}</button>` : ""}</div>${status}</div>`;
-  }
-  if (it.kind === "approve") return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn bad" data-act="changes">Needs changes</button><button class="btn good" data-act="good">Looks good</button></div>${status}</div>`;
-  const { ok, label } = sendState(it);
-  return `<div class="answer">${note}<div class="btns"><button class="btn ghost" data-act="chat">Talk in chat</button><button class="btn pri" data-act="send" ${ok ? "" : "hidden"}>${label}</button></div>${status}</div>`;
-}
-// Send works with a pick, a note, or both (Mike, 2026-11-18: "I should be able to send without a selection and only a note").
-function sendState(it) {
-  const hasNote = !!(S.drafts[it.id] || "").trim() || !!notesText(it);
-  if (it.kind === "pick" && it.multi) {
-    const nums = (it.options || []).map((o, i) => (S.sel[it.id] || []).includes(o.id) ? i + 1 : 0).filter(Boolean);
-    if (nums.length) return { ok: true, label: nums.length === 1 ? `Send pick ${nums[0]}` : `Send picks ${nums.slice(0, -1).join(", ")} and ${nums.at(-1)}` };
-  } else {
-    const opt = (it.options || []).find((o) => o.id === S.sel[it.id]), i = (it.options || []).indexOf(opt);
-    if (opt) return { ok: true, label: it.kind === "pick" ? `Send pick ${i + 1}` : "Send answer" };
-  }
-  if (hasNote) return { ok: true, label: "Send note" };
-  return { ok: false, label: it.kind === "pick" ? (it.multi ? "Pick some or write a note" : "Pick one or write a note") : "Choose an answer or write a note" };
+function foot(it) {
+  const st = stOf(it), s = S.status[it.id] || {};
+  if (st === "reviewed" || st === "done") return `<div class="foot"><div class="revd">✓ ${st === "done" ? "Done" : `Reviewed ${ago(it.reviewedAt || it.answer?.at)}`}${st === "reviewed" && canWrite ? `<button class="link" data-act="reopen">Not done reviewing</button>` : ""}</div><div class="status ${s.cls || ""}" role="status">${esc(s.text || "")}</div></div>`;
+  if (st === "chat") return `<div class="foot"><div class="status">Talking about this in the project chat.</div>${canWrite ? `<button class="btn" data-act="reviewed">Reviewed</button>` : ""}</div>`;
+  if (!canWrite) return `<div class="foot"><div class="status">You can look at this, but only the project owner can mark it reviewed.</div></div>`;
+  return `<div class="foot"><button class="btn" data-act="reviewed" ${s.busy ? "disabled" : ""}>Reviewed</button><div class="status ${s.cls || ""}" role="status">${esc(s.text || "")}</div></div>`;
 }
 function renderItem(id) {
   const it = S.items.find((i) => i.id === id);
-  if (!it) { S.lb = null; renderLb(null); $("#app").innerHTML = `<div class="nav"><button class="link" data-back>‹ Needs you</button></div><div class="empty"><b>${S.ready ? "This item is gone." : "Loading…"}</b>${S.ready ? "It was finished or removed." : ""}</div>`; bindItem(); return; }
+  if (!it) { S.lb = null; renderLb(null); $("#app").innerHTML = `<div class="nav"><button class="link" data-back>‹ Needs you</button></div><div class="empty"><b>${S.ready ? "This item is gone." : "Loading…"}</b>${S.ready ? "It was finished or removed." : ""}</div>`; return; }
   const q = queue(), k = q.findIndex((i) => i.id === id);
-  const st = it.status || "open";
-  let h = `<div class="nav"><button class="link" data-back>‹ Needs you</button>${k >= 0 ? `<span class="pos">${k > 0 ? `<button class="link" data-go="${esc(q[k - 1].id)}" aria-label="Previous">‹</button>` : ""}${k + 1} of ${q.length}${k < q.length - 1 ? `<button class="link" data-go="${esc(q[k + 1].id)}" aria-label="Next">›</button>` : ""}</span>` : ""}</div>
-    <div class="it-title">${esc(it.title)}</div>
+  $("#app").innerHTML = `<div class="nav"><button class="link" data-back>‹ Needs you</button>${k >= 0 ? `<span class="pos">${k > 0 ? `<button class="link" data-go="${esc(q[k - 1].id)}" aria-label="Previous">‹</button>` : ""}${k + 1} of ${q.length}${k < q.length - 1 ? `<button class="link" data-go="${esc(q[k + 1].id)}" aria-label="Next">›</button>` : ""}</span>` : ""}</div>
+    <div class="it-title" id="${cid(it, "title")}" data-comment-target>${esc(it.title)}</div>
     <div class="from">${esc(it.from || "")}${it.from ? " · " : ""}${ago(it.created)}${it.blocking ? " · blocking work" : ""}</div>
-    ${it.context ? `<p class="ctx">${esc(it.context)}${it.recommendReason ? ` <b>${esc(it.recommendReason)}</b>` : ""}</p>` : ""}
-    ${body(it)}`;
-  let tail = "";
-  if (st === "answered" || st === "done") {
-    const a = it.answer || {};
-    tail = `<div class="sent"><b>${a.marks ? sentMarks(it, a) : a.verdict === "changes" ? "You asked for changes" : a.verdict === "good" ? (multiShot(it) ? `You approved all ${it.images.length}` : "You approved it") : (a.label === "Just a note" ? "You sent a note" : a.label === "None" ? "You picked none" : `You chose ${esc(a.label || a.choice || "")}`)}</b> · ${ago(a.at)}${st === "answered" ? " · waiting on Claude" : " · done"}${a.note ? `<div class="note">${esc(a.note)}</div>` : ""}
-      ${st === "answered" && canWrite ? `<button class="link" data-act="reopen">Change my answer</button>` : ""}</div>`;
-  } else if (st === "chat") {
-    tail = `<div class="chatbox"><b>Talking in the project chat.</b> Claude will bring the outcome back here, or clear it when it's settled.${canWrite ? ` <button class="link" data-act="reopen">Answer here instead</button>` : ""}</div>`;
-  }
-  const inLb = S.lb && S.lb.id === it.id;
-  if (!tail) tail = answerBar(it, inLb);
-  if (S.lb && !inLb) S.lb = null;
-  $("#app").innerHTML = h + (inLb ? "" : tail);
-  renderLb(inLb ? it : null);
-  bindItem(it);
+    ${it.context ? `<p class="ctx" id="${cid(it, "context")}" data-comment-target>${esc(it.context)}${it.recommendReason ? ` <b>${esc(it.recommendReason)}</b>` : ""}</p>` : ""}
+    ${stOf(it) === "open" ? `<p class="how">Comment on any picture or line, and choose Send to Claude in the comment box. Press Reviewed when you've said everything.</p>` : ""}
+    ${body(it)}${was(it)}${foot(it)}`;
+  renderLb(S.lb && S.lb.id === it.id ? it : null);
 }
-// Push only: everything goes out with Send to Claude, so say up front when no Claude session can hear it.
-let listen = null;
+function renderLb(it) {
+  const el = $("#lb"), imgs = it ? imagesOf(it) : [];
+  if (!S.lb || !it || !imgs.length) { el.hidden = true; el.innerHTML = ""; document.body.classList.remove("lb-open"); return; }
+  const i = ((S.lb.i % imgs.length) + imgs.length) % imgs.length; S.lb.i = i;
+  const x = imgs[i], many = imgs.length > 1;
+  el.classList.toggle("full", S.lbFull);
+  el.innerHTML = `<div class="lb-bar"><span class="lb-cap"><b>${esc(it.title)}</b><span>${x.n} of ${imgs.length}</span></span><span class="lb-tools"><button class="link" data-lbcmt="${cid(it, "pic" + x.n)}">Comment</button><button class="link" data-lbfull>${S.lbFull ? "Fit to screen" : "Actual size"}</button><button class="link" data-lbclose>Close</button></span></div>
+    <div class="lb-stage">${many ? `<button class="lb-nav prev" data-lbgo="-1" aria-label="Previous picture">${ARROW(-1)}</button>` : ""}<div class="lb-scroll"><img src="${esc(x.img)}" alt="${esc(`${x.n} · ${x.label}`)}" referrerpolicy="no-referrer"></div>${many ? `<button class="lb-nav next" data-lbgo="1" aria-label="Next picture">${ARROW(1)}</button>` : ""}</div>
+    <div class="lb-foot"><b>${x.n} · ${esc(x.label)}${x.opt && isRec(it, x.opt.id) ? ` <span class="tag rec" style="margin-left:6px">Recommended</span>` : ""}</b>${x.desc ? `<span>${esc(x.desc)}</span>` : ""}</div>`;
+  el.hidden = false; document.body.classList.add("lb-open");
+}
+// Push only: Reviewed goes out with Send to Claude, so say up front when no Claude session can hear it.
 async function checkListen() {
   let v = "off";
   try { v = comments ? await comments.canSendToClaude() : "off"; } catch (e) { v = "off"; }
   if (v !== listen) { listen = v; render(); }
 }
-// No push route exists for artifacts on this account (the Claude Code Remote connector won't load in pages),
-// so the only live route is Send to Claude while a session watches the page. Answers always save in the db.
-const banner = () => {
-  if (!S.ready || listen === "available") return "";
-  return `<div class="calm" role="status">Your answers save here. When you're done, let Claude know in the project chat.</div>`;
-};
-// Rendering rebuilds the page, and new items or status changes arrive from the db at any moment. Whatever
-// Mike is typing in survives it: its text lives in state (S.drafts, S.typing) and focus and caret come back
-// (2026-11-21: an item added while he typed wiped his note twice).
-function render() {
-  const a = document.activeElement, ta = a && a.tagName === "TEXTAREA" ? a : null;
-  const where = ta && (ta.id ? "#" + CSS.escape(ta.id) : ta.closest(".pv-pop") ? `${ta.closest(".lb") ? ".lb " : ""}.pv-pop[data-pop="${CSS.escape(ta.closest(".pv-pop").dataset.pop)}"] textarea` : null);
-  const sel = ta ? [ta.selectionStart, ta.selectionEnd, ta.scrollTop] : null;
-  const id = currentId(); if (id) renderItem(id); else { S.lb = null; renderLb(null); renderList(); } const b = banner(); if (b) $("#app").insertAdjacentHTML("afterbegin", b);
-  if (where) { const t = document.querySelector(where); if (t) { t.focus({ preventScroll: true }); try { t.setSelectionRange(sel[0], sel[1]); } catch {} t.scrollTop = sel[2]; } }
-  saveDrafts();
-}
+const banner = () => !S.ready || listen === "available" ? "" : `<div class="calm" role="status">Claude isn't listening right now. Your comments and Reviewed marks still save here; when you're done, let Claude know in the project chat.</div>`;
+function render() { const id = currentId(); if (id) renderItem(id); else { S.lb = null; renderLb(null); renderList(); } const b = banner(); if (b) $("#app").insertAdjacentHTML("afterbegin", b); }
+function setStatus(it, text, cls, busy) { S.status[it.id] = { text, cls, busy }; render(); }
 
-function bindItem(it) {
-  document.querySelectorAll("[data-back]").forEach((b) => b.addEventListener("click", () => { location.hash = ""; }));
-  document.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => { location.hash = "i-" + encodeURIComponent(b.dataset.go); }));
-  if (!it) return;
-  const st = it.status || "open";
-  document.querySelectorAll("[data-opt]").forEach((el) => {
-    const pick = (e) => { if (e.target.closest("[data-zoom],[data-comment],[data-noteedit],a,.pv,.pv-pop")) return; if (st !== "open" || !canWrite) return; keepDraft(it); const id = el.dataset.opt;
-      if (it.multi) { const cur = S.sel[it.id] || []; S.sel[it.id] = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]; } else S.sel[it.id] = id;
-      render(); };
-    el.addEventListener("click", pick);
-    el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(e); } });
-  });
-  document.querySelectorAll("[data-comment]").forEach((b) => b.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const key = b.dataset.comment, holder = b.closest(".opt, .seq > div, .lb-opt");
-    if (holder.querySelector(".cbox")) { holder.querySelector(".cbox textarea").focus(); return; }
-    b.insertAdjacentHTML("afterend", `<div class="cbox"><textarea rows="2" placeholder="What about this one?"></textarea><div class="btns"><button class="btn ghost" data-cancel>Cancel</button><button class="btn pri" data-csend>Send to Claude</button></div><div class="status" role="status"></div></div>`);
-    const box = holder.querySelector(".cbox"), ta = box.querySelector("textarea"), stat = box.querySelector(".status");
-    ["click", "keydown"].forEach((ev) => box.addEventListener(ev, (x) => x.stopPropagation()));
-    ta.focus();
-    box.querySelector("[data-cancel]").addEventListener("click", () => box.remove());
-    box.querySelector("[data-csend]").addEventListener("click", async (x) => {
-      const t = ta.value.trim(); if (!t) { stat.textContent = "Write the comment first."; stat.className = "status err"; return; }
-      x.target.disabled = true; stat.textContent = "Sending…"; stat.className = "status";
-      const what = b.dataset.label || key;
-      const said = await tellClaude(it, `[review ${it.id}] Comment on ${what} in "${it.title}":\n\n${t}`, holder.querySelector(".shot") || holder);
-      if (said.ok) { box.innerHTML = `<div class="status ok">Sent to Claude: “${esc(t)}”</div>`; }
-      else { stat.textContent = said.text === NOT_HEARD ? "Not sent: Claude isn't watching right now. Say it in the project chat." : said.text.replace(/^Saved here, but /, "Not sent: ").replace(/^Not sent: Claude didn't get it: /, "Not sent: "); stat.className = "status err"; x.target.disabled = false; }
-    });
-  }));
-  const note = $(`#note-${CSS.escape(it.id)}`);
-  note?.addEventListener("input", () => { S.drafts[it.id] = note.value; saveDrafts(); const b = document.querySelector('[data-act="send"]'); if (b) { const st = sendState(it); b.hidden = !st.ok; b.textContent = st.label; } });
-  document.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => act(it, b.dataset.act)));
-  // Round picture buttons. Every action stays on the picture.
-  const lbOn = () => S.lb && S.lb.id === it.id;
-  document.querySelectorAll("[data-noteedit]").forEach((b) => b.addEventListener("click", (e) => {
-    e.stopPropagation(); e.preventDefault(); keepDraft(it);
-    S.pop = { id: it.id, key: b.dataset.key }; render();
-    const ta = document.querySelector(".pv-pop.inline textarea"); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
-  }));
-  document.querySelectorAll("[data-pv]").forEach((b) => b.addEventListener("click", (e) => {
-    e.stopPropagation(); e.preventDefault(); keepDraft(it);
-    const v = b.dataset.pv, k = b.dataset.key;
-    if (v === "note") { if (lbOn()) S.lbNote = !S.lbNote; else S.pop = S.pop && S.pop.id === it.id && S.pop.key === k ? null : { id: it.id, key: k }; render(); if (!lbOn() && S.pop) { const ta = document.querySelector(".pv-pop.inline textarea"); if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); } } return; }
-    let on;
-    if (v === "pick") { if (it.multi) { const cur = S.sel[it.id] || []; on = !cur.includes(k); S.sel[it.id] = on ? [...cur, k] : cur.filter((x) => x !== k); } else { on = S.sel[it.id] !== k; S.sel[it.id] = on ? k : undefined; } }
-    else { const m = marksOf(it); on = m[k] !== v; if (on) m[k] = v; else delete m[k]; }
-    // Stay on the picture: Mike moves on with the arrows (2026-11-19: "don't automatically advance").
-    S.lbNote = false; render();
-  }));
-  document.querySelectorAll(".pv-pop").forEach((pop) => {
-    ["click", "keydown"].forEach((ev) => pop.addEventListener(ev, (x) => x.stopPropagation()));
-    const ta = pop.querySelector("textarea"), k = pop.dataset.pop;
-    const drop = () => { if (S.typing[it.id]) delete S.typing[it.id][k]; };
-    const save = () => { const t = ta.value.trim(); if (t) notesOf(it)[k] = t; else delete notesOf(it)[k]; drop(); S.pop = null; S.lbNote = false; render(); };
-    const cancel = () => { drop(); S.pop = null; S.lbNote = false; render(); };
-    ta.addEventListener("input", () => { (S.typing[it.id] || (S.typing[it.id] = {}))[k] = ta.value; saveDrafts(); });
-    pop.querySelector("[data-pvsave]").addEventListener("click", save);
-    pop.querySelector("[data-pvcancel]").addEventListener("click", cancel);
-    ta.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); save(); } else if (e.key === "Escape") { e.preventDefault(); cancel(); } });
-  });
+// The artifact's own comment box, opened on a picture or line.
+async function openComment(elId) {
+  const el = document.getElementById(elId); if (!el) return;
+  if (!comments) { alertLine("Comments aren't available in this view. Use the comment tool in the page's toolbar."); return; }
+  try { await comments.openComposer({ element: el }); } catch (e) { alertLine("Couldn't open the comment box here. Use the comment tool in the page's toolbar."); }
 }
-// Everything Mike has typed or marked but not sent lives in the db (collection "drafts", one doc per item),
-// saved as he types, so a republish, reload or another device never loses it (Mike, 2026-11-21: a republish
-// wiped notes he hadn't sent; "any comments I write, even drafts, should be persisted as data").
-const draftsSaved = {}; let draftsT = 0, draftsLoaded = false;
-function draftOf(id) {
-  const d = { sel: S.sel[id] ?? null, note: S.drafts[id] || "", marks: S.marks[id] || {}, notes: S.pnotes[id] || {}, typing: S.typing[id] || {} };
-  const empty = d.sel == null || (Array.isArray(d.sel) && !d.sel.length) ? !d.note && !Object.keys(d.marks).length && !Object.keys(d.notes).length && !Object.keys(d.typing).length : false;
-  return empty ? null : d;
-}
-function saveDrafts(now) {
-  if (!db || !draftsLoaded || !canWrite) return;
-  clearTimeout(draftsT);
-  draftsT = setTimeout(() => {
-    const ids = new Set([...Object.keys(S.sel), ...Object.keys(S.drafts), ...Object.keys(S.marks), ...Object.keys(S.pnotes), ...Object.keys(S.typing), ...Object.keys(draftsSaved)]);
-    for (const id of ids) {
-      const d = draftOf(id), j = JSON.stringify(d);
-      if (j === (draftsSaved[id] ?? "null")) continue;
-      draftsSaved[id] = j;
-      const ref = db.collection("drafts").doc(id);
-      Promise.resolve(d ? ref.set({ ...d, at: new Date().toISOString() }) : (ref.delete ? ref.delete() : ref.set({}))).catch(() => { delete draftsSaved[id]; });
-    }
-  }, now ? 0 : 400);
-}
-addEventListener("pagehide", () => saveDrafts(true));
-document.addEventListener("visibilitychange", () => { if (document.hidden) saveDrafts(true); });
-function loadDrafts(snap) {
-  for (const doc of snap.docs) {
-    const d = doc.data() || {}, id = doc.id;
-    draftsSaved[id] = JSON.stringify(Object.keys(d).length ? { sel: d.sel ?? null, note: d.note || "", marks: d.marks || {}, notes: d.notes || {}, typing: d.typing || {} } : null);
-    if (d.sel != null && S.sel[id] == null) S.sel[id] = d.sel;
-    if (d.note && !S.drafts[id]) S.drafts[id] = d.note;
-    if (d.marks && !S.marks[id]) S.marks[id] = { ...d.marks };
-    if (d.notes && !S.pnotes[id]) S.pnotes[id] = { ...d.notes };
-    if (d.typing && Object.keys(d.typing).length && !S.typing[id]) S.typing[id] = { ...d.typing };
-  }
-  // Reopen a note box he was halfway through, on the item that's showing.
-  const cur = currentId(), t = cur && S.typing[cur];
-  if (t && !S.pop) { const k = Object.keys(t).find((x) => (t[x] || "") !== ((S.pnotes[cur] || {})[x] || "")); if (k) S.pop = { id: cur, key: k }; }
-  draftsLoaded = true; render();
-}
-const keepDraft = (it) => { const n = $(`#note-${CSS.escape(it.id)}`); if (n) S.drafts[it.id] = n.value; };
-function setStatus(it, text, cls) { S.status[it.id] = { text, cls }; const el = document.querySelector(".answer .status"); if (el) { el.textContent = text; el.className = "status " + (cls || ""); } }
+function alertLine(t) { const it = S.items.find((i) => i.id === currentId()); if (it) setStatus(it, t, "err"); }
 
-// Tell Claude: a comment on this item, sent to Claude. A plain comment wakes nobody, so the page never
-// falls back to one; when no Claude session can take it, it says so and points to the project chat.
-const NOT_HEARD = "Saved. Let Claude know in the project chat when you're done.";
-async function tellClaude(it, text, el) {
+async function markReviewed(it) {
+  const ref = db.collection("items").doc(it.id), at = new Date().toISOString();
+  setStatus(it, "Saving…", "", true);
+  try { await ref.update({ status: "reviewed", reviewedAt: at }); }
+  catch (e) { setStatus(it, "Couldn't save that: " + (e?.message || "try again"), "err"); return; }
+  const text = `[review ${it.id}] Mike marked "${it.title}" reviewed. His feedback is in the comments on this item.`;
+  const r = await tellClaude(text, document.getElementById(cid(it, "title")));
+  setStatus(it, r.text, r.ok ? "ok" : "");
+}
+const NOT_HEARD = "Saved. Claude isn't listening right now, so let Claude know in the project chat.";
+async function tellClaude(text, el) {
   if (!comments) return { ok: false, text: NOT_HEARD };
   try {
     const can = await comments.canSendToClaude();
-    if (can !== "available") return { ok: false, text: can === "writers_only" ? "Saved here, but only the page's owner can send to Claude from it." : NOT_HEARD };
+    if (can !== "available") return { ok: false, text: can === "writers_only" ? "Saved. Only the page's owner can send to Claude from it." : NOT_HEARD };
     const anchor = await comments.anchorFor(el || document.querySelector(".it-title"));
     await comments.sendToClaude({ anchor, text });
-    return { ok: true, text: "Sent to Claude." };
+    return { ok: true, text: "Saved and sent to Claude." };
   } catch (e) {
-    if (e?.code === "consent_required") return { ok: false, text: "Saved here, but not sent: allow this page to comment for you when claude.ai asks, then try again." };
-    if (e?.code === "forbidden") return { ok: false, text: "Saved here, but sending from this page is turned off for you. Mention it in the project chat." };
-    return { ok: false, text: "Saved here, but sending to Claude failed (" + (e?.code || "error") + "). Mention it in the project chat." };
+    if (e?.code === "consent_required") return { ok: false, text: "Saved, but not sent: allow this page to comment for you when claude.ai asks, then press Reviewed again." };
+    return { ok: false, text: "Saved, but sending to Claude failed (" + (e?.code || "error") + "). Mention it in the project chat." };
   }
 }
-async function act(it, what) {
-  keepDraft(it);
-  const note = (S.drafts[it.id] || "").trim();
-  const ref = db.collection("items").doc(it.id);
-  if (what === "reopen") { try { await ref.update({ status: "open" }); } catch (e) { setStatus(it, "Couldn't reopen it: " + (e?.message || "try again"), "err"); } return; }
-  let patch, text;
-  const now = new Date().toISOString();
-  if (what === "chat") {
-    patch = { status: "chat", answer: { note, at: now } };
-    text = `[review ${it.id}] Mike wants to talk about "${it.title}" in the project chat.${note ? `\n\nHis note: ${note}` : ""}`;
-  } else if (what === "send") {
-    const opts = it.options || [];
-    if (it.kind === "pick" && it.multi) {
-      const chosen = opts.filter((x) => (S.sel[it.id] || []).includes(x.id));
-      const label = chosen.map((x) => `${opts.indexOf(x) + 1} · ${x.label}`).join(", ");
-      if (!chosen.length) { if (!note && !notesText(it)) return; patch = { status: "answered", answer: { choice: [], label: "Just a note", note, at: now } }; text = `[review ${it.id}] "${it.title}": Mike picked none and sent ${note ? `a note:\n\n${note}` : "notes."}`; }
-      else {
-      patch = { status: "answered", answer: { choice: chosen.map((x) => x.id), label, note, at: now } };
-      text = `[review ${it.id}] "${it.title}": Mike picked ${chosen.length} of ${opts.length}: ${label}.${note ? `\n\nHis note: ${note}` : ""}`;
-      }
-    } else {
-    const o = opts.find((x) => x.id === S.sel[it.id]);
-    if (!o) { if (!note && !notesText(it)) return; patch = { status: "answered", answer: { label: "Just a note", note, at: now } }; text = `[review ${it.id}] "${it.title}": Mike didn't pick and sent ${note ? `a note:\n\n${note}` : "notes."}`; }
-    else {
-    const n = opts.indexOf(o) + 1, label = it.kind === "pick" ? `${n} · ${o.label}` : o.label;
-    patch = { status: "answered", answer: { choice: o.id, label, note, at: now } };
-    text = `[review ${it.id}] "${it.title}": Mike chose ${label}.${note ? `\n\nHis note: ${note}` : ""}`;
-    }
-    }
-  } else if (what === "marks") {
-    const { n, good, bad, noted, none } = markSummary(it);
-    if (!good.length && !bad.length && !noted.length) return;
-    const marks = {}; good.forEach((k) => (marks[k - 1] = "good")); bad.forEach((k) => (marks[k - 1] = "changes"));
-    const verdict = bad.length ? "changes" : none.length || noted.length ? "partial" : "good";
-    const label = bad.length ? "Needs changes" : noted.length && !good.length ? "Notes" : none.length || noted.length ? "Some look good" : "Looks good";
-    patch = { status: "answered", answer: { verdict, marks, label, note, at: now } };
-    const lines = []; if (good.length) lines.push(`looks good: ${rangeList(good)}`); if (bad.length) lines.push(`needs changes: ${rangeList(bad)}`); if (noted.length) lines.push(`a note only: ${rangeList(noted)}`); if (none.length) lines.push(`not marked: ${rangeList(none)}`);
-    text = `[review ${it.id}] "${it.title}": Mike judged the ${n} pictures one by one. ${lines.join("; ")}.${note ? `\n\n${note}` : ""}`;
-  } else {
-    if (what === "changes" && !note) { setStatus(it, "Say what should change first, in the box above.", "err"); $(`#note-${CSS.escape(it.id)}`)?.focus(); return; }
-    patch = { status: "answered", answer: { verdict: what, label: what === "good" ? "Looks good" : "Needs changes", note, at: now } };
-    text = `[review ${it.id}] "${it.title}": ${what === "good" ? (multiShot(it) ? `Mike approved all ${it.images.length} pictures.` : "Mike approved it.") : "Mike asked for changes."}${note ? `\n\n${note}` : ""}`;
-  }
-  const pn = notesText(it);
-  if (pn && patch.status === "answered") { patch.answer.notes = Object.fromEntries(Object.entries(notesOf(it)).filter(([, t]) => (t || "").trim())); text += `\n\nNotes on pictures:\n${pn}`; }
-  document.querySelectorAll(".answer .btn, .lb-send").forEach((b) => (b.disabled = true));
-  setStatus(it, "Sending…");
-  try { await ref.update(patch); }
-  catch (e) { setStatus(it, "Couldn't save your answer: " + (e?.message || "try again") + ".", "err"); document.querySelectorAll(".answer .btn").forEach((b) => (b.disabled = false)); return; }
-  const said = await tellClaude(it, text);
-  delete S.drafts[it.id]; delete S.sel[it.id]; delete S.marks[it.id]; delete S.pnotes[it.id]; delete S.typing[it.id]; S.lb = null; S.lbNote = false; S.pop = null; saveDrafts(true);
-  const next = queue().find((i) => i.id !== it.id);
-  toast(`“${it.title}”: ${said.text}`, !said.ok && said.text !== NOT_HEARD);
-  location.hash = next ? "i-" + encodeURIComponent(next.id) : "";
+async function reopen(it) {
+  S.status[it.id] = {};
+  try { await db.collection("items").doc(it.id).update({ status: "open" }); }
+  catch (e) { setStatus(it, "Couldn't reopen it: " + (e?.message || "try again"), "err"); }
 }
-let toastT = 0;
-function toast(t, bad) { const el = $("#toast"); el.textContent = t; el.classList.toggle("bad", !!bad); el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (el.hidden = true), bad ? 15000 : 6000); }
 
-// Lightbox: tap any screenshot to see it big; "Actual size" scrolls it at full resolution.
+const lbItem = () => S.items.find((t) => t.id === S.lb?.id);
 document.addEventListener("click", (e) => {
-  const z = e.target.closest("[data-zoom]"); if (!z) return;
-  e.stopPropagation(); const id = currentId(), it = S.items.find((t) => t.id === id); if (!it) return;
-  keepDraft(it); S.lb = { id, i: +z.dataset.lbi || 0 }; S.lbFull = false; render();
-}, true);
-document.addEventListener("click", (e) => {
-  if (e.target.closest("[data-lbclose]")) lbClose();
-  else if (e.target.closest("[data-lbgo]")) lbGo(+e.target.closest("[data-lbgo]").dataset.lbgo);
-  else if (e.target.closest("[data-lbfull]")) { S.lbFull = !S.lbFull; const it = S.items.find((t) => t.id === S.lb?.id); if (it) keepDraft(it); render(); }
+  const t = e.target;
+  const c = t.closest("[data-cmt]"); if (c) { e.stopPropagation(); openComment(c.dataset.cmt); return; }
+  const lbc = t.closest("[data-lbcmt]"); if (lbc) { const id = lbc.dataset.lbcmt; S.lb = null; render(); document.getElementById(id)?.scrollIntoView({ block: "center" }); openComment(id); return; }
+  const z = t.closest(".shot img"); if (z && !t.closest("#lb")) { S.lb = { id: currentId(), i: +z.dataset.lbi || 0 }; S.lbFull = false; render(); return; }
+  if (t.closest("[data-lbclose]")) { S.lb = null; render(); return; }
+  const g = t.closest("[data-lbgo]"); if (g) { S.lb.i += +g.dataset.lbgo; render(); return; }
+  if (t.closest("[data-lbfull]")) { S.lbFull = !S.lbFull; render(); return; }
+  const o = t.closest("[data-open]"); if (o) { location.hash = "i-" + encodeURIComponent(o.dataset.open); return; }
+  if (t.closest("[data-back]")) { location.hash = ""; return; }
+  const go = t.closest("[data-go]"); if (go) { location.hash = "i-" + encodeURIComponent(go.dataset.go); return; }
+  const a = t.closest("[data-act]"); if (a) { const it = S.items.find((i) => i.id === currentId()); if (!it) return; if (a.dataset.act === "reviewed") markReviewed(it); else if (a.dataset.act === "reopen") reopen(it); }
 });
 document.addEventListener("keydown", (e) => {
   if (!S.lb) return;
-  if (e.key === "Escape") { e.preventDefault(); lbClose(); return; }
-  if (e.target.closest("textarea, input")) return;
-  if (e.key === "ArrowLeft") { e.preventDefault(); lbGo(-1); } else if (e.key === "ArrowRight") { e.preventDefault(); lbGo(1); }
+  if (e.key === "Escape") { e.preventDefault(); S.lb = null; render(); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); S.lb.i--; render(); }
+  else if (e.key === "ArrowRight") { e.preventDefault(); S.lb.i++; render(); }
 });
-document.addEventListener("click", (e) => { const r = e.target.closest("[data-open]"); if (r) location.hash = "i-" + encodeURIComponent(r.dataset.open); });
-document.addEventListener("error", (e) => { const im = e.target; if (!(im instanceof HTMLImageElement)) return; const sh = im.closest(".shot"); if (!sh || sh.classList.contains("broken")) return; sh.classList.add("broken"); sh.textContent = "This picture didn't load here. The source link below still works."; }, true);
-addEventListener("hashchange", () => { render(); scrollTo(0, 0); checkListen(); });
+document.addEventListener("error", (e) => { const im = e.target; if (!(im instanceof HTMLImageElement)) return; const sh = im.closest(".shot"); if (!sh || sh.classList.contains("broken")) return; sh.classList.add("broken"); sh.textContent = "This picture didn't load here."; }, true);
+addEventListener("hashchange", () => { S.lb = null; render(); scrollTo(0, 0); checkListen(); });
 
 (async () => {
   const timer = setTimeout(() => { if (!S.ready) { S.err = "The store didn't answer. Reload the page to try again."; render(); } }, 10000);
   db = await claude.use("db");
   if (!db) { clearTimeout(timer); S.err = "Open this page signed in to claude.ai to see what needs you."; render(); return; }
-  claude.use("comments").then((c) => { comments = c; checkListen(); if (S.ready) render(); });
+  claude.use("comments").then((c) => { comments = c; checkListen(); });
   addEventListener("focus", checkListen); document.addEventListener("visibilitychange", () => { if (!document.hidden) checkListen(); });
-  claude.use("user").then((u) => { user = u; if (u) Promise.resolve(u.can ? u.can("data.write") : null).then((v) => { if (v === false) { canWrite = false; render(); } }); });
-  { let first = true, un = null; un = db.collection("drafts").onSnapshot((snap) => { if (!first) return; first = false; loadDrafts(snap); if (typeof un === "function") un(); }, () => { draftsLoaded = true; }); }
+  claude.use("user").then((u) => { if (u) Promise.resolve(u.can ? u.can("data.write") : null).then((v) => { if (v === false) { canWrite = false; render(); } }); });
   db.doc("meta/page").onSnapshot((s) => { S.meta = (s.exists && s.data()) || {}; render(); }, () => {});
   db.collection("items").onSnapshot((snap) => {
     clearTimeout(timer);
