@@ -48,7 +48,16 @@ finds a better layout, change this skill in the same turn and publish with `quas
   2026-11-26, after a set of shots went out in chat only: "Link me the review dude. Every time there
   are mocks". Whoever shows him pictures sends them to the desk first and puts the row link in the
   post. Row link: `<canvas url>#artboard-<board path without .dc.html>`.
-- **Move rows to Done when settled**, and drop them from Done once their work ships.
+- **Keep the open page clean: only what still needs him.** Mike, 2026-11-26: "there are pretty
+  resolved things in the review board that are still there. keep it clean". He had answered five
+  rows in canvas comments that nobody read, and one row asked about samples a thread had already
+  replaced. A row is settled the moment an answer exists anywhere (a canvas comment, the chat, a
+  thread) or its question goes stale (newer samples, a changed plan, work that shipped). Move it to
+  Done in that same turn, with his answer in its title. To catch what slips through, the canvas owner
+  checks every open row against its thread's latest state each time it touches the canvas, and
+  always before linking the canvas to Mike. A thread whose item settles or is replaced tells the
+  canvas owner in that turn.
+- **Drop rows from Done once their work ships.**
 - **Embed images as assets.** Upload every picture to the canvas (`Artifact`, `asset: true`, the
   canvas `url`) and use its `/_blob/<id>` URL. Assets already on another artifact are copied with
   `from_url` and `asset_ids`, no download.
