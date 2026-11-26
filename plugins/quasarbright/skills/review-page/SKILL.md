@@ -84,6 +84,11 @@ file shapes: `project/canvas.json` plus one `project/<name>.dc.html` per artboar
 - **Motion** (an animation, a demo, a transition) is never judged from stills: put a short GIF on
   the artboard (canvas uploads take png, jpg, gif, webp and svg) with a link to the live page, or
   skip the canvas and send the live link in chat.
+- **An empty open page says so.** When the last row moves to Done, put a gray sticky beside the
+  how-to sticky: "Nothing is waiting on you right now. Everything you answered, with your answer in
+  its title, is on the Done page." Moving the row he's looking at blanks his view: Mike, 2026-11-26,
+  right after his comment's row moved: "the whole canvas went black after the agent replied. what
+  happened". So the reply to the comment that settles a row also says the row moved to the Done page.
 - **Done**: on the `done` page, each row's title becomes his answer ("Done: the Drunk's card. You
   picked A."). Moving a row = set `page: "done"` on its boards and notes and place them in free
   space there.
