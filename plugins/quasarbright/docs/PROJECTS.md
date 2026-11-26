@@ -20,9 +20,9 @@ work. Mike doesn't read threads.
 - **Everything waiting on Mike goes on the project's review canvas** (the `review-page` skill): a
   Design canvas where each question is a row of artboards built from real screens, and he answers
   by commenting on the one he means. Keep it in sync when he answers in chat, link the row whenever
-  something needs him, and move rows to Done once settled. When Mike writes in the project chat and
-  the canvas hasn't been read in the last hour, read its comment threads first: plain comments
-  wake nobody.
+  something needs him, and move rows to Done once settled. Canvas comments can't be sent to Claude,
+  so they wake nobody: when Mike says he left comments, or writes in the project chat and the
+  canvas hasn't been read in the last hour, read its comment threads first.
 - **Every verdict teaches something.** Whoever handles an answer from the page or chat records
   the verdict and any general lesson in the live taste store in the same turn, through the area's
   persona when there is one (the `persona` skill, "When Mike gives a verdict").

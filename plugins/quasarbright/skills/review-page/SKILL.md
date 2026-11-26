@@ -24,8 +24,7 @@ finds a better layout, change this skill in the same turn and publish with `quas
 ## Owner
 
 - **A dedicated "Review desk" thread owns the canvas** (Mike, 2026-11-19). Only the desk publishes
-  to it, so only the desk holds its watch and gets woken by comments; two publishers would both be
-  woken and answer twice. Personas and build threads never write the canvas: they put their
+  to it, so two sessions never overwrite each other's rows or handle the same comment twice. Personas and build threads never write the canvas: they put their
   material (PNGs at 2x, captions, Gets/Costs lines, their pick and why) in
   `/mnt/project-files/review/<item id>/` and send the desk a note with full background, through the
   coordinator. Outside a project, or in a project without a desk, the coordinator (or the one
@@ -65,8 +64,8 @@ file shapes: `project/canvas.json` plus one `project/<name>.dc.html` per artboar
 
 - **Two pages**: `open` ("Waiting on you", the launch page) and `done` ("Done").
 - **A how-to sticky** at the top left of the open page, always there: "Comment on the option you
-  want, or on anything you have thoughts about. Choose Send to Claude in the comment box so I hear
-  right away. Plain comments get read too, just later."
+  want, or on anything you have thoughts about. Then say \"left comments\" in the project chat and
+  I'll read them right away. If you forget, I still check a few times a day."
 - **One row per item**, blocking items first. Above the row a `title1` note worded as the question
   ("2. Log the wakes where people only see who's who?"), `maxW` the row's width. 80 px between
   artboards in a row, 120 px between rows, at least 223 px of clear space above each title.
@@ -95,27 +94,28 @@ first canvas took about 10 publishes).
 
 ## How comments reach Claude
 
-Two paths, so a comment never depends on Mike remembering a toggle:
+Comments on a Design canvas can't be sent to Claude: the canvas's comment box has no Send to Claude
+option, so a comment wakes nobody (Mike, 2026-11-26: "comments don't get sent to Claude. I have to
+tell it in the chat that I left comments"; he has sent product feedback). Don't tell him to use
+Send to Claude or @claude there. But `ArtifactComments` `action: "read"` on the canvas returns
+every thread with an anchor naming the artboard and element it sits on, so Claude pulls them:
 
-1. **Push.** A comment he sends to Claude (Send to Claude in the comment box, or @claude) wakes the
-   session holding the canvas's watch: the desk. Publishing registers the watch;
-   `ArtifactComments` `action: "watch"` with the canvas `url` re-registers it after a restart. A send
-   while the desk's container is asleep isn't queued, so the pull below still matters.
-2. **Pull.** Plain comments wake nobody (Mike's two "This one" comments on the first canvas reached
-   no one). But `ArtifactComments` `action: "read"` on the canvas returns every thread, sent to
-   Claude or not, with an anchor that names the artboard and element it sits on. So read all
-   threads:
-   - the desk, on **every** wake, whatever woke it;
-   - the coordinator, whenever Mike writes in the project chat and no read has happened in the last
-     hour, and whenever he says he reviewed, commented or looked;
-   - **a daily review sweep routine** in every project with an open row: it reads the threads and
-     the ledger (below) and posts in the project chat only when it finds unhandled comments ("You
-     left 2 comments on the review canvas: … Passing them on."), which wakes the coordinator to
-     relay them to the desk. The coordinator creates it when the canvas is created and pauses it
-     while the open page is empty.
+1. **When he says so.** A line in the project chat ("left comments", "reviewed", "commented on the
+   canvas", "picked") makes the coordinator read the canvas threads in that same turn, answer him
+   in the chat, and pass each new comment to the desk. This is the fast path; the how-to sticky
+   tells him about it.
+2. **Whenever someone is awake anyway.** The desk reads all threads on every wake, whatever woke
+   it. The coordinator reads them whenever Mike writes in the project chat and no read has happened
+   in the last hour.
+3. **A review sweep routine** in every project with an open row, every 3 hours from 9am to 9pm
+   Eastern (his check-in hours), so a comment he forgot to mention waits at most a few hours. It
+   reads the threads and the ledger and posts in the project chat only when it finds unhandled
+   comments ("You left 2 comments on the review canvas: … Passing them on."), which wakes the
+   coordinator to relay them to the desk. The coordinator creates it with the canvas and pauses it
+   while the open page is empty.
 
-**The ledger.** A session can reply to and resolve only threads he sent to Claude, so "handled" is
-tracked on the canvas itself, in its database: `ArtifactData` collection `review_ledger`, one doc
+**The ledger.** A session can't reply to or resolve a thread that wasn't sent to Claude, which is
+every canvas thread, so "handled" is tracked on the canvas itself, in its database: `ArtifactData` collection `review_ledger`, one doc
 per thread id: `{thread, item, board, comment, handledAt, routedTo}`. A thread is new when it has
 a comment later than its ledger doc's `handledAt`, or no doc. Write the doc in the same turn you
 route it.
@@ -127,10 +127,9 @@ route it.
 - Route it to its owner with full context: game design to the design persona, screens, flows and
   UI wording to the UI/UX persona, art to the art persona, code to the build thread, through the
   coordinator.
-- If the thread was sent to Claude, reply in one or two plain lines saying what happens next
-  ("Got it, A. Passing it to Pam."), and resolve it once handled. Leave it open while a question is
-  still going back and forth. If it wasn't sent to Claude, you can't reply or resolve: answer in the
-  project chat instead and leave the thread for him.
+- Answer in the project chat in one or two plain lines saying what happens next ("Got it, A on the
+  Drunk's card. Passing it to Pam."). You can't reply on or resolve the thread; leave it for him.
+  If a thread ever shows as sent to Claude, reply and resolve there as well.
 - A settled pick moves its row to Done.
 - Before routing an approval, check whether the work already shipped (the live site or the repo); if
   it did, move the row to Done. Mike, 2026-11-25: "You need to mark the portfolio thing as done",
@@ -160,8 +159,8 @@ route it.
    with `action: "list"`, `scope: "types"`), `title` "<project> review", `auto_open:
    "after_first_write"`. Its result carries the type's instructions; follow them.
 2. Publish `project/canvas.json` (the two pages, the how-to sticky) and the first row from the
-   desk's session, so the desk holds the watch.
-3. Save the `url` and owner in project memory, and set up the daily review sweep routine.
+   desk's session.
+3. Save the `url` and owner in project memory, and set up the review sweep routine.
 4. Tell Mike the link once.
 
 ## Moving a project off the old review page
