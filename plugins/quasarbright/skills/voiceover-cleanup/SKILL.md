@@ -48,7 +48,9 @@ out of an .aup3 without Audacity: it is SQLite, see `sampleblocks` and the binar
    He imports them in Audacity (File > Import > Labels). Before calling the clean finished, listen
    to a few plosive fixes on the real recording: plosives only show up on a real voice, never in
    the draft.
-5. **Report to him** in a few lines. Say what you obeyed, any ad-lib you cut that he might want
+5. **Report to him.** Every listening test sends three clips of the same spot: his raw, his own edit
+   when there is one, and yours (Mike, 2026-11-26: "you should include the raw for comparison").
+   Then say in a few lines what you obeyed, any ad-lib you cut that he might want
    back, any line that was never recorded, and the counts of fixes. Attach `clean.wav` or a short
    excerpt, not the whole report.
 6. **Hand it on.** `clean.wav` is the master recording that `narrated-video`'s
@@ -63,8 +65,9 @@ out of an .aup3 without Audacity: it is SQLite, see `sampleblocks` and the binar
 | Noise Gate | threshold −40 dBFS (peak), reduction −35 dB, attack 10 ms, hold 50 ms, decay 100 ms | fitted to his polynomials wet track: 0.2 dB mean error per 10 ms frame, 0.5 dB on frames it turns down. This is his expander step and takes out the faint breaths between phrases |
 | Clicks and breaths before a word | deleted (60 dB down, whole spectrum) when a burst of 30 ms or less over −65 dBFS sits alone in a pause, within 0.35 s before the word | the thin vertical strips left of a word; he deleted 11 in polynomials after the gate, this finds 7 plus 1 he left in. Clicks inside words are left alone: he never fixed any |
 | Clicks inside speech | over 2 kHz capped at the voice's own level around the strip, where 10 to 18 kHz jumps 15 dB over its 60 ms median for 40 ms or less while the voice carries on around it | the tall thin strips over a vowel; about 19 a minute on the macros raw, 2 on clean polynomials. A "t" or "k" has silence before it and is left alone |
+| Plosives | lows under 150 Hz cut by their excess (up to 30 dB) where they jump 15 dB over the 200 Hz to 1 kHz band at −45 dBFS or louder, for the pop only | never a high-pass on the whole take: Mike found his own macros low cut took too much. Fires 0 times on the MV7+ polynomials take, about 14 a minute on macros |
 | Thumps | under 60 Hz down 25 dB where the sub-40 Hz band jumps 15 dB over its 200 ms median, above −60 dBFS | all of his "plosive" fixes in polynomials were this; finds 7 of 8, and a false hit can't touch the voice |
-| High-pass | off (`--highpass 80` to turn on) | his MV7+ setup filters at 75 Hz in the mic; older takes like macros weren't, and his wet track for those had a low cut, so turn it on there |
+| High-pass | off (`--highpass 80` to turn on) | the plosive fix is targeted instead. Mike thinks the MV7+ 75 Hz filter is on but isn't sure: ask him the next time a vocal take comes in |
 
 `--no-cut` skips take picking and only gates and repairs, for a file that is already edited.
 
