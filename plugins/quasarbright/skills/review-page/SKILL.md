@@ -170,7 +170,11 @@ from the desk's session:
 
 1. Read the old page's items (`ArtifactData` `items`) and every comment thread on it
    (`ArtifactComments` `read`). Route anything not yet routed; nothing he wrote may be dropped.
-2. Put every open item on the canvas as a row, copying its pictures across with `from_url` and
+2. Before you move an item, check whether Mike already answered it somewhere else: in the project
+   chat, or with the build thread. Ask the coordinator if you can't tell. If he did, mark it done
+   instead of moving it. (2026-11-26, Misc: the fisheye pick went onto the new canvas a day after
+   he had chosen it in chat, and the result was already live.)
+   Put every still-open item on the canvas as a row, copying its pictures across with `from_url` and
    `asset_ids`.
 3. Set each old item to `done` with `answer: {note: "Moved to the review canvas: <canvas url>"}`,
    and stop watching the old page (`ArtifactComments` `watch`, `on: false`). Leave the page up as a
