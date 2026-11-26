@@ -94,11 +94,14 @@ first canvas took about 10 publishes).
 
 ## How comments reach Claude
 
-Comments on a Design canvas can't be sent to Claude: the canvas's comment box has no Send to Claude
-option, so a comment wakes nobody (Mike, 2026-11-26: "comments don't get sent to Claude. I have to
-tell it in the chat that I left comments"; he has sent product feedback). Don't tell him to use
-Send to Claude or @claude there. But `ArtifactComments` `action: "read"` on the canvas returns
-every thread with an anchor naming the artboard and element it sits on, so Claude pulls them:
+Most canvas comments aren't sent to Claude, so they wake nobody (Mike, 2026-11-26: "comments
+don't get sent to Claude. I have to tell it in the chat that I left comments"). Sending can work
+there, though: on 2026-11-26 at 17:07 UTC a comment Mike left on a werewolf canvas option arrived
+"sent to you" and woke the desk, which publishes the canvas and so holds its watch. Treat a sent
+comment like any other: handle it, reply on the thread, and resolve it there. Don't promise him
+that sending works, and keep the "say left comments" route below as the default. `ArtifactComments`
+`action: "read"` on the canvas returns every thread, sent or not, with an anchor naming the artboard
+and element it sits on, so Claude pulls them:
 
 1. **When he says so.** A line in the project chat ("left comments", "reviewed", "commented on the
    canvas", "picked") makes the coordinator read the canvas threads in that same turn, answer him
