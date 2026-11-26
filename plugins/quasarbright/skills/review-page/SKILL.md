@@ -72,6 +72,30 @@ pick up a change when you republish them from the new template.
 - **No polling.** Feedback reaches Claude only by push (below). The page says so when nobody is
   listening.
 
+## Review on a Design canvas instead
+
+On 2026-11-26 Mike answered a pick left on a Design canvas (a claude.ai artifact made from the
+Design type, the one with artboards) and then asked to move all of that project's review items onto
+it: "Let's move all the review stuff into there." When a project works this way, the canvas
+replaces the page:
+
+- **One canvas per project holds every open item.** Each question is a row with a title note
+  above it (`kind: "title1"`, worded as the question). Each option gets its own artboard: a
+  screenshot of the real screen (uploaded as an asset), the option's name, a "Recommended" pill on
+  the recommended one, and one line under it: "Gets: … Costs: …". Always include today's screen as an
+  option or a reference board, so he compares against what exists. Supporting shots for an option go
+  in a second row under it.
+- **Settled items move to a "Done" row** at the bottom, titled with his answer ("Done: X. You picked
+  A."). Remove them once their work ships.
+- **His comments don't notify anyone** unless he sends them to Claude. He says "I commented" in
+  chat; then read every thread with `ArtifactComments` and answer in chat. A comment that isn't sent
+  to Claude can't be replied to or resolved from a session, so tell him which ones to resolve.
+- **Retire the old review page** when a project moves: mark its items done with a note that points
+  to the canvas, and put the canvas link in its project line.
+
+The rest of this skill (full background on every item, sync with chat, routing, lessons) applies
+the same way.
+
 ## Setting one up
 
 1. Copy `review.html`, replace `__PROJECT__` in the `<title>`, and publish it with the Artifact tool,
