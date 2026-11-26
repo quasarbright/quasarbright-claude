@@ -106,8 +106,8 @@ described under "Lessons from his verdicts" in `WORKING.md`.
 - **Demo UI work with screenshots.** Whenever you build or change something visible, take screenshots
   of it in the states that show the change (staged with real data, mobile too when layout changed)
   and send them with `SendUserFile` (`display: "render"`) with a one-line caption each, so Mike sees
-  it without opening anything. When the change involves motion or animation, also send a short
-  MP4 clip (a few seconds) as its own file; clips are only for motion, never for static UI. This is a demo for
+  it without opening anything. No clips by default, even for motion: screenshots plus the live
+  link. Make an MP4 clip only when Mike asks for one. This is a demo for
   him, on top of (not instead of) serving the page for him to try.
 - **Commit as you go, without asking.** Every finished change or iteration gets a local commit right
   away (stage only the files you changed; leave other sessions' work alone). Never end a turn with

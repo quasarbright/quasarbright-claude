@@ -87,8 +87,9 @@ had a − ×N + pill, after a rule about feature parity was already in `TASTE.md
    image, and don't make a gallery page or artifact just to show them: a big stitched image is hard
    to zoom on his phone and loses quality. Every mock, screenshot and clip carries a short title and a
    one-line description, in the image itself or in its filename plus caption.
-   When the change involves motion or animation, also send a short MP4 clip (a few seconds) as its
-   own file next to the screenshots. Clips are only for motion, never for static UI.
+   No clips by default, even when the change involves motion: send screenshots (mid-animation
+   frames where they show the change) plus the live link so he can watch it himself. Make a short
+   MP4 clip only when he asks for one. (Mike, 2026-11-26: "Let's limit clips.")
 5. Read the console. Warnings are often the real bug.
 6. For a reported bug, reproduce it in a failing test first. If he reports a class of bug twice,
    sweep for it everywhere.
