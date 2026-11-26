@@ -17,10 +17,12 @@ work. Mike doesn't read threads.
 - **Anything waiting on Mike carries its full background:** what it is, why it came up, and what
   each choice leads to, with any new term explained before the question uses it. Never assume he
   saw a thread's proposal.
-- **Everything waiting on Mike goes on the project's review page** (the `review-page` skill):
-  pictures to look over, choices and questions, persona questions included. He answers in the
-  page's comments and presses Reviewed. Keep it in sync when he answers in chat, link it whenever
-  something needs him, and mark items Done once their work ships.
+- **Everything waiting on Mike goes on the project's review canvas** (the `review-page` skill): a
+  Design canvas where each question is a row of artboards built from real screens, and he answers
+  by commenting on the one he means. Keep it in sync when he answers in chat, link the row whenever
+  something needs him, and move rows to Done once settled. When Mike writes in the project chat and
+  the canvas hasn't been read in the last hour, read its comment threads first: plain comments
+  wake nobody.
 - **Every verdict teaches something.** Whoever handles an answer from the page or chat records
   the verdict and any general lesson in the live taste store in the same turn, through the area's
   persona when there is one (the `persona` skill, "When Mike gives a verdict").

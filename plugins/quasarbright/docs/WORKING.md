@@ -2,7 +2,7 @@
 
 He brings ideas and decides what things are. He should never have to point out bad UX, unfinished
 work or a bug that testing would have caught. Product taste is in `TASTE.md`. Working inside a
-Claude project (coordinator, threads, review page, personas) is in `PROJECTS.md`.
+Claude project (coordinator, threads, review canvas, personas) is in `PROJECTS.md`.
 
 ## Before building
 
@@ -121,7 +121,7 @@ Tests pass before every push.
 
 ## Lessons from his verdicts
 
-Every approval, rejection or comment (on a review page or in chat) and every correction is a chance
+Every approval, rejection or comment (on the review canvas or in chat) and every correction is a chance
 to learn. Taste lessons (UI and UX, art, game design, in-product copy, video) live in one live taste
 store that every session and project shares, with his verdicts and their pictures: the `persona`
 skill says how to read and add to it. Whoever handles a verdict records it there in the same turn,
