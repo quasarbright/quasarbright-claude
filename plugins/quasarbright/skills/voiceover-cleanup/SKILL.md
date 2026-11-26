@@ -62,8 +62,9 @@ out of an .aup3 without Audacity: it is SQLite, see `sampleblocks` and the binar
 | Splices | butt splice at the quietest point of the pause, keeping up to 0.25 s lead-in and 0.3 s tail, 3 ms fades | his splices are butt splices; the fades stop a join from clicking |
 | Noise Gate | threshold −40 dBFS (peak), reduction −35 dB, attack 10 ms, hold 50 ms, decay 100 ms | fitted to his polynomials wet track: 0.2 dB mean error per 10 ms frame, 0.5 dB on frames it turns down. This is his expander step and takes out the faint breaths between phrases |
 | Clicks and breaths before a word | deleted (60 dB down, whole spectrum) when a burst of 30 ms or less over −65 dBFS sits alone in a pause, within 0.35 s before the word | the thin vertical strips left of a word; he deleted 11 in polynomials after the gate, this finds 7 plus 1 he left in. Clicks inside words are left alone: he never fixed any |
+| Clicks inside speech | over 2 kHz capped at the voice's own level around the strip, where 10 to 18 kHz jumps 15 dB over its 60 ms median for 40 ms or less while the voice carries on around it | the tall thin strips over a vowel; about 19 a minute on the macros raw, 2 on clean polynomials. A "t" or "k" has silence before it and is left alone |
 | Thumps | under 60 Hz down 25 dB where the sub-40 Hz band jumps 15 dB over its 200 ms median, above −60 dBFS | all of his "plosive" fixes in polynomials were this; finds 7 of 8, and a false hit can't touch the voice |
-| High-pass | off (`--highpass 80` to turn on) | his MV7+ setup filters at 75 Hz in the mic; turn it on for a take recorded without that |
+| High-pass | off (`--highpass 80` to turn on) | his MV7+ setup filters at 75 Hz in the mic; older takes like macros weren't, and his wet track for those had a low cut, so turn it on there |
 
 `--no-cut` skips take picking and only gates and repairs, for a file that is already edited.
 
