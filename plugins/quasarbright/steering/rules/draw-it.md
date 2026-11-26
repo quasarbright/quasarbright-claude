@@ -16,8 +16,8 @@ How:
 Animate when motion would explain it better than a still: send an animated SVG. The app's
 side panel plays them (SMIL and CSS animations both work), so Mike sees it without opening
 anything. How the animation goes is a judgment call each time. Check frames before sending
-(in Playwright: `svg.pauseAnimations()` and `setCurrentTime(t)`, then screenshot). Don't make
-MP4 clips unless Mike asks for one.
+(in Playwright: `svg.pauseAnimations()` and `setCurrentTime(t)`, then screenshot). For what
+an SVG can't do, an MP4 from headless frames and ffmpeg (installed) also works.
 
 Style:
 - Dark background, readable light text, a title and a one-line subtitle per panel.
