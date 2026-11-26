@@ -15,15 +15,15 @@ Each one is a persona in Mike's live taste store (domain `video`; the `persona` 
 what to look for, **what Mike wants** learned so far and a dated **log**. That's the reviewer's
 long-term memory, shared live by every session and machine.
 
-| reviewer | name | persona id | sees | script stage | draft render |
-|---|---|---|---|---|---|
-| Fact check | Clippy | `video-fact-check` | informed | yes | |
-| Clarity | Ben | `video-clarity` | **blind** | yes | yes |
-| Entertainment | Quentin | `video-entertainment` | informed | yes | yes |
-| Pacing | Fletcher | `video-pacing` | informed | yes | yes |
-| Hook and packaging | Hooky | `video-hook` | **blind** | yes | |
-| Script vs screen | Annie | `video-script-screen` | informed | yes, once `>` notes exist | yes |
-| Visual polish | Grant | `video-visual-polish` | informed | | yes |
+| reviewer | name | persona id | sees | script stage | storyboard | draft render |
+|---|---|---|---|---|---|---|
+| Fact check | Clippy | `video-fact-check` | informed | yes |  |  |
+| Clarity | Ben | `video-clarity` | **blind** | yes |  | yes |
+| Entertainment | Quentin | `video-entertainment` | informed | yes |  | yes |
+| Pacing | Fletcher | `video-pacing` | informed | yes |  | yes |
+| Hook and packaging | Hooky | `video-hook` | **blind** | yes |  |  |
+| Script vs screen | Annie | `video-script-screen` | informed | yes, once `>` notes exist | yes | yes |
+| Visual polish | Grant | `video-visual-polish` | informed |  | yes | yes |
 
 Refer to each reviewer by its name (the persona skill's Names table), in the report too.
 
@@ -49,6 +49,9 @@ below. They're the ones who remember Mike.
   scripts, his Mac copy (`~/GitHub/learn-obsidian`) is newer than GitHub; read it through the device
   tools. Never edit his Obsidian files. If a video is split into parts, give only the part under
   review, and say in one line that it's a part.
+- **Storyboard:** the 2 or 3 still frames (PNG) for one scene, that block's lines from `script.py`
+  with Mike's `>` notes for it from the script, and the video's theme. Give the frames of scenes
+  already built too, so they can judge whether the new one fits.
 - **Draft render:** the rendered mp4 (with the draft or real voice), `script.md`, `script.py` and
   `main.py` from `manim-videos/<year>/<topic>/`, frames sampled with ffmpeg (every 2s, plus every
   cue's frame and the frame 0.3s before it), and the word timings the narration service wrote.
@@ -76,7 +79,19 @@ video (project memory). Give paths, not summaries, so the reviewer reads the rea
    > on what works best, so it doesn't get cut. Don't edit any files.
 
    Blind reviewers get only their file text, the material path and that paragraph.
-3. Sort the findings yourself (below). Merge duplicates across reviewers and say which reviewers
+3. **A storyboard run** (the `narrated-video` skill, "Storyboard before animating") is Grant and
+   Annie only. Before judging, each reads the 5 to 8 closest `video` examples with pictures (the
+   `persona` skill, "A review"). Their prompt replaces the paragraph above with:
+
+   > These are 2 or 3 candidate frames for one scene. Pick the one Mike would pick, judged against
+   > his past verdicts and your file, and name the example ids behind the call. Say in one line
+   > why, as he'd read it. If none would pass, send them all back with what's wrong with each. Don't
+   > edit any files.
+
+   When they agree, that's the pick. When they split, you choose and say so. All rejected sends
+   the frames back for one more round; after two rounds, show Mike the best one with the open
+   question. Record the pick on each persona's example when he answers (`persona` `approved`).
+4. Sort the findings yourself (below). Merge duplicates across reviewers and say which reviewers
    raised them.
 
 ## Sorting
@@ -105,6 +120,11 @@ This is what makes the panel get better. After Mike reacts to a review:
   right reviewer (`kind` `rule`), so it's caught next time.
 - **Save the verdict** as an example (`area` `video`, kind `script line`, `title`, `joke`...) with
   his words, and mark what the reviewer had said, so misses get counted.
+- **A visual verdict saves its picture.** On a storyboard, the frame he judged; on a render, the
+  frame at the moment he means (`ffmpeg -ss <t> -i render.mp4 -frames:v 1 frame.png`, then the
+  persona skill's 512px webp step). Kinds: `palette`, `title card`, `diagram`, `code animation`,
+  `transition`, `scene layout`, `storyboard`. A storyboard pick he later rejects or corrects is a
+  miss for Grant and Annie.
 - **Add a log line** for each reviewer you touched: date, video, what changed.
 
 All of this goes in the store, live, with no plugin publish (the `persona` skill, "When Mike gives

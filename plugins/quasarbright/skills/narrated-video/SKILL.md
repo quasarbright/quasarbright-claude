@@ -124,6 +124,32 @@ different edit than the one intended.
 Title case titles, headers and labels. Leave data lowercase: alphabet strips,
 code tables, the word being spelled.
 
+## Storyboard before animating
+
+A trial (Mike, 2026-11-26: "sure let's try it. might want to go back to scene
+direct but we'll try storyboards for initial iteration speed"). If storyboards
+stop paying for themselves, he may go back to building scenes directly, so
+ask him after the first few scenes whether to keep them.
+
+Before building a scene whose look isn't settled yet, make **2 or 3 still
+frames** of its key moment, each a different approach: a different layout, a
+different way of drawing the idea, or a different thing made big. A first
+diagram of a new kind, a title card or a new representation needs this. A
+scene that reuses a look Mike already approved skips it, and so does an exact
+small ask.
+
+- Make them as manim stills in the video's own theme and fonts
+  (`manim main.py -s -ql Storyboard<Scene><A|B|C>`), not HTML mocks, so they
+  look like the real render and the winner becomes the start of the scene.
+  Keep the storyboard scenes in a `storyboard.py` next to `main.py`.
+- A video's **first storyboard is its look**: palette, type and the visual
+  language below, before any scene builds on it.
+- Hand the frames to the `video-review` skill's storyboard stage (Grant and
+  Annie pick one). Build on the pick and show Mike the picked frame with the
+  one-line reason in the next update. Don't wait for his answer unless he asks.
+- When Mike comments on a storyboard or a render, save it as a taste example
+  (`video-review`, "Learning"), with the frame he saw.
+
 ## manim behaviors that will waste your day
 
 **`add_sound` was silently dropped when manim reused a cached partial movie**
