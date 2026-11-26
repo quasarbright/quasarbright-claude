@@ -65,7 +65,7 @@ file shapes: `project/canvas.json` plus one `project/<name>.dc.html` per artboar
 - **Two pages**: `open` ("Waiting on you", the launch page) and `done` ("Done").
 - **A how-to sticky** at the top left of the open page, always there: "Comment on the option you
   want, or on anything you have thoughts about. Then say \"left comments\" in the project chat and
-  I'll read them right away. If you forget, I still check a few times a day."
+  I'll read them right away."
 - **One row per item**, blocking items first. Above the row a `title1` note worded as the question
   ("2. Log the wakes where people only see who's who?"), `maxW` the row's width. 80 px between
   artboards in a row, 120 px between rows, at least 223 px of clear space above each title.
@@ -107,13 +107,8 @@ every thread with an anchor naming the artboard and element it sits on, so Claud
 2. **Whenever someone is awake anyway.** The desk reads all threads on every wake, whatever woke
    it. The coordinator reads them whenever Mike writes in the project chat and no read has happened
    in the last hour.
-3. **A review sweep scheduled task** in every project with an open row, every 3 hours from 9am to
-   9pm Eastern (his check-in hours), so a comment he forgot to mention waits at most a few hours.
-   The desk creates it, firing into the desk's own session (a thread can't post in the project
-   chat, so a fresh session would have nowhere to report). Each run reads the threads and the
-   ledger, and only when it finds unhandled comments routes them to the coordinator, which tells
-   Mike in the project chat ("You left 2 comments on the review canvas: … Passing them on.").
-   Without a desk, the coordinator creates it. Pause it while the open page is empty.
+No timed checks: never set up a routine, scheduled task, cron or watch to sweep a canvas for
+comments. Mike, 2026-11-26: "Remove the sweeps" (scheduled runs cost usage while nothing happens).
 
 **The ledger.** A session can't reply to or resolve a thread that wasn't sent to Claude, which is
 every canvas thread, so "handled" is tracked in a ledger. It can't live on the canvas: a Design
@@ -164,8 +159,7 @@ route it, and re-read the file just before writing (other threads share the fold
    "after_first_write"`. Its result carries the type's instructions; follow them.
 2. Publish `project/canvas.json` (the two pages, the how-to sticky) and the first row from the
    desk's session.
-3. Save the `url`, owner and ledger path in project memory, and set up the review sweep scheduled
-   task.
+3. Save the `url`, owner and ledger path in project memory.
 4. Tell Mike the link once.
 
 ## Moving a project off the old review page

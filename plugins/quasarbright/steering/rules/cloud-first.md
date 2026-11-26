@@ -48,5 +48,5 @@ What it took for Clanker Tycoon on 2026-11-19. Not every project needs every ste
 7. **Artifacts can't wake a sleeping thread.** The Remote connector doesn't load inside artifacts,
    so a page's comments sent to Claude only wake the owning thread while its container is awake,
    and a Design canvas's comments can't be sent to Claude at all. Comments still save, so the
-   `review-page` skill reads every thread when Mike says he left comments, on each wake, and from a
-   review sweep routine.
+   `review-page` skill reads every thread when Mike says he left comments, and whenever the desk or
+   coordinator is awake anyway. No timed sweeps.
