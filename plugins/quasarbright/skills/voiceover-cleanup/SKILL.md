@@ -63,7 +63,7 @@ out of an .aup3 without Audacity: it is SQLite, see `sampleblocks` and the binar
 | Takes | last full read of each line; jumps of more than about 300 script words cost much more | every retake cut he made kept the last read; a common phrase repeated in a recap shouldn't look like a retake |
 | Splices | butt splice at the quietest point of the pause, keeping up to 0.25 s lead-in and 0.3 s tail, 3 ms fades | his splices are butt splices; the fades stop a join from clicking |
 | Noise Gate | threshold −40 dBFS (peak), reduction −35 dB, attack 10 ms, hold 50 ms, decay 100 ms | fitted to his polynomials wet track: 0.2 dB mean error per 10 ms frame, 0.5 dB on frames it turns down. This is his expander step and takes out the faint breaths between phrases |
-| Clicks and breaths before a word | deleted (60 dB down, whole spectrum) when a burst of 30 ms or less over −65 dBFS sits alone in a pause, within 0.35 s before the word | the thin vertical strips left of a word; he deleted 11 in polynomials after the gate, this finds 7 plus 1 he left in. Clicks inside words are left alone: he never fixed any |
+| Clicks and breaths before a word | deleted (60 dB down, whole spectrum) when a burst of 30 ms or less over −65 dBFS sits alone in a pause, within 0.35 s before the word | the thin vertical strips left of a word; he deleted 11 in polynomials after the gate, this finds 7 plus 1 he left in. He never managed to fix clicks inside words by hand; the next two rows do |
 | Clicks inside speech | over 2 kHz capped at the voice's own level around the strip, where 10 to 18 kHz jumps 15 dB over its 60 ms median for 40 ms or less while the voice carries on around it | the tall thin strips over a vowel; about 19 a minute on the macros raw, 2 on clean polynomials. A "t" or "k" has silence before it and is left alone |
 | Faint clicks inside speech | the same cap, where 8 to 14 kHz on a 1 ms envelope (read every 0.25 ms) jumps 18 dB, lasts 4 ms or less, beats every other spike within 13 ms by 6 dB, and voice carries on around it | ticks too quiet for 5 ms blocks, hidden between the glottal pulses. The "the bits" click at 105.93 s on the macros raw; about 12 a minute there, 1 on polynomials |
 | Plosives | lows under 150 Hz cut by their excess (up to 30 dB) where they jump 15 dB over the 200 Hz to 1 kHz band at −45 dBFS or louder, for the pop only | never a high-pass on the whole take: Mike found his own macros low cut took too much. Fires 0 times on the MV7+ polynomials take, about 14 a minute on macros |
@@ -71,6 +71,22 @@ out of an .aup3 without Audacity: it is SQLite, see `sampleblocks` and the binar
 | High-pass | off (`--highpass 80` to turn on) | the plosive fix is targeted instead. Mike thinks the MV7+ 75 Hz filter is on but isn't sure: ask him the next time a vocal take comes in |
 
 `--no-cut` skips take picking and only gates and repairs, for a file that is already edited.
+
+## Known gaps
+
+Mike approved the results on 2026-11-26 ("you did better than me on some"), with these open:
+
+- **Faint clicks right at a word onset.** He still hears one on "the bits" (macros raw, about
+  105.9 s) after the faint-click pass. A click that lands on the first glottal pulse of a word is
+  not separated from the voice by either click detector.
+- **Loud breaths open the gate.** A breath that peaks over −40 dBFS (macros raw 8.6 to 9.5 s)
+  crosses the threshold, so the gate opens partway through it with an abrupt start. It needs its
+  own breath detector (broadband hiss, no harmonics, before a word), not a lower threshold, which
+  would also eat quiet word endings.
+- Some clicks before a word leave a small remnant right at the onset (polynomials 181 s in the
+  clean), because the repair stops where the word begins.
+
+Tell him about these when you hand over a clean, and fix them the way "Changing it" says.
 
 ## Changing it
 
