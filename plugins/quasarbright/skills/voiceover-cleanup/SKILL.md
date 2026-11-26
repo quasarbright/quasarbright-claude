@@ -43,8 +43,8 @@ out of an .aup3 without Audacity: it is SQLite, see `sampleblocks` and the binar
 3. **Obey the directions.** Put the take number for each block he asked about in
    `<take>.cleanup/choices.json`, then run again with `--choose <take>.cleanup/choices.json`. If a
    direction can't be expressed as a take choice, do the edit in code or tell him.
-4. **Spot-check the fixes.** `labels-clean.txt` marks every deleted breath, de-clicked click and
-   plosive fix on the cleaned file, and `labels-raw.txt` marks every keep and cut on the raw take.
+4. **Spot-check the fixes.** `labels-clean.txt` marks every deleted click or breath and every thump
+   fix on the cleaned file, and `labels-raw.txt` marks every keep and cut on the raw take.
    He imports them in Audacity (File > Import > Labels). Before calling the clean finished, listen
    to a few plosive fixes on the real recording: plosives only show up on a real voice, never in
    the draft.
@@ -60,15 +60,19 @@ out of an .aup3 without Audacity: it is SQLite, see `sampleblocks` and the binar
 |---|---|---|
 | Takes | last full read of each line; jumps of more than about 300 script words cost much more | every retake cut he made kept the last read; a common phrase repeated in a recap shouldn't look like a retake |
 | Splices | butt splice at the quietest point of the pause, keeping up to 0.25 s lead-in and 0.3 s tail, 3 ms fades | his splices are butt splices; the fades stop a join from clicking |
-| Noise Gate | threshold −40 dBFS (peak), reduction −35 dB, attack 20 ms, hold 50 ms, decay 100 ms | fitted to his own wet track to within 0.17 dB per frame |
-| Leftover breaths and clicks | deleted (gate floor) when a gate opening is unvoiced, under −35 dBFS RMS and not inside a heard word | he deletes them rather than turning them down; his deletes measured −44 to −58 dBFS before |
-| Mouth clicks | top end (>2 kHz) down 20 dB on ≤8 ms spikes 25 dB over their surroundings | the thin vertical strips in a spectrogram; consonants spike less than that |
-| Plosives | lows (<150 Hz) down 15 dB where they jump 15 dB over their 200 ms median | rare on purpose: he fixed about one every few minutes |
+| Noise Gate | threshold −40 dBFS (peak), reduction −35 dB, attack 10 ms, hold 50 ms, decay 100 ms | fitted to his polynomials wet track: 0.2 dB mean error per 10 ms frame, 0.5 dB on frames it turns down. This is his expander step and takes out the faint breaths between phrases |
+| Clicks and breaths before a word | deleted (60 dB down, whole spectrum) when a burst of 30 ms or less over −65 dBFS sits alone in a pause, within 0.35 s before the word | the thin vertical strips left of a word; he deleted 11 in polynomials after the gate, this finds 7 plus 1 he left in. Clicks inside words are left alone: he never fixed any |
+| Thumps | under 60 Hz down 25 dB where the sub-40 Hz band jumps 15 dB over its 200 ms median, above −60 dBFS | all of his "plosive" fixes in polynomials were this; finds 7 of 8, and a false hit can't touch the voice |
 | High-pass | off (`--highpass 80` to turn on) | his MV7+ setup filters at 75 Hz in the mic; turn it on for a take recorded without that |
 
 `--no-cut` skips take picking and only gates and repairs, for a file that is already edited.
 
 ## Changing it
+
+Measure against his hand edit before showing him anything: run it on a project with raw and wet
+tracks and compare the clean with wet in aligned 10 ms frames. Anything done in blocks must use the
+real block length (220 samples at 44.1 kHz, not 220.5): the first version drifted 0.34 s by minute
+2.5, gated out words, and the samples he heard were "terrible".
 
 When Mike corrects the result ("you cut a good take", "that breath is still there"), find the
 case in the report and labels, fix the rule in `cleanup.py`, add a test to
