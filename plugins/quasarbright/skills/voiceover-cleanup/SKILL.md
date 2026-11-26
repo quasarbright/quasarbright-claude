@@ -83,8 +83,6 @@ Mike approved the results on 2026-11-26 ("you did better than me on some"), with
   crosses the threshold, so the gate opens partway through it with an abrupt start. It needs its
   own breath detector (broadband hiss, no harmonics, before a word), not a lower threshold, which
   would also eat quiet word endings.
-- Some clicks before a word leave a small remnant right at the onset (polynomials 181 s in the
-  clean), because the repair stops where the word begins.
 
 Tell him about these when you hand over a clean, and fix them the way "Changing it" says.
 
