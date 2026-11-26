@@ -107,18 +107,22 @@ every thread with an anchor naming the artboard and element it sits on, so Claud
 2. **Whenever someone is awake anyway.** The desk reads all threads on every wake, whatever woke
    it. The coordinator reads them whenever Mike writes in the project chat and no read has happened
    in the last hour.
-3. **A review sweep routine** in every project with an open row, every 3 hours from 9am to 9pm
-   Eastern (his check-in hours), so a comment he forgot to mention waits at most a few hours. It
-   reads the threads and the ledger and posts in the project chat only when it finds unhandled
-   comments ("You left 2 comments on the review canvas: … Passing them on."), which wakes the
-   coordinator to relay them to the desk. The coordinator creates it with the canvas and pauses it
-   while the open page is empty.
+3. **A review sweep scheduled task** in every project with an open row, every 3 hours from 9am to
+   9pm Eastern (his check-in hours), so a comment he forgot to mention waits at most a few hours.
+   The desk creates it, firing into the desk's own session (a thread can't post in the project
+   chat, so a fresh session would have nowhere to report). Each run reads the threads and the
+   ledger, and only when it finds unhandled comments routes them to the coordinator, which tells
+   Mike in the project chat ("You left 2 comments on the review canvas: … Passing them on.").
+   Without a desk, the coordinator creates it. Pause it while the open page is empty.
 
 **The ledger.** A session can't reply to or resolve a thread that wasn't sent to Claude, which is
-every canvas thread, so "handled" is tracked on the canvas itself, in its database: `ArtifactData` collection `review_ledger`, one doc
-per thread id: `{thread, item, board, comment, handledAt, routedTo}`. A thread is new when it has
-a comment later than its ledger doc's `handledAt`, or no doc. Write the doc in the same turn you
-route it.
+every canvas thread, so "handled" is tracked in a ledger. It can't live on the canvas: a Design
+canvas's database refuses writes (`store_read_only`, found 2026-11-26). In a project it's a JSON
+file in the shared project files, `/mnt/project-files/review/<project>-review-ledger.json`;
+outside a project, `docs/review-ledger.json` in the project's repo. Its shape: `{"canvas": "<url>",
+"threads": {"<thread id>": {item, board, comment, handledAt, routedTo}}}`. A thread is new when it
+has a comment later than its entry's `handledAt`, or no entry. Write the entry in the same turn you
+route it, and re-read the file just before writing (other threads share the folder).
 
 **Handling a comment:**
 
@@ -160,7 +164,8 @@ route it.
    "after_first_write"`. Its result carries the type's instructions; follow them.
 2. Publish `project/canvas.json` (the two pages, the how-to sticky) and the first row from the
    desk's session.
-3. Save the `url` and owner in project memory, and set up the review sweep routine.
+3. Save the `url`, owner and ledger path in project memory, and set up the review sweep scheduled
+   task.
 4. Tell Mike the link once.
 
 ## Moving a project off the old review page
