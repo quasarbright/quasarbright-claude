@@ -43,8 +43,11 @@ finds a better layout, change this skill in the same turn and publish with `quas
   came up, what's in use now, and how to read the pictures.
 - **Keep the canvas and the chat in sync.** When he answers in chat, move the row to Done right away
   with his answer in its title.
-- **Link the row**, not just the canvas, whenever you tell Mike something needs him:
-  `<canvas url>#artboard-<board path without .dc.html>`.
+- **Every set of mocks or screenshots goes on the canvas, and every post that shows them links its
+  row**: picks, and built work to look over too, even when the post also attaches the PNGs. Mike,
+  2026-11-26, after a set of shots went out in chat only: "Link me the review dude. Every time there
+  are mocks". Whoever shows him pictures sends them to the desk first and puts the row link in the
+  post. Row link: `<canvas url>#artboard-<board path without .dc.html>`.
 - **Move rows to Done when settled**, and drop them from Done once their work ships.
 - **Embed images as assets.** Upload every picture to the canvas (`Artifact`, `asset: true`, the
   canvas `url`) and use its `/_blob/<id>` URL. Assets already on another artifact are copied with
