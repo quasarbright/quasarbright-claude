@@ -47,7 +47,10 @@ finds a better layout, change this skill in the same turn and publish with `quas
   point with a bold lead-in ("**Eye badge:** sits inside the card's corner"), and the ask last
   ("Nothing to choose. Comment on any screen that looks off."). Mike, 2026-11-27, on a long blue
   sticky: "this is just a wall of text. can we format it like md or something to be more
-  readable?"
+  readable?" He approved the first one (onuw, About-Fixes1127): "Looks good update the plugin
+  telling it to do this". Its look: background `#16213a`, 12 px corners, 24 px 28 px padding,
+  14 px gaps; the label 13 px caps `#9fb4e0`; the headline 20 px semibold; the points 15 px with
+  a `<strong>` lead-in; the ask in `#ffd88a`. Name the shots a point covers ("(6 to 8)").
 - **Keep the canvas and the chat in sync.** When he answers in chat, move the row to Done right away
   with his answer in its title.
 - **Every set of mocks or screenshots goes on the canvas, and every post that shows them links its
