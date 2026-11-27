@@ -289,6 +289,15 @@ Render `-ql` while iterating, `-qm` to send Mike. He asked for `qm` by default;
 `qh` only when he says so. Send the file from `media/`, never a copy in the
 video directory.
 
+**Look at every scene you changed before he does.** Step through its frames,
+mid-animation included, and check them against the `video` lessons in the taste
+store (the `persona` skill): cue timing, teleports and pops, transform matches,
+overlap and alignment. He has had to ask "did you even look at it?" and
+"misaligned, and different font size?? ... you should catch this".
+
+**His sketches and notes give the intent, not the layout.** "my drawing sucked,
+don't follow it exactly. make it look nice."
+
 **A full video renders with `python render_parallel.py -qm`**, not `manim …
 Everything` (see *Render the sections in parallel*): it renders, joins and
 masters in one go, about 3x faster. For changes inside a section or two,
