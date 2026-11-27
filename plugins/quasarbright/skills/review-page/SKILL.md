@@ -39,8 +39,15 @@ finds a better layout, change this skill in the same turn and publish with `quas
   questions, persona questions. A question that needs an answer within minutes can be asked in chat,
   and goes on the canvas too if it's still open an hour later.
 - **Full background on every row.** He may never have seen the thread it came from. The row's title
-  is the question in plain words; a sticky note at the left end of the row says what it is, why it
-  came up, what's in use now, and how to read the pictures.
+  is the question in plain words; an "About this row" card at the left end of the row says what it
+  is, why it came up, what's in use now, and how to read the pictures.
+- **The background is formatted, never a wall of text.** Canvas stickies are plain text, so the
+  background is an artboard (`About-<row>.dc.html`, about 480 px wide, slightly lighter than the
+  option boards): a small "About this row" label, a one-line headline, then one short line per
+  point with a bold lead-in ("**Eye badge:** sits inside the card's corner"), and the ask last
+  ("Nothing to choose. Comment on any screen that looks off."). Mike, 2026-11-27, on a long blue
+  sticky: "this is just a wall of text. can we format it like md or something to be more
+  readable?"
 - **Keep the canvas and the chat in sync.** When he answers in chat, move the row to Done right away
   with his answer in its title.
 - **Every set of mocks or screenshots goes on the canvas, and every post that shows them links its
@@ -161,14 +168,14 @@ route it, and re-read the file just before writing (other threads share the fold
   then at real tab size", not a bare "favicon sheet".
 - **A pick is a real choice that differs in one thing.** Every option is the same screen with only
   the thing being decided changed. Fixes that apply to every option are built into all of them and
-  mentioned in the sticky.
+  mentioned in the About card.
 - **One direction is a look-over, not a pick.** Mike, 2026-11-19, on a quarter-board pick: "it
   wasn't even really a choice, and there were unrelated differences between each thing."
 - **Each option's picture shows that option itself.** For "add X" versus "keep", the add side shows
   X working, never the closest thing that exists today. Mike, 2026-11-25, on a fisheye pick whose
   pictures were both today's mode at 170° and 179°: "neither of these show >180".
 - **Check a build against what he approved before it goes up.** Put the build next to the picked
-  option on the row and list every difference in the sticky, or fix the drift. Mike, 2026-11-19:
+  option on the row and list every difference in the About card, or fix the drift. Mike, 2026-11-19:
   "Still not the version you showed me that I liked."
 - **What he picked is what gets built.** Hand the build the picked option's image and source.
 
